@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
@@ -36,8 +37,11 @@ export default function Navbar() {
 
         <Image src="/Logo.png" width={40} height={100} alt="logo" />
 
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2">
-          Join Now
+        <Button
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2"
+          asChild
+        >
+          <Link href="/sign-up">Join Now</Link>
         </Button>
       </div>
     </header>

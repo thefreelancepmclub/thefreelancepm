@@ -2,9 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { registeruser } from "@/action/authentication/registration";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,11 +17,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // Initialize the form
   const form = useForm<SignUpFormValues>({
@@ -37,23 +42,28 @@ export function SignUpForm() {
 
   // Handle form submission
   async function onSubmit(data: SignUpFormValues) {
-    setIsLoading(true);
+    startTransition(() => {
+      registeruser(data).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
 
-    try {
-      // In a real app, you would call your registration API here
-      console.log("Sign up data:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to login page or dashboard after successful registration
-      // router.push("/login")
-    } catch (error) {
-      console.error("Sign up error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+        // handle success
+        setLoading(true);
+        toast.success(res.message);
+        router.push("/login");
+      });
+    });
   }
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
+  const isLoading = pending || loading;
 
   return (
     <Form {...form}>
@@ -231,7 +241,7 @@ export function SignUpForm() {
           effect="gooeyLeft"
           disabled={isLoading}
         >
-          {isLoading ? "Signing Up..." : "Sign Up"}
+          {pending ? "Signing Up..." : loading ? "Just a second..." : "Sign Up"}
         </Button>
       </form>
     </Form>

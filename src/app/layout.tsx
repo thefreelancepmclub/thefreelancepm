@@ -1,3 +1,4 @@
+import NProgress from "@/components/ui/NProgress";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; // Optional: For fallback fonts
 import { Toaster } from "sonner";
@@ -26,6 +27,7 @@ export default function RootLayout({
         {children}
 
         <Toaster closeButton richColors />
+        <NProgress />
       </body>
     </html>
   );
