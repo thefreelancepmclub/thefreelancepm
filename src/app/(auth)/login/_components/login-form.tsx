@@ -148,8 +148,9 @@ export function LoginForm() {
         {/* Submit button */}
         <Button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className="w-full bg-blue-600 hover:bg-blue-700 min-h-[45px]"
           disabled={isLoading}
+          effect="gooeyLeft"
         >
           {isLoading ? "Signing In..." : "Sign In"}
         </Button>
