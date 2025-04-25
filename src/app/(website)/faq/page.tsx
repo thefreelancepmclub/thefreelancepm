@@ -1,5 +1,9 @@
 const page = () => {
-  return <div>page</div>;
+  return (
+    <main className="py-12">
+      <section className=""></section>
+    </main>
+  );
 };
 
 export default page;
