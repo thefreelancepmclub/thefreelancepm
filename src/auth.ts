@@ -5,6 +5,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
       async authorize(credentials) {
@@ -43,8 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
   },
-
-  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },

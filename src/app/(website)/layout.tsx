@@ -1,10 +1,12 @@
+import { auth } from "@/auth";
 import { ReactNode } from "react";
 import Navbar from "./_components/navbar";
 
-const WebsiteLayoout = ({ children }: { children: ReactNode }) => {
+const WebsiteLayoout = async ({ children }: { children: ReactNode }) => {
+  const cu = await auth();
   return (
     <div>
-      <Navbar />
+      <Navbar isLoggedin={!!cu} />
       {children}
     </div>
   );

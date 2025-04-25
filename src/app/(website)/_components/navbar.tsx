@@ -1,8 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -55,7 +64,11 @@ const navlinks = [
   },
 ];
 
-export default function Navbar() {
+interface Props {
+  isLoggedin: boolean;
+}
+
+export default function Navbar({ isLoggedin }: Props) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -106,14 +119,45 @@ export default function Navbar() {
           </SheetContent>
         </Sheet>
 
-        <Image src="/Logo.png" width={40} height={100} alt="logo" />
+        <Link href="/">
+          <Image src="/Logo.png" width={40} height={100} alt="logo" />
+        </Link>
 
-        <Button
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2"
-          asChild
-        >
-          <Link href="/sign-up">Join Now</Link>
-        </Button>
+        {isLoggedin ? (
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="icon" className="rounded-full">
+                  <User className="text-orange-500" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center">
+                <DropdownMenuItem asChild>
+                  <Link href="/account" className="w-full">
+                    Account{" "}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  onClick={async () => {
+                    await signOut({ redirectTo: "/" });
+                  }}
+                  className="cursor-pointer w-full"
+                >
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        ) : (
+          <Button
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2"
+            asChild
+          >
+            <Link href="/sign-up">Join Now</Link>
+          </Button>
+        )}
       </div>
     </header>
   );
