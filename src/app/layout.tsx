@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; // Optional: For fallback fonts
+import { Toaster } from "sonner";
 import "./globals.css";
 
 // Importing Poppins font from Google Fonts
@@ -21,8 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${poppins.variable} antialiased font-sans`}>
+      <body className={` ${poppins.className} antialiased `}>
         {children}
+
+        <Toaster closeButton richColors />
       </body>
     </html>
   );
