@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --detail-medium-contrast: hsl(0, 0%, 100%);
+  --text-body: #577be2;
+}
+/* Scroll bar */
+.scrollbar-thin {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #577be2 transparent; /* For Firefox */
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 2px; /* Set the width */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent; /* Track color */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #577be2; /* Thumb color */
+  border-radius: 10px; /* Optional for rounded edges */
+}
+
+/* hide scroll bar */
+/* Add this class to hide scrollbars */
+.scrollbar-hidden {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
