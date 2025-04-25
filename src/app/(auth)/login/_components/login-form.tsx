@@ -1,0 +1,159 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { loginFormSchema, LoginFormValues } from "@/schemas/auth";
+import Link from "next/link";
+
+export function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Initialize the form
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      rememberMe: false,
+    },
+  });
+
+  // Handle form submission
+  async function onSubmit(data: LoginFormValues) {
+    setIsLoading(true);
+
+    try {
+      // In a real app, you would call your authentication API here
+      console.log("Login data:", data);
+
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Redirect to dashboard or home page after successful login
+      // router.push("/dashboard")
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Email field */}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    {...field}
+                    placeholder="Enter your Full Name"
+                    type="text"
+                    autoComplete="name"
+                    className="border-primary border-[1px]  min-h-[45px] "
+                    disabled={isLoading}
+                    startIcon={Mail}
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Password field */}
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    {...field}
+                    placeholder="Enter your Password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    className=" pr-10 border-primary border-[1px]  min-h-[45px]"
+                    startIcon={Lock}
+                    disabled={isLoading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-3 text-gray-400"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Remember me and Forgot password */}
+        <div className="flex items-center justify-between">
+          <FormField
+            control={form.control}
+            name="rememberMe"
+            render={({ field }) => (
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="rememberMe"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  disabled={isLoading}
+                />
+                <label
+                  htmlFor="rememberMe"
+                  className="text-sm font-medium text-gray-700"
+                >
+                  Remember me
+                </label>
+              </div>
+            )}
+          />
+          <Link
+            href="/forgot-password"
+            className="text-sm font-medium text-orange-500 hover:text-orange-600"
+          >
+            Forgot password?
+          </Link>
+        </div>
+
+        {/* Submit button */}
+        <Button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700"
+          disabled={isLoading}
+        >
+          {isLoading ? "Signing In..." : "Sign In"}
+        </Button>
+      </form>
+    </Form>
+  );
+}

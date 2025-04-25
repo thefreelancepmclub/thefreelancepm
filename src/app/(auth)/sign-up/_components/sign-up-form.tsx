@@ -2,10 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,44 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-// Define the form schema with Zod
-const signUpFormSchema = z
-  .object({
-    name: z.string().min(1, { message: "Name is required" }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Invalid email address" }),
-    phoneNumber: z
-      .string()
-      .min(1, { message: "Phone number is required" })
-      .regex(/^\+?[0-9\s\-()]+$/, { message: "Invalid phone number" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-    rememberMe: z.boolean().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-// Infer the type from the schema
-type SignUpFormValues = z.infer<typeof signUpFormSchema>;
+import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
 
 export function SignUpForm() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +57,7 @@ export function SignUpForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[24px]">
         {/* Name field */}
         <FormField
           control={form.control}
@@ -108,7 +71,7 @@ export function SignUpForm() {
                     placeholder="Enter your Full Name"
                     type="text"
                     autoComplete="name"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px] "
                     disabled={isLoading}
                     startIcon={User}
                   />
@@ -127,14 +90,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Enter your Email"
                     type="email"
                     autoComplete="email"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Mail}
                   />
                 </div>
               </FormControl>
@@ -151,14 +114,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Enter your Phone Number"
                     type="tel"
                     autoComplete="tel"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Phone}
                   />
                 </div>
               </FormControl>
@@ -175,14 +138,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Create a Password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    className="pl-10 pr-10"
+                    className=" pr-10 border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Lock}
                   />
                   <button
                     type="button"
@@ -211,14 +174,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Confirm a Password"
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    className="pl-10 pr-10"
+                    className=" pr-10 border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Lock}
                   />
                   <button
                     type="button"
@@ -264,7 +227,8 @@ export function SignUpForm() {
         {/* Submit button */}
         <Button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className=" min-h-[45px] w-full"
+          effect="gooeyLeft"
           disabled={isLoading}
         >
           {isLoading ? "Signing Up..." : "Sign Up"}
