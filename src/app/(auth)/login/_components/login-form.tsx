@@ -49,7 +49,11 @@ export function LoginForm() {
 
         // handle success
         setIsLoading(true);
-        router.push("/");
+        if (res.role === "user") {
+          router.push("/");
+        } else if (res.role === "admin") {
+          router.push("/dashboard");
+        }
       });
     });
   }
