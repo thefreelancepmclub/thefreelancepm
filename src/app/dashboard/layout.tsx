@@ -9,6 +9,8 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
   const cu = await auth();
 
   if (!cu) redirect("/login");
+
+  if (cu.user.role !== "admin") redirect("/");
   return (
     <div className="flex min-h-screen flex-col">
       <SIdebar />
