@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 
 import { prisma } from "@/lib/prisma";
 import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
+import { manageRememberMeCookies } from "./login";
 
 export async function registeruser(data: SignUpFormValues) {
   const { success, data: parsedData, error } = signUpFormSchema.safeParse(data);
@@ -41,6 +42,13 @@ export async function registeruser(data: SignUpFormValues) {
         phone: parsedData.phoneNumber,
       },
     });
+
+    // Manage "Remember Me" cookies using the reusable function
+    await manageRememberMeCookies(
+      !!data.rememberMe,
+      data.rememberMe ? data.email : undefined,
+      data.rememberMe ? data.password : undefined
+    );
 
     return {
       success: true,
