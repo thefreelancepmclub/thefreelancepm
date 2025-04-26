@@ -18,6 +18,7 @@ model User {
   password String
   accounts      Account[]
   sessions      Session[]
+  isActive Boolean @default(false)
   // Optional for WebAuthn support
   Authenticator Authenticator[]
  
