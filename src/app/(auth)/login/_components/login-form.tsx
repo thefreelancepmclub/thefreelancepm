@@ -2,9 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { loginAction } from "@/action/authentication/login";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -17,10 +18,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginFormSchema, LoginFormValues } from "@/schemas/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   // Initialize the form
   const form = useForm<LoginFormValues>({
@@ -34,23 +40,21 @@ export function LoginForm() {
 
   // Handle form submission
   async function onSubmit(data: LoginFormValues) {
-    setIsLoading(true);
+    startTransition(() => {
+      loginAction(data).then((res) => {
+        if (!res?.success) {
+          toast.error(res?.message);
+          return;
+        }
 
-    try {
-      // In a real app, you would call your authentication API here
-      console.log("Login data:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to dashboard or home page after successful login
-      // router.push("/dashboard")
-    } catch (error) {
-      console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+        // handle success
+        setIsLoading(true);
+        router.push("/");
+      });
+    });
   }
+
+  const loading = isLoading || pending;
 
   return (
     <Form {...form}>
@@ -69,7 +73,7 @@ export function LoginForm() {
                     type="text"
                     autoComplete="name"
                     className="border-primary border-[1px]  min-h-[45px] "
-                    disabled={isLoading}
+                    disabled={loading}
                     startIcon={Mail}
                   />
                 </div>
@@ -94,7 +98,7 @@ export function LoginForm() {
                     autoComplete="current-password"
                     className=" pr-10 border-primary border-[1px]  min-h-[45px]"
                     startIcon={Lock}
-                    disabled={isLoading}
+                    disabled={loading}
                   />
                   <button
                     type="button"
@@ -126,7 +130,7 @@ export function LoginForm() {
                   id="rememberMe"
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  disabled={isLoading}
+                  disabled={loading}
                 />
                 <label
                   htmlFor="rememberMe"
@@ -149,10 +153,14 @@ export function LoginForm() {
         <Button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 min-h-[45px]"
-          disabled={isLoading}
+          disabled={loading}
           effect="gooeyLeft"
         >
-          {isLoading ? "Signing In..." : "Sign In"}
+          {pending
+            ? "Signing In..."
+            : isLoading
+            ? "Just a second..."
+            : "Sign In"}
         </Button>
       </form>
     </Form>
