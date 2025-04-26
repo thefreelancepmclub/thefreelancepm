@@ -17,7 +17,7 @@ const DashboardLayout = async ({ children }: { children: ReactNode }) => {
       {/* Main Content */}
       <div className="ml-64 flex flex-1 flex-col">
         {/* Top Bar */}
-        <Topbar />
+        <Topbar name={cu.user.name as string} />
 
         {children}
 

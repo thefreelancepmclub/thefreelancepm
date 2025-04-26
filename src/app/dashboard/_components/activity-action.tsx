@@ -1,8 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma";
 import { BarChart3, FileText } from "lucide-react";
+import moment from "moment";
 
-const ActivityAction = () => {
+const ActivityAction = async () => {
+  const latestUsers = await prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 8,
+    select: {
+      id: true,
+      createdAt: true,
+      name: true,
+    },
+  });
   return (
     <div className="mt-6 grid gap-6 md:grid-cols-2">
       {/* Recent Activity */}
@@ -15,12 +28,13 @@ const ActivityAction = () => {
             </h3>
           </div>
           <ul className="mt-4 space-y-3">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <li key={i} className="flex items-center gap-2 text-sm">
+            {latestUsers.map(({ id, name, createdAt }) => (
+              <li key={id} className="flex items-center gap-2 text-sm">
                 <BarChart3 className="h-4 w-4 text-primary" />
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium text-primary">John Doe</span>{" "}
-                  registered a new account — April 26, 2025 at 3:45 PM
+                  <span className="font-medium text-primary">{name}</span>{" "}
+                  registered a new account —{" "}
+                  {moment(createdAt).format("MMMM D, YYYY [at] h:mm A")}
                 </p>
               </li>
             ))}
