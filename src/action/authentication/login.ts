@@ -3,6 +3,7 @@
 import { signIn } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { loginFormSchema, LoginFormValues } from "@/schemas/auth";
+import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 export async function loginAction(data: LoginFormValues) {
@@ -52,6 +53,7 @@ export async function loginAction(data: LoginFormValues) {
     return {
       success: true,
       message: "Login successful",
+      role: user.role as Role,
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
