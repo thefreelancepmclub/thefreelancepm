@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { loginFormSchema, LoginFormValues } from "@/schemas/auth";
 import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 
 export async function loginAction(data: LoginFormValues) {
   const { success, data: parsedData, error } = loginFormSchema.safeParse(data);
@@ -50,6 +51,13 @@ export async function loginAction(data: LoginFormValues) {
       redirect: false,
     });
 
+    // Manage "Remember Me" cookies using the reusable function
+    await manageRememberMeCookies(
+      !!data.rememberMe,
+      data.rememberMe ? data.email : undefined,
+      data.rememberMe ? data.password : undefined
+    );
+
     return {
       success: true,
       message: "Login successful",
@@ -63,5 +71,41 @@ export async function loginAction(data: LoginFormValues) {
       success: false,
       message: error.message ?? "Something went wrong!",
     };
+  }
+}
+
+/**
+ * A reusable server action to manage "Remember Me" cookies.
+ *
+ * @param {boolean} rememberMe - Whether the user wants to be remembered.
+ * @param {string | undefined} email - The email to store in the cookie (optional if deleting).
+ * @param {string | undefined} password - The password to store in the cookie (optional if deleting).
+ */
+export async function manageRememberMeCookies(
+  rememberMe: boolean,
+  email?: string,
+  password?: string
+) {
+  const cookieOptions = {
+    sameSite: "strict" as const, // Prevents the cookie from being sent with cross-site requests
+    maxAge: 2592000, // Expires after 30 days (in seconds)
+  };
+
+  if (rememberMe && email && password) {
+    // Set the "rememberMeEmail" and "rememberMePassword" cookies
+    cookies().set({
+      name: "rememberMeEmail",
+      value: email,
+      ...cookieOptions,
+    });
+    cookies().set({
+      name: "rememberMePassword",
+      value: password,
+      ...cookieOptions,
+    });
+  } else {
+    // Delete the "rememberMeEmail" and "rememberMePassword" cookies
+    cookies().delete("rememberMeEmail");
+    cookies().delete("rememberMePassword");
   }
 }

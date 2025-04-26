@@ -17,14 +17,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { loginFormSchema, LoginFormValues } from "@/schemas/auth";
+import Cookies from "js-cookie"; // Import js-cookie for cookie retrieval
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+
+// Retrieve cookies for email and "Remember Me"
+const rememberedEmail = Cookies.get("rememberMeEmail");
+const rememberMePassword = Cookies.get("rememberMePassword");
+const isRemembered = !!rememberedEmail && !!rememberMePassword;
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  console.log({
+    rememberedEmail,
+    rememberMePassword,
+  });
 
   const router = useRouter();
 
@@ -32,9 +43,9 @@ export function LoginForm() {
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
     defaultValues: {
-      email: "",
-      password: "",
-      rememberMe: false,
+      email: rememberedEmail ?? "",
+      password: rememberMePassword ?? "",
+      rememberMe: isRemembered ?? false,
     },
   });
 
