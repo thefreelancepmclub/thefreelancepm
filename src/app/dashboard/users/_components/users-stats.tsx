@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface StatCardProps {
   title: string;
-  value: string;
+  value: number;
   icon: React.ReactNode;
 }
 
@@ -21,22 +21,32 @@ const StatCard = ({ title, value, icon }: StatCardProps) => (
   </Card>
 );
 
-export default function UserStats() {
+interface Props {
+  totalUsers: number;
+  newUsers: number;
+  activeUsers: number;
+}
+
+export default function UserStats({
+  totalUsers,
+  newUsers,
+  activeUsers,
+}: Props) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <StatCard
         title="Total Users"
-        value="XXX"
+        value={totalUsers}
         icon={<Users className="h-6 w-6 text-primary" />}
       />
       <StatCard
         title="New Users"
-        value="XX"
+        value={newUsers}
         icon={<Users className="h-6 w-6 text-primary" />}
       />
       <StatCard
         title="Active Users"
-        value="XXX"
+        value={activeUsers}
         icon={<Users className="h-6 w-6 text-primary" />}
       />
     </div>

@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { CircleUser, HelpCircle } from "lucide-react";
 
-const Topbar = () => {
+interface Props {
+  name: string;
+}
+
+const Topbar = ({ name }: Props) => {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-white px-6">
       <div>
-        <h1 className="text-lg font-semibold">Admin Name</h1>
+        <h1 className="text-lg font-semibold">{name}</h1>
         <p className="text-sm text-muted-foreground">Admin Dashboard</p>
       </div>
       <div className="flex items-center gap-4">
@@ -19,7 +23,7 @@ const Topbar = () => {
             <span className="sr-only">Profile</span>
           </Button>
           <div className="text-sm">
-            <p className="font-medium">Name</p>
+            <p className="font-medium">{name}</p>
             <p className="text-xs text-muted-foreground">Admin</p>
           </div>
         </div>
