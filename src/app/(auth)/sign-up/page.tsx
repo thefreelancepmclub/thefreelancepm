@@ -6,13 +6,12 @@ export default function SignUpPage() {
   return (
     <div className="flex min-h-screen">
       {/* Left side - Image */}
-      <div className="hidden w-1/2 bg-gray-900 lg:block">
+      <div className="hidden lg:w-3/5 md:w-1/2 bg-gray-900 lg:block relative">
         <Image
           src="https://res.cloudinary.com/drdztqgcx/image/upload/v1745573218/Rectangle_4833_guur5l.png"
           alt="Team meeting"
-          width={1000}
-          height={1000}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
 
@@ -21,8 +20,9 @@ export default function SignUpPage() {
         <div className="mx-auto w-full max-w-md space-y-8">
           {/* Create account text */}
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900">
-              Create Your <span className="text-orange-500">Account</span>
+            <h1 className="text-[32px] leading-[120%]  font-semibold text-gray-900">
+              Create Your{" "}
+              <span className="text-orange-500 underline">Account</span>
             </h1>
             <p className="mt-2 text-sm text-gray-600">
               Join us and start shopping today

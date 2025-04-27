@@ -2,11 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
+import { registeruser } from "@/action/authentication/registration";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -17,47 +16,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
-// Define the form schema with Zod
-const signUpFormSchema = z
-  .object({
-    name: z.string().min(1, { message: "Name is required" }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Invalid email address" }),
-    phoneNumber: z
-      .string()
-      .min(1, { message: "Phone number is required" })
-      .regex(/^\+?[0-9\s\-()]+$/, { message: "Invalid phone number" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-    rememberMe: z.boolean().optional(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-// Infer the type from the schema
-type SignUpFormValues = z.infer<typeof signUpFormSchema>;
+import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export function SignUpForm() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   // Initialize the form
   const form = useForm<SignUpFormValues>({
@@ -74,27 +42,32 @@ export function SignUpForm() {
 
   // Handle form submission
   async function onSubmit(data: SignUpFormValues) {
-    setIsLoading(true);
+    startTransition(() => {
+      registeruser(data).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
 
-    try {
-      // In a real app, you would call your registration API here
-      console.log("Sign up data:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to login page or dashboard after successful registration
-      // router.push("/login")
-    } catch (error) {
-      console.error("Sign up error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+        // handle success
+        setLoading(true);
+        toast.success(res.message);
+        router.push("/login");
+      });
+    });
   }
+
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+    };
+  }, []);
+
+  const isLoading = pending || loading;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[24px]">
         {/* Name field */}
         <FormField
           control={form.control}
@@ -108,7 +81,7 @@ export function SignUpForm() {
                     placeholder="Enter your Full Name"
                     type="text"
                     autoComplete="name"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px] "
                     disabled={isLoading}
                     startIcon={User}
                   />
@@ -127,14 +100,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Enter your Email"
                     type="email"
                     autoComplete="email"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Mail}
                   />
                 </div>
               </FormControl>
@@ -151,14 +124,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Enter your Phone Number"
                     type="tel"
                     autoComplete="tel"
-                    className="pl-10"
+                    className="border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Phone}
                   />
                 </div>
               </FormControl>
@@ -175,14 +148,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Create a Password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    className="pl-10 pr-10"
+                    className=" pr-10 border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Lock}
                   />
                   <button
                     type="button"
@@ -211,14 +184,14 @@ export function SignUpForm() {
             <FormItem>
               <FormControl>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                   <Input
                     {...field}
                     placeholder="Confirm a Password"
                     type={showConfirmPassword ? "text" : "password"}
                     autoComplete="new-password"
-                    className="pl-10 pr-10"
+                    className=" pr-10 border-primary border-[1px]  min-h-[45px]"
                     disabled={isLoading}
+                    startIcon={Lock}
                   />
                   <button
                     type="button"
@@ -264,10 +237,11 @@ export function SignUpForm() {
         {/* Submit button */}
         <Button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className=" min-h-[45px] w-full"
+          effect="gooeyLeft"
           disabled={isLoading}
         >
-          {isLoading ? "Signing Up..." : "Sign Up"}
+          {pending ? "Signing Up..." : loading ? "Just a second..." : "Sign Up"}
         </Button>
       </form>
     </Form>
