@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
 import { Rating, Star } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
+import Image from "next/image";
 
 const SuccessStoriesCard = () => {
   return (
@@ -22,16 +22,17 @@ const SuccessStoriesCard = () => {
         />
       </div>
       <p className="font-normal leading-[120%] text-[18px] pt-[15px] pb-[32px]">
-        "The Freelance PM Club templates saved me countless hours of
-        preparation. Within three months of joining, I landed my first major
-        client and haven't looked back since."
+        The Freelance PM Club templates saved me countless hours of preparation.
+        Within three months of joining, I landed my first major client and
+        haven&apos;t looked back since.
       </p>
       <div className="flex items-center gap-x-[15px]">
-        <div className="h-[60px] w-[60px] object-cover">
-          <img
+        <div className="h-[60px] w-[60px] object-cover relative">
+          <Image
             src="https://res.cloudinary.com/drdztqgcx/image/upload/v1745577685/success_g9lyu9.png"
             alt="reviewer image"
             className="h-full w-full object-cover"
+            fill
           />
         </div>
         <div>
