@@ -1,11 +1,14 @@
 import { CreditCard, DollarSign, Package } from "lucide-react";
 import type React from "react";
 
+import { getTotalEarningsThisMonth } from "@/action/subscription/get-this-month-earn";
 import { Card, CardContent } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma";
 
 interface StatCardProps {
   title: string;
-  value: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: any;
   icon: React.ReactNode;
 }
 
@@ -23,22 +26,31 @@ const StatCard = ({ title, value, icon }: StatCardProps) => (
   </Card>
 );
 
-export function SubscriptionStats() {
+export default async function SubscriptionStats() {
+  const totalPlan = await prisma.subscription.count();
+  const activePlan = await prisma.subscription.count({
+    where: {
+      isActive: true,
+    },
+  });
+
+  const earnings = await getTotalEarningsThisMonth();
+
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <StatCard
         title="Total Plan"
-        value="###"
+        value={totalPlan}
         icon={<Package className="h-6 w-6" />}
       />
       <StatCard
         title="Active Plan"
-        value="###"
+        value={activePlan}
         icon={<CreditCard className="h-6 w-6" />}
       />
       <StatCard
         title="Revenue (Monthly)"
-        value="###"
+        value={`$${earnings.toFixed(2)}`}
         icon={<DollarSign className="h-6 w-6" />}
       />
     </div>
