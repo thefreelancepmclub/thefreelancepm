@@ -1,18 +1,22 @@
 "use client";
 
-import { Eye, Pencil, Search } from "lucide-react";
-import { useState } from "react";
+import { Loader2, Pencil, Search, Trash } from "lucide-react";
+import { useState, useTransition } from "react";
 
+import { deleteSubscription } from "@/action/subscription/delete";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -21,95 +25,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TablePagination } from "@/components/ui/table-pagination";
-import { Subscription } from "./subscription-column";
+import { Subscription } from "@prisma/client";
+import moment from "moment";
+import { toast } from "sonner";
+import { AddPlanForm } from "./create-subscription-plan";
 
-// Sample subscription data
-const subscriptions: Subscription[] = [
-  {
-    id: "XXXXX",
-    title: "Freelancer Light",
-    status: "Active",
-    publishedDate: "10/05/2025",
-    amount: "Free",
-    renewalType: "Free",
-    totalUsers: 10,
-  },
-  {
-    id: "XXXXX",
-    title: "Freelancer Elite",
-    status: "Active",
-    publishedDate: "10/05/2025",
-    amount: "$##",
-    renewalType: "Auto",
-    totalUsers: 50,
-  },
-  {
-    id: "XXXXX",
-    title: "Freelancer Pro",
-    status: "Active",
-    publishedDate: "10/05/2025",
-    amount: "$##",
-    renewalType: "Manual",
-    totalUsers: 75,
-  },
-];
+interface Props {
+  data: Subscription[];
+}
 
-export function SubscriptionTableContainer() {
-  const [currentPage, setCurrentPage] = useState(1);
+export function SubscriptionTableContainer({ data }: Props) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string | undefined>();
-
-  const itemsPerPage = 5;
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [pending, startTransition] = useTransition();
 
   // Apply filters
-  const filteredSubscriptions = subscriptions.filter((subscription) => {
+  const filteredSubscriptions = data.filter((subscription) => {
     const matchesSearch =
       searchQuery === "" ||
-      subscription.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      subscription.renewalType
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      subscription.title.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesStatus =
-      !statusFilter ||
-      statusFilter === "all" ||
-      subscription.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
+    return matchesSearch;
   });
 
-  const totalItems = filteredSubscriptions.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const onDelete = (id: string) => {
+    startTransition(() => {
+      deleteSubscription(id).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
 
-  // Get current page items
-  const currentSubscriptions = filteredSubscriptions.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Handle page change
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  // Handle search
-  const handleSearch = () => {
-    setCurrentPage(1); // Reset to first page when searching
-  };
-
-  // Get status badge class
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case "Active":
-        return "bg-green-100 text-green-800";
-      case "Inactive":
-        return "bg-yellow-100 text-yellow-800";
-      case "Expired":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
+        // handle success
+        toast.success(res.message);
+        setAlertOpen(false);
+      });
+    });
   };
 
   return (
@@ -126,20 +77,6 @@ export function SubscriptionTableContainer() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Select Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Inactive">Inactive</SelectItem>
-                <SelectItem value="Expired">Expired</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button onClick={handleSearch}>Search</Button>
-          </div>
         </div>
 
         <div className="mt-6 overflow-hidden rounded-md border">
@@ -152,12 +89,11 @@ export function SubscriptionTableContainer() {
                 <TableHead>Published Date</TableHead>
                 <TableHead>Amount</TableHead>
                 <TableHead>Renewal Type</TableHead>
-                <TableHead>Total User</TableHead>
                 <TableHead className="text-right">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {currentSubscriptions.map((subscription) => (
+              {filteredSubscriptions.map((subscription) => (
                 <TableRow key={subscription.id}>
                   <TableCell className="font-medium">
                     {subscription.id}
@@ -165,27 +101,68 @@ export function SubscriptionTableContainer() {
                   <TableCell>{subscription.title}</TableCell>
                   <TableCell>
                     <span
-                      className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
-                        subscription.status
-                      )}`}
+                      className={`rounded-full px-2 py-1 text-xs font-medium bg-green-100 text-green-800`}
                     >
-                      {subscription.status}
+                      Active
                     </span>
                   </TableCell>
-                  <TableCell>{subscription.publishedDate}</TableCell>
-                  <TableCell>{subscription.amount}</TableCell>
-                  <TableCell>{subscription.renewalType}</TableCell>
-                  <TableCell>{subscription.totalUsers}</TableCell>
+                  <TableCell>
+                    {moment(subscription.createdAt).format("DD/MM/YYYY")}
+                  </TableCell>
+                  <TableCell>{subscription.price}</TableCell>
+                  <TableCell>{subscription.type}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end space-x-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Eye className="h-4 w-4" />
-                        <span className="sr-only">View</span>
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
-                      </Button>
+                      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
+                            <Trash className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel disabled={pending}>
+                              Cancel
+                            </AlertDialogCancel>
+                            <Button
+                              variant="destructive"
+                              onClick={() => onDelete(subscription.id)}
+                              disabled={pending}
+                            >
+                              Continue{" "}
+                              {pending && <Loader2 className="animate-spin" />}
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                      <AddPlanForm
+                        initialData={subscription}
+                        trigger={
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
+                            <Pencil className="h-4 w-4" />
+                            <span className="sr-only">Edit</span>
+                          </Button>
+                        }
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
@@ -193,14 +170,6 @@ export function SubscriptionTableContainer() {
             </TableBody>
           </Table>
         </div>
-
-        <TablePagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          itemsPerPage={itemsPerPage}
-          onPageChange={handlePageChange}
-        />
       </CardContent>
     </Card>
   );

@@ -1,11 +1,13 @@
 import { Package, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { prisma } from "@/lib/prisma";
 import { AddPlanForm } from "./_componets/create-subscription-plan";
-import { SubscriptionStats } from "./_componets/subscription-stats";
+import SubscriptionStats from "./_componets/subscription-stats";
 import { SubscriptionTableContainer } from "./_componets/subscription-table-container";
 
-export default function SubscriptionPage() {
+export default async function SubscriptionPage() {
+  const subscriptions = await prisma.subscription.findMany();
   return (
     <div className=" p-6">
       <div className="mb-6 flex items-center justify-between">
@@ -28,7 +30,9 @@ export default function SubscriptionPage() {
       <SubscriptionStats />
 
       {/* Subscription Table Container Component */}
-      <SubscriptionTableContainer />
+      {subscriptions.length > 0 && (
+        <SubscriptionTableContainer data={subscriptions} />
+      )}
     </div>
   );
 }

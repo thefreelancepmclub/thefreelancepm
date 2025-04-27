@@ -7,6 +7,7 @@ import {
   SubscriptionCreateFormValues,
   subscriptionSchema,
 } from "@/schemas/subscription";
+import { revalidatePath } from "next/cache";
 
 export async function createSubscription(values: SubscriptionCreateFormValues) {
   // Authenticate the user and check their role
@@ -68,6 +69,8 @@ export async function createSubscription(values: SubscriptionCreateFormValues) {
         stripePriceId: stripePrice.id, // Store the Stripe price ID
       },
     });
+
+    revalidatePath("/dashboard/subscription");
 
     // Return success response with the created subscription data
     return {

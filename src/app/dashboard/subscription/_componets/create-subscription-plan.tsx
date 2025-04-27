@@ -4,6 +4,7 @@ import { Loader2, Plus, Trash2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { createSubscription } from "@/action/subscription/create";
+import { editSubscription } from "@/action/subscription/edit";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,40 +27,58 @@ import {
   SubscriptionCreateFormValues,
   subscriptionSchema,
 } from "@/schemas/subscription";
+import { Subscription } from "@prisma/client";
 import { ReactNode, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 interface iAppProps {
   trigger: ReactNode;
+  initialData?: Subscription;
 }
 
-export function AddPlanForm({ trigger }: iAppProps) {
+export function AddPlanForm({ trigger, initialData }: iAppProps) {
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   // Initialize the form with default values
   const form = useForm<SubscriptionCreateFormValues>({
     resolver: zodResolver(subscriptionSchema),
     defaultValues: {
-      title: "",
-      features: [""],
-      price: undefined,
+      title: initialData?.title ?? "",
+      features: initialData?.features ?? [""],
+      price: initialData?.price ?? undefined,
     },
   });
 
   // Handle form submission
   const handleSubmit = (data: SubscriptionCreateFormValues) => {
-    startTransition(() => {
-      createSubscription(data).then((res) => {
-        if (!res.success) {
-          toast.error(res.message);
-          return;
-        }
-
-        // handle success
-        setOpen(false);
-        toast.success(res.message);
+    if (initialData) {
+      startTransition(() => {
+        editSubscription(initialData?.id, data).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+          // handle success
+          setOpen(false);
+          toast.success(res.message);
+          form.reset();
+        });
       });
-    });
+    } else {
+      startTransition(() => {
+        createSubscription(data).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+
+          // handle success
+          setOpen(false);
+          toast.success(res.message);
+          form.reset();
+        });
+      });
+    }
   };
 
   // Add a new feature field
@@ -85,7 +104,7 @@ export function AddPlanForm({ trigger }: iAppProps) {
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-blue-600">
-            Add New Plan
+            {initialData ? "Edit plan" : "Add New Plan"}
           </DialogTitle>
         </DialogHeader>
 
@@ -187,7 +206,8 @@ export function AddPlanForm({ trigger }: iAppProps) {
                 className="bg-orange-500 hover:bg-orange-600"
                 disabled={pending}
               >
-                Save {pending && <Loader2 className="animate-spin ml-2" />}
+                {initialData ? "Save" : "Create"}{" "}
+                {pending && <Loader2 className="animate-spin ml-2" />}
               </Button>
             </DialogFooter>
           </form>
