@@ -124,7 +124,7 @@ export async function createCheckoutLink(
         },
       ],
       mode: "subscription", // For recurring subscriptions
-      success_url: `${process.env.AUTH_URL}/success?session_id={CHECKOUT_SESSION_ID}`, // Redirect after successful payment
+      success_url: `${process.env.AUTH_URL}/success`, // Redirect after successful payment
       cancel_url: `${process.env.AUTH_URL}/cancel`, // Redirect if the user cancels
       metadata: {
         userId: userId, // Include the user's ID in the metadata,

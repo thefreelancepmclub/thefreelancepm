@@ -1,15 +1,15 @@
 import { auth } from "@/auth";
+import Footer from "@/components/footer";
 import { ReactNode } from "react";
 import Navbar from "./_components/navbar";
-import Footer from "@/components/footer";
 
 const WebsiteLayoout = async ({ children }: { children: ReactNode }) => {
   const cu = await auth();
   return (
-    <div>
+    <div className="min-h-screen flex flex-col ">
       <Navbar isLoggedin={!!cu} />
-      {children}
-      <Footer/>
+      <div className="flex-1">{children}</div>
+      <Footer />
     </div>
   );
 };
