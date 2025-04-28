@@ -10,6 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: "#004AAD",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -49,6 +50,14 @@ const config: Config = {
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
+        },
+      },
+      container: {
+        center: true,
+        padding: "16px",
+        screens: {
+          md: "768px",
+          lg: "1248px",
         },
       },
       borderRadius: {

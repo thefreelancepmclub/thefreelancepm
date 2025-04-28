@@ -1,5 +1,5 @@
 import Header from "@/components/header";
-import React from "react";
+import SubscriptionContainer from "./_components/subscription-container";
 
 const page = () => {
   return (
@@ -8,6 +8,8 @@ const page = () => {
         Pick the Plan That Fits Your Journey{" "}
         <span className="text-[#FFA400] underline">Journey</span>
       </Header>
+
+      <SubscriptionContainer />
     </div>
   );
 };
