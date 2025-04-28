@@ -1,13 +1,39 @@
+"use client";
+
+import { createCheckoutLink } from "@/action/subscription/create";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Subscription } from "@prisma/client";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface PricingCardProps {
   plan: Subscription;
 }
 
 export default function PricingCard({ plan }: PricingCardProps) {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const onPurchase = () => {
+    startTransition(() => {
+      createCheckoutLink(
+        plan.stripePriceId,
+        plan.stripeProductId,
+        plan.id
+      ).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        router.push(res.checkoutUrl as string);
+      });
+    });
+  };
   return (
     <div
       className={cn(
@@ -40,10 +66,13 @@ export default function PricingCard({ plan }: PricingCardProps) {
         ))}
       </ul>
 
-      <Button className={cn("mt-auto w-full bg-brand")} asChild>
-        <a href={plan.paymentLink} target="_stripe" className="w-full">
-          Choose Plan
-        </a>
+      <Button
+        className={cn("mt-auto w-full bg-brand relative")}
+        onClick={onPurchase}
+        disabled={pending}
+      >
+        Choose Plan{" "}
+        {pending && <Loader2 className="animate-spin ml-2 absolute right-3" />}
       </Button>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   subscriptionSchema,
 } from "@/schemas/subscription";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createSubscription(values: SubscriptionCreateFormValues) {
   // Authenticate the user and check their role
@@ -94,6 +95,56 @@ export async function createSubscription(values: SubscriptionCreateFormValues) {
     return {
       success: false,
       message: "An unexpected error occurred while creating the subscription.",
+    };
+  }
+}
+
+export async function createCheckoutLink(
+  priceId: string,
+  productId: string,
+  planId: string
+) {
+  // Step 1: Authenticate the user
+  const cu = await auth();
+
+  if (!cu?.user?.id) {
+    redirect("/login"); // Redirect to login if the user is not authenticated
+  }
+
+  const userId = cu.user.id;
+
+  try {
+    // Step 2: Create a Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"], // Allow card payments
+      line_items: [
+        {
+          price: priceId, // The price ID of the subscription plan
+          quantity: 1,
+        },
+      ],
+      mode: "subscription", // For recurring subscriptions
+      success_url: `${process.env.AUTH_URL}/success?session_id={CHECKOUT_SESSION_ID}`, // Redirect after successful payment
+      cancel_url: `${process.env.AUTH_URL}/cancel`, // Redirect if the user cancels
+      metadata: {
+        userId: userId, // Include the user's ID in the metadata,
+        planId: planId, // Include the plan's price ID
+        stripeProductId: productId,
+      },
+    });
+
+    // Step 3: Return the checkout URL
+    return {
+      success: true,
+      checkoutUrl: session.url, // The URL to redirect the user to Stripe Checkout
+    };
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+
+    // Handle errors gracefully
+    return {
+      success: false,
+      message: "An error occurred while creating the checkout session.",
     };
   }
 }

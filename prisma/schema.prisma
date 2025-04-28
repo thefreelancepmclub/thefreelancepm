@@ -7,6 +7,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum FeatureName {
+  templates
+  courses
+  job_board
+  resume
+  slack_community_access
+  personalized_account_portal
+  coaching
+  vip_slack_access
+  unlimited_resume_reviews
+}
+
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -21,6 +33,9 @@ model User {
   isActive      Boolean         @default(false)
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+
+  // Add relation to track subscriptions
+  userSubscriptions UserSubscription[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -110,6 +125,9 @@ model Subscription {
 
   isActive Boolean @default(true)
 
+  // Add relation to track user subscriptions
+  userSubscriptions UserSubscription[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -117,4 +135,43 @@ model Subscription {
 enum SubscriptionType {
   monthly
   yearly
+}
+
+// New model to track user subscriptions and feature usage
+model UserSubscription {
+  id              String             @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String             @db.ObjectId
+  subscriptionId  String             @db.ObjectId
+  stripeSessionId String? // Store Stripe session ID for reference
+  status          SubscriptionStatus @default(active)
+  startDate       DateTime           @default(now())
+  endDate         DateTime? // For tracking subscription expiration
+  features        Feature[] // Relation to Feature model
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription    Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, subscriptionId])
+}
+
+model Feature {
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  userSubscriptionId String           @db.ObjectId
+  name               FeatureName // Use enum for feature names
+  total              Int? // Total allowed (e.g., 10 templates), null for boolean features
+  remaining          Int? // Remaining usage, null for boolean features
+  value              Int? // Value per unit (e.g., 5000), null for boolean features
+  enabled            Boolean? // True for features like job_board, null for numeric features
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  userSubscription   UserSubscription @relation(fields: [userSubscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([userSubscriptionId, name])
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  expired
 }
