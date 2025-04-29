@@ -137,7 +137,7 @@ export function UserTableContainer({ plans }: Props) {
                   <TableCell className="text-right">
                     <div>
                       {" "}
-                      <DeleteuserModal />
+                      <DeleteuserModal data={user} />
                     </div>
                   </TableCell>
                 </TableRow>

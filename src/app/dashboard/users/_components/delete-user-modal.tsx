@@ -1,12 +1,14 @@
 "use client";
 
+import { deleteUser } from "@/action/users/users";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { X } from "lucide-react";
-import { useState } from "react";
+import { Loader2, Trash } from "lucide-react";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 interface UserData {
   name: string;
@@ -15,31 +17,49 @@ interface UserData {
   status: string;
 }
 
-export default function DeleteUserModal() {
+interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+}
+
+export default function DeleteUserModal({ data }: Props) {
   const [open, setOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
+  const [pending, startTransition] = useTransition();
 
   // Sample user data
   const userData: UserData = {
-    name: "John Doe",
-    email: "john@example.com",
-    plan: "Freelance Elite",
-    status: "Active",
+    name: data.name,
+    email: data.email,
+    plan:
+      data.userSubscriptions.length > 0
+        ? data.userSubscriptions[0].subscription.title
+        : "Unknown Plan",
+    status: data.isActive ? "Active" : "Inactive",
   };
 
   const handleDelete = () => {
     if (confirmText === "DELETE") {
-      // Handle deletion logic here
-      console.log("User deleted");
-      setOpen(false);
-      setConfirmText("");
+      startTransition(() => {
+        deleteUser(data.id).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+
+          // handle success
+          toast.success(res.message);
+          setOpen(false);
+          setConfirmText("");
+        });
+      });
     }
   };
 
   return (
     <div className="p-4">
-      <Button variant="outline" onClick={() => setOpen(true)}>
-        Delete user
+      <Button variant="outline" onClick={() => setOpen(true)} size="icon">
+        <Trash />
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -50,14 +70,6 @@ export default function DeleteUserModal() {
               <h2 className="text-2xl font-semibold text-blue-700">
                 Delete User
               </h2>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setOpen(false)}
-                className="h-8 w-8 rounded-full"
-              >
-                <X className="h-4 w-4" />
-              </Button>
             </div>
 
             {/* Confirmation message */}
@@ -80,7 +92,7 @@ export default function DeleteUserModal() {
               </div>
               <div className="grid grid-cols-[100px_1fr] items-center">
                 <span className="font-medium">Plan:</span>
-                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 px-3 py-0.5 rounded-full font-medium">
+                <Badge className="bg-green-100 text-green-800 hover:bg-green-100 px-3 py-0.5 rounded-full font-medium w-fit">
                   {userData.plan}
                 </Badge>
               </div>
@@ -118,9 +130,9 @@ export default function DeleteUserModal() {
                   type="button"
                   className="bg-orange-500 hover:bg-orange-600 text-white"
                   onClick={handleDelete}
-                  disabled={confirmText !== "DELETE"}
+                  disabled={confirmText !== "DELETE" || pending}
                 >
-                  Delete
+                  Delete {pending && <Loader2 className="animate-spin ml-2" />}
                 </Button>
               </div>
             </div>
