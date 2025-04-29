@@ -23,6 +23,13 @@ const page = async () => {
   });
 
   const usersByMonth = await getUserCountByMonth();
+
+  const plans = await prisma.subscription.findMany({
+    select: {
+      id: true,
+      title: true,
+    },
+  });
   return (
     <div className="flex-1 p-6">
       <UserStats
@@ -33,7 +40,7 @@ const page = async () => {
 
       <UserGraph data={usersByMonth} />
 
-      <UserTableContainer />
+      <UserTableContainer plans={plans} />
     </div>
   );
 };
