@@ -1,16 +1,10 @@
 "use client";
 
-import { MoreHorizontal, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 
-import { GetUserResponse } from "@/app/api/dashboard/users/route";
+// import { GetUserResponse } from "@/app/api/dashboard/users/route";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -30,6 +24,8 @@ import {
 import { TablePagination } from "@/components/ui/table-pagination";
 import useUsersStore from "@/zustand/dashboard/users";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import DeleteuserModal from "./delete-user-modal";
 
 interface Props {
   plans: {
@@ -41,19 +37,30 @@ interface Props {
 interface ApiRes {
   success: boolean;
   message: string;
-  data: GetUserResponse;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
+  meta: {
+    totalPages: number;
+    totalItems: number;
+    currentPage: number;
+    itemsPerPage: number;
+  };
 }
+
+const item_per_page = 10;
 export function UserTableContainer({ plans }: Props) {
+  const [currentPage, setCurrentPage] = useState(1);
   const { searchQuery, setSearchQuery, status, setStatus, plan, setPlan } =
     useUsersStore();
 
-  const { isLoading, data, isError, error, refetch } = useQuery<ApiRes>({
-    queryKey: ["Users"],
-    queryFn: () =>
-      fetch(`/api/dashboard/users?isActive=${status}&planId=${plan}`).then(
-        (res) => res.json()
-      ),
-  });
+  const { isLoading, data, isError, error, refetch, isRefetching } =
+    useQuery<ApiRes>({
+      queryKey: ["Users", currentPage, item_per_page],
+      queryFn: () =>
+        fetch(
+          `/api/dashboard/users?isActive=${status}&planId=${plan}&query=${searchQuery}&page=${currentPage}&limit=${item_per_page}`
+        ).then((res) => res.json()),
+    });
 
   // Get badge color based on status
   const getStatusBadgeClass = (status: string) => {
@@ -92,7 +99,7 @@ export function UserTableContainer({ plans }: Props) {
                 <TableHead className="w-[80px]">ID</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Last Active</TableHead>
+                {/* <TableHead>Last Active</TableHead> */}
                 <TableHead>Status</TableHead>
                 <TableHead>Plan</TableHead>
                 <TableHead className="w-[80px] text-right">Action</TableHead>
@@ -104,7 +111,7 @@ export function UserTableContainer({ plans }: Props) {
                   <TableCell className="font-medium">{user.id}</TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>01/15/23 01:16AM EST</TableCell>
+                  {/* <TableCell>01/15/23 01:16AM EST</TableCell> */}
                   <TableCell>
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
@@ -128,18 +135,10 @@ export function UserTableContainer({ plans }: Props) {
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Open menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit user</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div>
+                      {" "}
+                      <DeleteuserModal />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
@@ -148,11 +147,11 @@ export function UserTableContainer({ plans }: Props) {
         </div>
 
         <TablePagination
-          currentPage={0}
-          totalPages={0}
-          totalItems={0}
-          itemsPerPage={0}
-          onPageChange={() => {}}
+          currentPage={currentPage}
+          totalPages={data.meta.totalPages ?? 0}
+          totalItems={data.meta.totalItems ?? 0}
+          itemsPerPage={item_per_page}
+          onPageChange={(p) => setCurrentPage(p)}
         />
       </>
     );
@@ -167,7 +166,7 @@ export function UserTableContainer({ plans }: Props) {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-full pl-8"
+              className="w-full pl-4"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -196,7 +195,9 @@ export function UserTableContainer({ plans }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <Button onClick={() => refetch()}>Search</Button>
+            <Button onClick={() => refetch()} disabled={isRefetching}>
+              Search {isRefetching && <Loader2 className="animate-spin ml-2" />}
+            </Button>
           </div>
         </div>
 
