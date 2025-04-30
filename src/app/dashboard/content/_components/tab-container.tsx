@@ -1,7 +1,7 @@
 "use client";
 
 import { CustomTabs, Tab } from "@/components/ui/custom-tab";
-import { Subscription } from "@prisma/client";
+import { Subscription, Template } from "@prisma/client";
 import { FileText } from "lucide-react";
 import { useState } from "react";
 import { ContentStats } from "./content-stats";
@@ -16,10 +16,14 @@ const tabs = [
 
 interface Props {
   subscription: Subscription[];
+  templates: Template[];
 }
 
-const TabContainer = ({ subscription }: Props) => {
+const TabContainer = ({ subscription, templates }: Props) => {
   const [currenttab, setCurrenttab] = useState("1");
+  const totalTemplateDownload = templates.reduce((acc, template) => {
+    return acc + template.download;
+  }, 0);
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -42,21 +46,24 @@ const TabContainer = ({ subscription }: Props) => {
             stats={[
               {
                 title: "Total Template",
-                value: "100",
+                value: templates.length.toString(),
               },
               {
                 title: "Published",
-                value: "100",
+                value: templates.filter((i) => i.published).length.toString(),
               },
               {
                 title: "Download",
-                value: "100",
+                value: totalTemplateDownload.toString(),
               },
             ]}
           />
 
           <div className="mt-5">
-            <TemplatetableContainer subscripton={subscription} data={[]} />
+            <TemplatetableContainer
+              subscripton={subscription}
+              data={templates}
+            />
           </div>
         </div>
       )}

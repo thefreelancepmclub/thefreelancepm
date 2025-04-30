@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { TemplateCreateType } from "@/schemas/templates";
 import { TemplateType } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function createTemplate(data: TemplateCreateType) {
   const cu = await auth();
@@ -32,6 +33,7 @@ export async function createTemplate(data: TemplateCreateType) {
     });
 
     // Optional: Revalidate relevant paths (e.g., templates list page)
+    revalidatePath("/dashboard/conten");
 
     return {
       success: true,

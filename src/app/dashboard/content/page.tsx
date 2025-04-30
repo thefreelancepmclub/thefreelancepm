@@ -3,9 +3,10 @@ import TabContainer from "./_components/tab-container";
 
 const Page = async () => {
   const subscripton = await prisma.subscription.findMany();
+  const templates = await prisma.template.findMany();
   return (
     <div className="p-6">
-      <TabContainer subscription={subscripton ?? []} />
+      <TabContainer subscription={subscripton ?? []} templates={templates} />
     </div>
   );
 };

@@ -58,25 +58,14 @@ export const templateColumns: ColumnDef<Template>[] = [
     header: "Category",
   },
   {
-    accessorKey: "downloads",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0 hover:bg-transparent"
-        >
-          Downloads
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "download",
+    header: "Downloads",
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.original.published ? "Published" : "Draft";
       return (
         <span
           className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(

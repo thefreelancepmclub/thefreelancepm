@@ -6,6 +6,7 @@ import { Subscription, Template } from "@prisma/client";
 import {
   ColumnDef,
   getCoreRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { templateColumns } from "./template-columns";
@@ -43,11 +44,12 @@ const TableContainer = ({ data, columns, subscripton }: Props) => {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
   return (
     <div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-3">
           <Input
             placeholder="Search..."
             value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
