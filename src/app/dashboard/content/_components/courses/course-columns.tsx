@@ -1,25 +1,11 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-// Define the Course type
-export type Course = {
-  id: string;
-  title: string;
-  instructor: string;
-  enrollments: number;
-  status: "Published" | "Archive";
-  plan: "Freelancer Lite" | "Freelancer Pro" | "Freelancer Max";
-};
+import { Course } from "@prisma/client";
+import CourseColumnAction from "./course-column-action";
 
 // Get badge color based on status
 const getStatusBadgeClass = (status: string) => {
@@ -31,11 +17,11 @@ const getStatusBadgeClass = (status: string) => {
 // Get badge color based on plan
 const getPlanBadgeClass = (plan: string) => {
   switch (plan) {
-    case "Freelancer Lite":
+    case "680e40a854471484d23cd2af":
       return "bg-blue-100 text-blue-800";
-    case "Freelancer Pro":
+    case "680e40f354471484d23cd2b0":
       return "bg-yellow-100 text-yellow-800";
-    case "Freelancer Max":
+    case "680e413c54471484d23cd2b1":
       return "bg-green-100 text-green-800";
     default:
       return "bg-gray-100 text-gray-800";
@@ -80,12 +66,15 @@ export const courseColumns: ColumnDef<Course>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return <p>{row.original.enrolled}</p>;
+    },
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.original.published ? "Published" : "Draft";
       return (
         <span
           className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
@@ -101,7 +90,7 @@ export const courseColumns: ColumnDef<Course>[] = [
     accessorKey: "plan",
     header: "Plan",
     cell: ({ row }) => {
-      const plan = row.getValue("plan") as string;
+      const plan = row.original.plan;
       return (
         <span
           className={`rounded-full px-2 py-1 text-xs font-medium ${getPlanBadgeClass(
@@ -115,31 +104,6 @@ export const courseColumns: ColumnDef<Course>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      return (
-        <div className="flex justify-end space-x-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Eye className="h-4 w-4" />
-            <span className="sr-only">View</span>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Duplicate</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
+    cell: ({ row }) => <CourseColumnAction data={row.original} />,
   },
 ];

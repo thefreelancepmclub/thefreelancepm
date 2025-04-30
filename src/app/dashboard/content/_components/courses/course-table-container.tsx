@@ -1,4 +1,4 @@
-import AddTemplatesPage from "@/components/shared/models/add-template-modal";
+import AddCoursePage from "@/components/shared/models/add-course-modal";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TablePagination } from "@/components/ui/table-pagination";
-import { Subscription, Template } from "@prisma/client";
+import useDebounce from "@/hooks/useDebounce";
+import { Course, Subscription } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
@@ -19,12 +20,12 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { templateColumns } from "./template-columns";
+import { courseColumns } from "./course-columns";
 
 interface ApiResponse {
   success: boolean;
   message: string;
-  data: Template[];
+  data: Course[];
   meta: {
     totalPages: number;
     totalItems: number;
@@ -37,25 +38,31 @@ interface TemplatetableContainerProps {
   subscripton: Subscription[];
 }
 
-const TemplatetableContainer = ({
-  subscripton,
-}: TemplatetableContainerProps) => {
+const CoursetableContainer = ({ subscripton }: TemplatetableContainerProps) => {
   const [status, setStatus] = useState("");
   const [planId, setPlanId] = useState("");
   const [page, setPage] = useState(1);
+  const [content, setContent] = useState("");
+
+  const searchQuery = useDebounce(content, 500);
   const { data } = useQuery<ApiResponse>({
-    queryKey: ["templates", status, planId, page],
+    queryKey: ["courses", status, planId, page, searchQuery],
     queryFn: () =>
       fetch(
-        `/api/dashboard/content/templates?status=${status}&plan=${planId}&page=${page}`
+        `/api/dashboard/content/courses?status=${status}&plan=${planId}&page=${page}&searchQuery=${searchQuery}`
       ).then((res) => res.json()),
   });
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center  gap-x-5">
           <div className="flex items-center gap-2 ">
-            <Input placeholder="Search..." className="w-[350px]" />
+            <Input
+              placeholder="Search..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-[350px]"
+            />
           </div>
           <Select onValueChange={(s) => setStatus(s)}>
             <SelectTrigger className="w-[180px]">
@@ -81,18 +88,17 @@ const TemplatetableContainer = ({
             </SelectContent>
           </Select>
         </div>
-        <AddTemplatesPage
-          subscription={subscripton}
+        <AddCoursePage
           trigger={
             <Button>
-              Add Template <span className="ml-1">+</span>
+              Add Course <span className="ml-1">+</span>
             </Button>
           }
         />
       </div>
       <TableContainer
         data={data?.data ?? []}
-        columns={templateColumns}
+        columns={courseColumns}
         subscripton={subscripton}
         pagination={data?.meta ?? {}}
         setCurrentPage={setPage}
@@ -101,11 +107,11 @@ const TemplatetableContainer = ({
   );
 };
 
-export default TemplatetableContainer;
+export default CoursetableContainer;
 
 interface Props {
-  data: Template[];
-  columns: ColumnDef<Template>[];
+  data: Course[];
+  columns: ColumnDef<Course>[];
   subscripton: Subscription[];
   pagination: {
     totalPages?: number;
