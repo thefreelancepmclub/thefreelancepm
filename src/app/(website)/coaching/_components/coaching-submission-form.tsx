@@ -98,22 +98,31 @@ export default function CoachingSubmissionForm() {
   }
 
   return (
-    <div className="w-full max-w-[600px] mx-auto p-6 bg-white rounded-lg shadow-sm">
-      <h1 className="text-2xl font-bold text-blue-700 mb-6">
+    <div className="container  mx-auto p-12 bg-white rounded-lg shadow-[0px_4px_12px_0px_#0000001A]">
+      <h1 className="text-2xl font-bold  text-[#004AAD] mb-6">
         Book Your Coaching Session
       </h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 mt-10"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm">First name *</FormLabel>
+                  <FormLabel className="text-[#344054] font-medium text-sm">
+                    First name *
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="First name" {...field} />
+                    <Input
+                      placeholder="First name "
+                      className="py-3 px-4"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,7 +134,9 @@ export default function CoachingSubmissionForm() {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm">Last name *</FormLabel>
+                  <FormLabel className="text-[#344054] font-medium text-sm">
+                    Last name *
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="Last name" {...field} />
                   </FormControl>
@@ -140,7 +151,9 @@ export default function CoachingSubmissionForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Email *</FormLabel>
+                <FormLabel className="text-[#344054] font-medium text-sm">
+                  Email *
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="you@company.com" {...field} />
                 </FormControl>
@@ -154,8 +167,8 @@ export default function CoachingSubmissionForm() {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-inter text-[14px] font-medium leading-[16.94px] text-[#111827]">
-                  Phone
+                <FormLabel className="font-inter text-[14px] font-medium leading-[16.94px] text-[#344054]">
+                  Phone Number *
                 </FormLabel>
                 <FormControl>
                   <PhoneInput
@@ -175,7 +188,9 @@ export default function CoachingSubmissionForm() {
             name="date"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="text-sm">Date *</FormLabel>
+                <FormLabel className="text-[#344054] font-medium text-sm">
+                  Date *
+                </FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -217,7 +232,9 @@ export default function CoachingSubmissionForm() {
             name="time"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Time *</FormLabel>
+                <FormLabel className="text-[#344054] font-medium text-sm">
+                  Time *
+                </FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -241,10 +258,10 @@ export default function CoachingSubmissionForm() {
           />
 
           <div>
-            <FormLabel className="text-sm">
+            <FormLabel className="text-[#344054] font-medium text-sm">
               Focus Area * (Select at least one)
             </FormLabel>
-            <div className="mt-2">
+            <div className=" flex md:flex-row flex-col  mt-4 gap-4 md:gap-8">
               {focusAreas.map((area) => (
                 <FormField
                   key={area.id}
@@ -289,7 +306,9 @@ export default function CoachingSubmissionForm() {
             name="notes"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">Additional Notes</FormLabel>
+                <FormLabel className="text-[#344054] font-medium text-sm">
+                  Additional Notes
+                </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder=""
@@ -314,7 +333,7 @@ export default function CoachingSubmissionForm() {
               type="button"
               variant="outline"
               onClick={() => form.reset()}
-              className="px-6"
+              className="px-6 text-[#004AAD] border border-[#004AAD]"
             >
               Cancel Form
             </Button>
