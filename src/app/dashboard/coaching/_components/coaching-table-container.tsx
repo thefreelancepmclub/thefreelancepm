@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { DataTable } from "@/components/ui/data-table"; // assuming you have it from shadcn!
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,56 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { coachingColumns, CoachingSession } from "./coaching-columns";
-
-const coachingSessions: CoachingSession[] = [
-  {
-    id: "12345",
-    user: "Freelancer Light",
-    email: "example@gmail.com",
-    dateTime: "12/12/2025\n10:00 AM",
-    focusArea: "Career Guidance",
-    confirmed: true,
-    status: "Completed",
-  },
-  {
-    id: "67890",
-    user: "Freelancer Elite",
-    email: "example@gmail.com",
-    dateTime: "12/12/2025\n2:00 PM",
-    focusArea: "Freelance Strategy",
-    confirmed: true,
-    status: "Scheduled",
-  },
-  {
-    id: "ABCDE",
-    user: "Freelancer Pro",
-    email: "example@gmail.com",
-    dateTime: "12/12/2025\n11:00 AM",
-    focusArea: "Resume Prep",
-    confirmed: true,
-    status: "Canceled",
-  },
-];
 
 export function CoachingTableContainer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string | undefined>();
-
-  const filteredSessions = coachingSessions.filter((session) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      session.user.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.focusArea.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesStatus =
-      !statusFilter ||
-      statusFilter === "all" ||
-      session.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
-  });
 
   return (
     <Card className="mt-6">
@@ -94,9 +47,7 @@ export function CoachingTableContainer() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <DataTable columns={coachingColumns} data={filteredSessions} />
-        </div>
+        <div className="mt-6"></div>
       </CardContent>
     </Card>
   );

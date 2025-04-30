@@ -10,16 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-// Define the Template type
-export type Template = {
-  id: string;
-  title: string;
-  category: string;
-  downloads: number;
-  status: "Published" | "Archive";
-  plan: "Freelancer Lite" | "Freelancer Pro" | "Freelancer Max";
-};
+import { Template } from "@prisma/client";
 
 // Get badge color based on status
 const getStatusBadgeClass = (status: string) => {
