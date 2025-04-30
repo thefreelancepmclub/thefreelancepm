@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const SuccessStoriesCard = () => {
   return (
-    <section className="w-[390px] p-5 border border-[#004AAD] rounded-xl felx items-center">
+    <section className="w-[390px] p-5 rounded-xl felx items-center">
       <div className="flex gap-4">
         <Rating
           style={{ maxWidth: 200 }}
