@@ -1,25 +1,11 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-// Define the Template type
-export type Template = {
-  id: string;
-  title: string;
-  category: string;
-  downloads: number;
-  status: "Published" | "Archive";
-  plan: "Freelancer Lite" | "Freelancer Pro" | "Freelancer Max";
-};
+import { Template } from "@prisma/client";
+import TemplateColumnAction from "./template-column-action";
 
 // Get badge color based on status
 const getStatusBadgeClass = (status: string) => {
@@ -67,25 +53,14 @@ export const templateColumns: ColumnDef<Template>[] = [
     header: "Category",
   },
   {
-    accessorKey: "downloads",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0 hover:bg-transparent"
-        >
-          Downloads
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    accessorKey: "download",
+    header: "Downloads",
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.original.published ? "Published" : "Draft";
       return (
         <span
           className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
@@ -115,31 +90,6 @@ export const templateColumns: ColumnDef<Template>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      return (
-        <div className="flex justify-end space-x-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Eye className="h-4 w-4" />
-            <span className="sr-only">View</span>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Duplicate</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
+    cell: ({ row }) => <TemplateColumnAction data={row.original} />,
   },
 ];

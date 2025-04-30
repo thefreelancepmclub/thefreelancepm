@@ -26,6 +26,7 @@ import useUsersStore from "@/zustand/dashboard/users";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import DeleteuserModal from "./delete-user-modal";
+import UserDetailsModal from "./view-user-modal";
 
 interface Props {
   plans: {
@@ -135,9 +136,9 @@ export function UserTableContainer({ plans }: Props) {
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div>
-                      {" "}
-                      <DeleteuserModal />
+                    <div className="flex items-center">
+                      <UserDetailsModal data={user} />
+                      <DeleteuserModal data={user} />
                     </div>
                   </TableCell>
                 </TableRow>
