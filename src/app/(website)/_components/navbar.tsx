@@ -30,7 +30,7 @@ const navlinks = [
   {
     id: 3,
     label: "Job Board",
-    href: "/job",
+    href: "/jobBoard",
   },
   {
     id: 4,
