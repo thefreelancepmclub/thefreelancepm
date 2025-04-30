@@ -7,6 +7,7 @@ import { useState } from "react";
 import { ContentStats } from "./content-stats";
 import CoursetableContainer from "./courses/course-table-container";
 import TemplatetableContainer from "./templates/template-table-container";
+import TestmonialtableContainer from "./testimonials/testmonial-table-container";
 
 const tabs = [
   {
@@ -16,6 +17,10 @@ const tabs = [
   {
     id: "2",
     label: "Courses",
+  },
+  {
+    id: "3",
+    label: "Testimonials",
   },
 ] as Tab[];
 
@@ -96,6 +101,12 @@ const TabContainer = ({ subscription, templates, courses }: Props) => {
           <div className="mt-5">
             <CoursetableContainer subscripton={subscription} />
           </div>
+        </div>
+      )}
+
+      {currenttab === "3" && (
+        <div className="mt-5">
+          <TestmonialtableContainer subscripton={subscription} />
         </div>
       )}
     </div>

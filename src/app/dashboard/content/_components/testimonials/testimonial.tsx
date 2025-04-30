@@ -1,24 +1,10 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, MoreHorizontal, Star } from "lucide-react";
+import { ArrowUpDown, Eye, Star, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-// Define the Testimonial type
-export type Testimonial = {
-  id: string;
-  name: string;
-  jobTitle: string;
-  star: number;
-  status: "Published" | "Archive";
-};
+import { Testmonial } from "@prisma/client";
 
 // Get badge color based on status
 const getStatusBadgeClass = (status: string) => {
@@ -27,13 +13,13 @@ const getStatusBadgeClass = (status: string) => {
     : "bg-gray-100 text-gray-800";
 };
 
-export const testimonialColumns: ColumnDef<Testimonial>[] = [
+export const testimonialColumns: ColumnDef<Testmonial>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => {
       return (
         <Button
@@ -66,9 +52,9 @@ export const testimonialColumns: ColumnDef<Testimonial>[] = [
       );
     },
     cell: ({ row }) => {
-      const stars = row.getValue("star") as number;
+      const stars = row.original.rating;
       return (
-        <div className="flex">
+        <div className="flex justify-center">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
@@ -82,10 +68,10 @@ export const testimonialColumns: ColumnDef<Testimonial>[] = [
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "active",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
+      const status = row.original.active ? "Published" : "Draft";
       return (
         <span
           className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
@@ -106,21 +92,10 @@ export const testimonialColumns: ColumnDef<Testimonial>[] = [
             <Eye className="h-4 w-4" />
             <span className="sr-only">View</span>
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Archive</DropdownMenuItem>
-              <DropdownMenuItem className="text-destructive">
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Trash className="h-4 w-4" />
+            <span className="sr-only">Delete</span>
+          </Button>
         </div>
       );
     },
