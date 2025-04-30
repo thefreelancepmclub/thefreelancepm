@@ -77,6 +77,7 @@ export default function AddCoursePage({ subscription, trigger }: Props) {
         // handle sucess
         toast.success(res.message);
         setOpen(false);
+        form.reset();
         queryClient.invalidateQueries({ queryKey: ["courses"] });
       });
     });
