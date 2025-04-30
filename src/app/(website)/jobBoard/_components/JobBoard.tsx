@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 export default function JobBoard() {
   // Array of job card data
@@ -24,14 +25,14 @@ export default function JobBoard() {
       <div className="my-[50px]">
         <div className="bg-white py-6 px-4">
           <div className="container mx-auto">
-            <div className="relative mb-4 shadow-[0px_4px_12px_0px_#0000001A] rounded-[15px]">
+            <div className="relative mb-[30px] shadow-[0px_4px_12px_0px_#0000001A] rounded-[15px]">
               <input
                 type="text"
                 placeholder="Search job titles, companies, or keywords..."
-                className="w-full p-2 pl-3 pr-10 h-[52px] rounded-[15px]"
+                className="w-full p-2 pl-3 pr-10 h-[52px] rounded-[15px] outline-[#004AAD]"
               />
               <Search
-                className="absolute right-3 top-4 text-gray-400"
+                className="absolute right-3 top-4 text-black"
                 size={20}
               />
             </div>
@@ -93,6 +94,7 @@ export default function JobBoard() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -100,7 +102,7 @@ export default function JobBoard() {
       {/* Job Cards Grid */}
       <div className="bg-white py-6 px-4 flex-grow">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px]">
             <JobCard />
             <JobCard />
             <JobCard />
@@ -112,6 +114,10 @@ export default function JobBoard() {
             <JobCard />
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-center mt-[30px] mb-[50px]">
+        <Button className="w-[175px] h-[52px] text-base text-white">Load More</Button>
       </div>
 
       {/* Footer - Newsletter */}
