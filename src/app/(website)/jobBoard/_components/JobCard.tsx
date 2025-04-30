@@ -2,7 +2,7 @@ import React from "react";
 
 const JobCard = () => {
   return (
-    <div className="bg-white border rounded-[15px] overflow-hidden shadow-sm w-[394px]">
+    <div className="bg-white border rounded-[15px] overflow-hidden shadow-sm lg:w-[394px] w-full">
       <div className="p-4">
         <h3 className="font-bold text-lg mb-4 text-[#004AAD]">
           Senior Digital Project Manager

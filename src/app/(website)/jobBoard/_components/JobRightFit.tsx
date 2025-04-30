@@ -14,11 +14,11 @@ const JobRightFit = () => {
         </p>
         </div>
 
-        <div className="flex max-w-md mx-auto gap-[30px]">
+        <div className="lg:flex max-w-md flex-row mx-auto lg:gap-[30px]">
           <input
             type="email"
             placeholder="Your email address"
-            className="flex-grow p-4  text-gray-800 h-[52px] rounded-[15px] outline-none"
+            className="flex-grow lg:p-4 p-2.5  text-gray-800 lg:h-[52px] rounded-[15px] outline-none mr-3 lg:mr-0"
           />
           <button className="bg-[#FFFFFF] text-blue-800 font-medium py-2 px-4 rounded-[15px] hover:bg-yellow-300 transition">
             Get Started
