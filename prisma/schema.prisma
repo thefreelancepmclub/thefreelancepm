@@ -38,6 +38,7 @@ model User {
   userSubscriptions  UserSubscription[]
   purchasedTemplates UserPurchasedTemplate[]
   jobActivities      UserJobActivity[] // Jobs the user applied for or interacted with
+  courses UserPurchasedCourse[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -254,4 +255,36 @@ model UserJobActivity {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Course {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  instructor String
+  description String
+   category    TemplateType @default(free)
+  file        String
+  price       Int?
+  plan        String       @db.ObjectId
+  published   Boolean      @default(false)
+  enrolled Int @default(0)
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  purchases   UserPurchasedCourse[]
+
+  @@map("courses")
+}
+
+model UserPurchasedCourse {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  courseId    String   @db.ObjectId
+  purchasedAt DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+  course      Course   @relation(fields: [courseId], references: [id])
+
+  @@map("user_purchased_courses")
 }
