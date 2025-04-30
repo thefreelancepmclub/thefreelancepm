@@ -89,7 +89,6 @@ const CoursetableContainer = ({ subscripton }: TemplatetableContainerProps) => {
           </Select>
         </div>
         <AddCoursePage
-          subscription={subscripton}
           trigger={
             <Button>
               Add Course <span className="ml-1">+</span>

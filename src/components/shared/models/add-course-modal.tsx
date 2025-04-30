@@ -6,6 +6,7 @@ import { ReactNode, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { createCourse } from "@/action/course/create";
+import { editCourse } from "@/action/course/edit";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -35,51 +36,73 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { courseCreateSchema, CourseCreateType } from "@/schemas/course";
-import { Subscription } from "@prisma/client";
-import { useQueryClient } from "@tanstack/react-query";
+import { Course, Subscription } from "@prisma/client";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface Props {
-  subscription: Subscription[];
   trigger: ReactNode;
+  initialData?: Course;
 }
 
-export default function AddCoursePage({ subscription, trigger }: Props) {
+export default function AddCoursePage({ trigger, initialData }: Props) {
   const [open, setOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [pending, startTransition] = useTransition();
 
   const queryClient = useQueryClient();
 
+  const { data: subscription, isLoading } = useQuery<Subscription[]>({
+    queryKey: ["subscription"],
+    queryFn: () =>
+      fetch("/api/dashboard/subscription").then((res) => res.json()),
+  });
+
   // Initialize the form
   const form = useForm<CourseCreateType>({
     resolver: zodResolver(courseCreateSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      category: "",
-      price: "",
-      file: "",
-      plan: "",
-      publishNow: false,
+      title: initialData?.title ?? "",
+      instructor: initialData?.instructor ?? "",
+      description: initialData?.description ?? "",
+      category: initialData?.category ?? "",
+      price: initialData?.price?.toString() ?? "",
+      file: initialData?.file ?? "",
+      plan: initialData?.plan ?? "",
+      publishNow: initialData?.published ?? false,
     },
   });
 
   // Handle form submission
   async function onSubmit(values: CourseCreateType) {
     startTransition(() => {
-      createCourse(values).then((res) => {
-        if (!res.success) {
-          toast.error(res.message);
-          return;
-        }
+      if (initialData) {
+        editCourse(initialData.id, values).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
 
-        // handle sucess
-        toast.success(res.message);
-        setOpen(false);
-        form.reset();
-        queryClient.invalidateQueries({ queryKey: ["courses"] });
-      });
+          // handle sucess
+          toast.success(res.message);
+          setOpen(false);
+          form.reset();
+          queryClient.invalidateQueries({ queryKey: ["courses"] });
+        });
+      } else {
+        createCourse(values).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+
+          // handle sucess
+          toast.success(res.message);
+          setOpen(false);
+          form.reset();
+          queryClient.invalidateQueries({ queryKey: ["courses"] });
+        });
+      }
     });
   }
 
@@ -118,7 +141,7 @@ export default function AddCoursePage({ subscription, trigger }: Props) {
                 <FormItem className="grid grid-cols-[100px_1fr] items-center gap-4">
                   <FormLabel className="text-right">Instructor:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Course Title" {...field} />
+                    <Input placeholder="Instructor" {...field} />
                   </FormControl>
                   <FormMessage className="col-start-2" />
                 </FormItem>
@@ -206,6 +229,7 @@ export default function AddCoursePage({ subscription, trigger }: Props) {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    disabled={isLoading}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -213,7 +237,7 @@ export default function AddCoursePage({ subscription, trigger }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {subscription.map(({ id, title }) => (
+                      {subscription?.map(({ id, title }) => (
                         <SelectItem value={id} key={id}>
                           {title}
                         </SelectItem>
@@ -255,7 +279,8 @@ export default function AddCoursePage({ subscription, trigger }: Props) {
                 className="bg-blue-600 hover:bg-blue-700"
                 disabled={isUploading || pending}
               >
-                Create {pending && <Loader2 className="animate-spin ml-2" />}
+                {initialData ? "Save" : "Create"}{" "}
+                {pending && <Loader2 className="animate-spin ml-2" />}
               </Button>
             </div>
           </form>

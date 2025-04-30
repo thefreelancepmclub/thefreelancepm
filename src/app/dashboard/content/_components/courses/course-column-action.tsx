@@ -11,8 +11,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Course, Subscription } from "@prisma/client";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Course } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { Pencil, Trash } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -26,11 +26,6 @@ const CourseColumnAction = ({ data: course }: Props) => {
   const [pending, startTransition] = useTransition();
 
   const queryClient = useQueryClient();
-  const { data } = useQuery<Subscription[]>({
-    queryKey: ["subscription"],
-    queryFn: () =>
-      fetch("/api/dashboard/subscription").then((res) => res.json()),
-  });
 
   const onDelete = () => {
     startTransition(() => {
@@ -50,7 +45,7 @@ const CourseColumnAction = ({ data: course }: Props) => {
   return (
     <div className="flex justify-end space-x-2">
       <AddCoursePage
-        subscription={data ?? []}
+        initialData={course}
         trigger={
           <Button variant="outline" size="icon">
             <Pencil />
