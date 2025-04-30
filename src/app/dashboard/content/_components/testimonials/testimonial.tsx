@@ -1,10 +1,11 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, Star, Trash } from "lucide-react";
+import { ArrowUpDown, Star } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Testmonial } from "@prisma/client";
+import TestmonialAction from "./testmonial-action";
 
 // Get badge color based on status
 const getStatusBadgeClass = (status: string) => {
@@ -85,19 +86,6 @@ export const testimonialColumns: ColumnDef<Testmonial>[] = [
   },
   {
     id: "actions",
-    cell: () => {
-      return (
-        <div className="flex justify-end space-x-2">
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Eye className="h-4 w-4" />
-            <span className="sr-only">View</span>
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <Trash className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </div>
-      );
-    },
+    cell: ({ row }) => <TestmonialAction data={row.original} />,
   },
 ];

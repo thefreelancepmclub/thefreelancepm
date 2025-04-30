@@ -5,6 +5,7 @@ import { Loader2, X } from "lucide-react";
 import { ReactNode, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { editTestimonial } from "@/action/testmonial/edit";
 import { createTestimonial } from "@/action/testmonial/testmonial";
 import {
   AlertDialog,
@@ -37,13 +38,13 @@ import {
   testimonialCreateSchema,
   TestimonialCreateType,
 } from "@/schemas/testmonial";
-import { Course } from "@prisma/client";
+import { Testmonial } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface Props {
   trigger: ReactNode;
-  initialData?: Course;
+  initialData?: Testmonial;
 }
 
 export default function AddTestmonial({ trigger, initialData }: Props) {
@@ -56,30 +57,46 @@ export default function AddTestmonial({ trigger, initialData }: Props) {
   const form = useForm<TestimonialCreateType>({
     resolver: zodResolver(testimonialCreateSchema),
     defaultValues: {
-      fullName: "",
-      jobTitle: "",
-      message: "",
-      rating: "",
-      active: false,
+      fullName: initialData?.fullName ?? "",
+      jobTitle: initialData?.jobTitle ?? "",
+      message: initialData?.message ?? "",
+      rating: initialData?.rating.toString() ?? "",
+      active: initialData?.active ?? false,
     },
   });
 
   // Handle form submission
   async function onSubmit(values: TestimonialCreateType) {
     startTransition(() => {
-      createTestimonial(values).then((res) => {
-        if (!res.success) {
-          toast.error(res.message);
-          return;
-        }
+      if (initialData) {
+        editTestimonial(initialData.id, values).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
 
-        // handle success
-        toast.success(res.message);
-        form.reset();
-        setOpen(false);
+          // handle success
+          toast.success(res.message);
+          form.reset();
+          setOpen(false);
 
-        queryClient.invalidateQueries({ queryKey: ["testmonial"] });
-      });
+          queryClient.invalidateQueries({ queryKey: ["testmonial"] });
+        });
+      } else {
+        createTestimonial(values).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+
+          // handle success
+          toast.success(res.message);
+          form.reset();
+          setOpen(false);
+
+          queryClient.invalidateQueries({ queryKey: ["testmonial"] });
+        });
+      }
     });
   }
 
