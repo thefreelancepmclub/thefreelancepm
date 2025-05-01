@@ -1,9 +1,8 @@
 "use client";
 
-import { Eye, Loader2, Pencil, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,7 +27,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { Job, JobType } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import Link from "next/link";
+import JobBordTableAction from "./job-board-table-action";
 
 interface ApiResponse {
   success: true;
@@ -134,18 +133,7 @@ export function JobBoardTableContainer() {
                 </TableCell>
                 <TableCell>{0}</TableCell>
                 <TableCell className="text-right">
-                  <div className="flex justify-end space-x-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Eye className="h-4 w-4" />
-                      <span className="sr-only">View</span>
-                    </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Link href={`/dashboard/job-board/edit/${job.id}`}>
-                        <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
-                      </Link>
-                    </Button>
-                  </div>
+                  <JobBordTableAction job={job} />
                 </TableCell>
               </TableRow>
             ))}
