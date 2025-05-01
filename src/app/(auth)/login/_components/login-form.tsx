@@ -169,7 +169,6 @@ export function LoginForm() {
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 min-h-[45px]"
           disabled={loading}
-          effect="gooeyLeft"
         >
           {pending
             ? "Signing In..."

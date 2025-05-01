@@ -232,7 +232,7 @@ model Job {
   salary      Int
   description String
   url         String
-  expiredOn   DateTime
+  expiration   DateTime
   published   Boolean  @default(false)
 
   skills    String[]
