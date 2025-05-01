@@ -28,6 +28,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { Job, JobType } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
+import Link from "next/link";
 
 interface ApiResponse {
   success: true;
@@ -139,8 +140,10 @@ export function JobBoardTableContainer() {
                       <span className="sr-only">View</span>
                     </Button>
                     <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <Pencil className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
+                      <Link href={`/dashboard/job-board/edit/${job.id}`}>
+                        <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
+                      </Link>
                     </Button>
                   </div>
                 </TableCell>

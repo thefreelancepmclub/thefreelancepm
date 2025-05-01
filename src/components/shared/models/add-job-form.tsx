@@ -8,6 +8,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { createJob } from "@/action/job/create";
+import { editJob } from "@/action/job/edit";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -66,7 +67,9 @@ export default function JobForm({ initialData }: { initialData?: Job }) {
       salary: initialData?.salary ?? 0,
       description: initialData?.description ?? "",
       url: initialData?.url ?? "",
-      expiration: initialData?.expiration.toString() ?? "",
+      expiration: initialData?.expiration
+        ? new Date(initialData.expiration).toISOString()
+        : undefined,
       skills: initialData?.skills.toString() ?? "",
       experienc: initialData?.experienc ?? ExperiencesType.entry_level,
       education: initialData?.education ?? "",
@@ -75,8 +78,22 @@ export default function JobForm({ initialData }: { initialData?: Job }) {
   });
 
   function onSubmit(data: JobFormSchemaType) {
+    console.log(data);
     startTransition(() => {
       if (initialData) {
+        editJob(initialData.id, data).then((res) => {
+          if (!res.success) {
+            toast.error(res.message);
+            return;
+          }
+
+          // handle success
+          form.reset();
+          toast.success(res.message);
+          router.back();
+        });
+
+        return;
       } else {
         createJob(data).then((res) => {
           if (!res.success) {
