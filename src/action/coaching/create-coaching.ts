@@ -8,17 +8,20 @@ import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
 import { DateTime } from "luxon";
 import { redirect } from "next/navigation";
 
-// Subscription tiers
+// Map Stripe Subscription IDs to tier labels
 const model = {
   "680e40a854471484d23cd2af": "free",
   "680e40f354471484d23cd2b0": "pro",
   "680e413c54471484d23cd2b1": "elite",
 };
 
+export type webhookFor = "subscription" | "coaching";
+
 export async function createCoaching(data: CoachingSchemaType) {
   const cu = await auth();
   if (!cu?.user) redirect("/login");
 
+  // Find admin to access Nylas calendar
   const admin = await prisma.user.findFirst({
     where: { role: "admin" },
   });
@@ -30,6 +33,7 @@ export async function createCoaching(data: CoachingSchemaType) {
     };
   }
 
+  // Get current user with their subscriptions and previous coaching sessions
   const user = await prisma.user.findFirst({
     where: { id: cu.user.id },
     include: {
@@ -46,6 +50,7 @@ export async function createCoaching(data: CoachingSchemaType) {
     };
   }
 
+  // Validate incoming form data
   const parsedData = coachingSchema.safeParse(data);
   if (!parsedData.success) {
     return {
@@ -69,7 +74,7 @@ export async function createCoaching(data: CoachingSchemaType) {
   const tier =
     model[subscription.subscriptionId as keyof typeof model] || "pro";
 
-  // Parse booking datetime
+  // Convert date + time string to Luxon DateTime object (in UTC)
   const startDateTime = DateTime.fromFormat(
     `${date} ${time}`,
     "yyyy-MM-dd h:mm a",
@@ -77,7 +82,7 @@ export async function createCoaching(data: CoachingSchemaType) {
   );
   const endDateTime = startDateTime.plus({ minutes: 30 });
 
-  // Check calendar for conflicts
+  // Query admin's calendar to check for overlapping events
   const events = await nylas.events.list({
     identifier: admin.grantId,
     queryParams: { calendarId: admin.grantEmail as string },
@@ -87,6 +92,8 @@ export async function createCoaching(data: CoachingSchemaType) {
   const isBusy = events.data.some((event: any) => {
     const eventStart = DateTime.fromSeconds(event.start_time, { zone: "utc" });
     const eventEnd = DateTime.fromSeconds(event.end_time, { zone: "utc" });
+
+    // Return true if event overlaps with desired time slot
     return startDateTime < eventEnd && endDateTime > eventStart;
   });
 
@@ -94,31 +101,47 @@ export async function createCoaching(data: CoachingSchemaType) {
     return { success: false, message: "This time slot is already booked." };
   }
 
-  // Booking rules
+  // Determine if payment is required based on subscription tier & usage
   let requiresPayment = false;
 
   if (tier === "free") {
+    // Free tier gets 1 free coaching
     if (user.coaching.length > 0) requiresPayment = true;
   } else if (tier === "elite") {
+    // Elite gets 1 free coaching per month
     const now = DateTime.utc();
     const hasBookedThisMonth = user.coaching.some((c) => {
-      const bookedDate = DateTime.fromFormat(
-        c.date.toISOString().split("T")[0],
-        "yyyy-MM-dd",
-        { zone: "utc" }
-      );
+      const bookedDate = DateTime.fromJSDate(c.date, { zone: "utc" });
       return bookedDate.hasSame(now, "month");
     });
 
     if (hasBookedThisMonth) requiresPayment = true;
   } else {
+    // All other tiers (e.g. Pro) must pay
     requiresPayment = true;
   }
 
   if (requiresPayment) {
+    // Create unpaid coaching entry and generate checkout session
+    const coaching = await prisma.coaching.create({
+      data: {
+        amount: 0,
+        date,
+        time,
+        email,
+        firstName,
+        lastName,
+        focusArea: focusAreas,
+        phone: phoneNumber,
+        notes: notes || "",
+        userId: user.id,
+        isPaid: false,
+      },
+    });
+
     const session = await createCheckoutSession({
       email: user.email as string,
-      data: parsedData.data,
+      coachingId: coaching.id,
       userId: user.id,
     });
 
@@ -129,7 +152,7 @@ export async function createCoaching(data: CoachingSchemaType) {
     };
   }
 
-  // Create coaching session (free/elite allowed)
+  // Otherwise, book session directly
   await prisma.coaching.create({
     data: {
       amount: 0,
@@ -152,13 +175,18 @@ export async function createCoaching(data: CoachingSchemaType) {
   };
 }
 
+// Create Stripe Checkout Session for one-time coaching payment
 interface Props {
   email: string;
-  data: CoachingSchemaType;
+  coachingId: string;
   userId: string;
 }
 
-export async function createCheckoutSession({ email, data, userId }: Props) {
+export async function createCheckoutSession({
+  email,
+  coachingId,
+  userId,
+}: Props) {
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     customer_email: email,
@@ -176,15 +204,9 @@ export async function createCheckoutSession({ email, data, userId }: Props) {
       },
     ],
     metadata: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      date: data.date.toString(),
-      time: data.time,
-      focusAreas: data.focusAreas.join(", "),
-      notes: data.notes || "",
+      coachingId,
       userId,
+      for: "coaching" as webhookFor, // helpful for distinguishing in webhook
     },
     success_url: `${process.env.AUTH_URL}/dashboard?success=true`,
     cancel_url: `${process.env.AUTH_URL}/dashboard?canceled=true`,
