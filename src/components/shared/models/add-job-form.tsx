@@ -37,12 +37,14 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import { countries } from "@/data/countries";
 import { jobFormSchema, JobFormSchemaType } from "@/schemas/job";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -176,12 +178,13 @@ export default function JobForm({ initialData }: { initialData?: Job }) {
                               <SelectValue placeholder="Select Location" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="all">All Locations</SelectItem>
-                              <SelectItem value="Remote">Remote</SelectItem>
-                              <SelectItem value="Hybrid">Hybrid</SelectItem>
-                              <SelectItem value="On-Site">On-Site</SelectItem>
-                              <SelectItem value="New York">New York</SelectItem>
-                              <SelectItem value="London">London</SelectItem>
+                              <SelectGroup>
+                                {countries.map((country) => (
+                                  <SelectItem key={country} value={country}>
+                                    {country}
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
                             </SelectContent>
                           </Select>
                         </FormControl>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, Pencil, Search } from "lucide-react";
+import { Eye, Loader2, Pencil, Search } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -22,128 +23,45 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TablePagination } from "@/components/ui/table-pagination";
-import { Job } from "./job-board-column";
+import { countries } from "@/data/countries";
+import useDebounce from "@/hooks/useDebounce";
+import { Job, JobType } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 
-// Sample job data
-const jobs: Job[] = [
-  {
-    id: "XXXXX",
-    title: "Agile Coach",
-    company: "#######",
-    category: "Leadership",
-    type: "Contract",
-    location: "New York",
-    status: "Published",
-    startDate: "10/05/2023",
-    endDate: "10/06/2025",
-    applications: 10,
-  },
-  {
-    id: "XXXXX",
-    title: "Scrum Master",
-    company: "#######",
-    category: "Agile",
-    type: "Part-Time",
-    location: "Hybrid",
-    status: "Draft",
-    startDate: "10/05/2023",
-    endDate: "10/06/2025",
-    applications: 55,
-  },
-  {
-    id: "XXXXX",
-    title: "PM Consultant",
-    company: "#######",
-    category: "Consulting",
-    type: "Full-Time",
-    location: "London",
-    status: "Published",
-    startDate: "10/05/2023",
-    endDate: "10/06/2025",
-    applications: 75,
-  },
-  {
-    id: "XXXXX",
-    title: "Senior Project Manager",
-    company: "#######",
-    category: "Agile",
-    type: "Freelance",
-    location: "Remote",
-    status: "Draft",
-    startDate: "10/05/2023",
-    endDate: "10/06/2025",
-    applications: 33,
-  },
-  {
-    id: "XXXXX",
-    title: "Lead PM",
-    company: "#######",
-    category: "Leadership",
-    type: "Contract",
-    location: "On-Site",
-    status: "Expired",
-    startDate: "10/05/2023",
-    endDate: "10/06/2025",
-    applications: 64,
-  },
-];
+interface ApiResponse {
+  success: true;
+  data: Job[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
 
 export function JobBoardTableContainer() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string | undefined>();
-  const [locationFilter, setLocationFilter] = useState<string | undefined>();
-  const [typeFilter, setTypeFilter] = useState<string | undefined>();
-  const [categoryFilter, setCategoryFilter] = useState<string | undefined>();
+  const [statusFilter, setStatusFilter] = useState<string | "all">("all");
+  const [locationFilter, setLocationFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<JobType | "all">("all");
+
+  const query = useDebounce(searchQuery, 500);
 
   const itemsPerPage = 5;
 
-  // Apply filters
-  const filteredJobs = jobs.filter((job) => {
-    const matchesSearch =
-      searchQuery === "" ||
-      job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchQuery.toLowerCase());
-
-    const matchesStatus =
-      !statusFilter || statusFilter === "all" || job.status === statusFilter;
-    const matchesLocation =
-      !locationFilter ||
-      locationFilter === "all" ||
-      job.location === locationFilter;
-    const matchesType =
-      !typeFilter || typeFilter === "all" || job.type === typeFilter;
-    const matchesCategory =
-      !categoryFilter ||
-      categoryFilter === "all" ||
-      job.category === categoryFilter;
-
-    return (
-      matchesSearch &&
-      matchesStatus &&
-      matchesLocation &&
-      matchesType &&
-      matchesCategory
-    );
+  const { data, isLoading, isError, error } = useQuery<ApiResponse>({
+    queryKey: ["job", statusFilter, typeFilter, locationFilter, query],
+    queryFn: () =>
+      fetch(
+        `/api/dashboard/job?status=${statusFilter}&type=${typeFilter}&location=${locationFilter}&searchQuery=${query}`
+      ).then((res) => res.json()),
   });
-
-  const totalItems = filteredJobs.length;
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  // Get current page items
-  const currentJobs = filteredJobs.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
-
-  // Handle search
-  const handleSearch = () => {
-    setCurrentPage(1); // Reset to first page when searching
   };
 
   // Get badge color based on status
@@ -160,6 +78,80 @@ export function JobBoardTableContainer() {
     }
   };
 
+  let content;
+
+  if (isLoading) {
+    content = (
+      <div className="w-full h-[400px] flex justify-center items-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
+  } else if (isError) {
+    content = (
+      <div className="w-full h-[400px] flex justify-center items-center">
+        <p className="max-w-[500px] text-red-500">{error.message}</p>
+      </div>
+    );
+  } else if (data && data.success) {
+    content = (
+      <div className="mt-6 overflow-hidden rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[80px]">ID</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Company</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Type</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Expire Date</TableHead>
+              <TableHead>Applications</TableHead>
+              <TableHead className="w-[80px] text-right">Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {data?.data.map((job) => (
+              <TableRow key={job.id + job.title}>
+                <TableCell className="font-medium">{job.id}</TableCell>
+                <TableCell>{job.title}</TableCell>
+                <TableCell>{job.company}</TableCell>
+                <TableCell>{job.type}</TableCell>
+                <TableCell>{job.location}</TableCell>
+                <TableCell>
+                  <span
+                    className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
+                      job.published ? "Published" : "Draft"
+                    )}`}
+                  >
+                    {job.published ? "Published" : "Draft"}
+                  </span>
+                </TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    <div>{moment(job.expiration).format()}</div>
+                  </div>
+                </TableCell>
+                <TableCell>{0}</TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end space-x-1">
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Eye className="h-4 w-4" />
+                      <span className="sr-only">View</span>
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Pencil className="h-4 w-4" />
+                      <span className="sr-only">Edit</span>
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  }
+
   return (
     <Card className="mt-6">
       <CardContent className="p-6">
@@ -175,124 +167,63 @@ export function JobBoardTableContainer() {
             />
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select
+              value={statusFilter}
+              onValueChange={(val) => setStatusFilter(val)}
+            >
               <SelectTrigger className="w-[140px]">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Published">Published</SelectItem>
-                <SelectItem value="Draft">Draft</SelectItem>
-                <SelectItem value="Expired">Expired</SelectItem>
+                <SelectItem value="true">Published</SelectItem>
+                <SelectItem value="false">Draft</SelectItem>
               </SelectContent>
             </Select>
 
-            <Select value={locationFilter} onValueChange={setLocationFilter}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Select Location" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Locations</SelectItem>
-                <SelectItem value="Remote">Remote</SelectItem>
-                <SelectItem value="Hybrid">Hybrid</SelectItem>
-                <SelectItem value="On-Site">On-Site</SelectItem>
-                <SelectItem value="New York">New York</SelectItem>
-                <SelectItem value="London">London</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
+            <Select
+              value={typeFilter}
+              onValueChange={(v) => setTypeFilter(v as JobType | "all")}
+            >
               <SelectTrigger className="w-[140px]">
                 <SelectValue placeholder="Select Type" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="Full-Time">Full-Time</SelectItem>
-                <SelectItem value="Part-Time">Part-Time</SelectItem>
-                <SelectItem value="Contract">Contract</SelectItem>
-                <SelectItem value="Freelance">Freelance</SelectItem>
+                {Object.values(JobType).map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <Select
+              value={locationFilter}
+              onValueChange={(v) => setLocationFilter(v)}
+            >
               <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Select Category" />
+                <SelectValue placeholder="Select Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="Leadership">Leadership</SelectItem>
-                <SelectItem value="Agile">Agile</SelectItem>
-                <SelectItem value="Consulting">Consulting</SelectItem>
+                <SelectItem value="all">All Locations</SelectItem>
+                <SelectGroup>
+                  {countries.map((country) => (
+                    <SelectItem key={country} value={country}>
+                      {country}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
-
-            <Button onClick={handleSearch}>Search</Button>
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[80px]">ID</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Company</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>Applications</TableHead>
-                <TableHead className="w-[80px] text-right">Action</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {currentJobs.map((job) => (
-                <TableRow key={job.id + job.title}>
-                  <TableCell className="font-medium">{job.id}</TableCell>
-                  <TableCell>{job.title}</TableCell>
-                  <TableCell>{job.company}</TableCell>
-                  <TableCell>{job.category}</TableCell>
-                  <TableCell>{job.type}</TableCell>
-                  <TableCell>{job.location}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
-                        job.status
-                      )}`}
-                    >
-                      {job.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="text-sm">
-                      <div>{job.startDate}</div>
-                      <div>{job.endDate}</div>
-                    </div>
-                  </TableCell>
-                  <TableCell>{job.applications}</TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex justify-end space-x-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Eye className="h-4 w-4" />
-                        <span className="sr-only">View</span>
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Pencil className="h-4 w-4" />
-                        <span className="sr-only">Edit</span>
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
+        {content}
         <TablePagination
           currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
+          totalPages={data?.meta?.totalPages ?? 1}
+          totalItems={data?.meta?.total ?? 1}
           itemsPerPage={itemsPerPage}
           onPageChange={handlePageChange}
         />
