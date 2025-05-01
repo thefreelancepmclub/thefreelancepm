@@ -31,6 +31,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   isActive      Boolean         @default(false)
+  grantId String?
+  grantEmail String?
+  calendarLink String?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
 
@@ -298,6 +301,32 @@ model Testmonial {
   rating Int
 
   active Boolean @default(false)
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+enum CoachingStatus {
+  opened
+  confirmed
+  closed
+}
+
+model Coaching {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName String
+  email String 
+  phone String
+  date DateTime
+  time String
+  focusArea String[]
+  isPaid Boolean @default(false)
+  notes String
+
+  status CoachingStatus @default(opened)
+  meetingLink String? 
+
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
