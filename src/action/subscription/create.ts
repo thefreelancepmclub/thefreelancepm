@@ -9,6 +9,7 @@ import {
 } from "@/schemas/subscription";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { webhookFor } from "../coaching/create-coaching";
 
 export async function createSubscription(values: SubscriptionCreateFormValues) {
   // Authenticate the user and check their role
@@ -130,6 +131,7 @@ export async function createCheckoutLink(
         userId: userId, // Include the user's ID in the metadata,
         planId: planId, // Include the plan's price ID
         stripeProductId: productId,
+        for: "subscription" as webhookFor,
       },
     });
 

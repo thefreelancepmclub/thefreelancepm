@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { BarChart3, FileText } from "lucide-react";
 import moment from "moment";
+import Link from "next/link";
 
 const ActivityAction = async () => {
   const latestUsers = await prisma.user.findMany({
@@ -52,7 +53,9 @@ const ActivityAction = async () => {
             </h3>
           </div>
           <div className="mt-4 space-y-3">
-            <Button className="w-full bg-primary">Add Job Post</Button>
+            <Button className="w-full bg-primary h-[40px]" asChild>
+              <Link href="/dashboard/job-board/new">Add Job Post</Link>
+            </Button>
             <Button className="w-full bg-primary">Upload Templates</Button>
             <Button className="w-full bg-primary">Create Course</Button>
           </div>

@@ -3,10 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
+import { createCoaching } from "@/action/coaching/create-coaching";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,6 +34,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
+import { toast } from "sonner";
 
 const timeSlots = [
   "9:00 AM",
@@ -53,29 +55,11 @@ const focusAreas = [
   { id: "freelance-strategy", label: "Freelance Strategy" },
 ];
 
-const phoneRegex = /^\+\d{1,4}\s$$\d{3}$$\s\d{3}-\d{4}$/;
-
-const formSchema = z.object({
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  phoneNumber: z.string().regex(phoneRegex, {
-    message:
-      "Please enter a valid phone number in the format: +1 (555) 555-5555",
-  }),
-  date: z.date({ required_error: "Please select a date" }),
-  time: z.string({ required_error: "Please select a time" }),
-  focusAreas: z.array(z.string()).refine((value) => value.length >= 1, {
-    message: "Please select at least one focus area",
-  }),
-  notes: z.string().optional(),
-});
-
 export default function CoachingSubmissionForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<CoachingSchemaType>({
+    resolver: zodResolver(coachingSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -87,14 +71,22 @@ export default function CoachingSubmissionForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    // In a real application, you would submit the form data to your backend
-    console.log(values);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      form.reset();
-    }, 2000);
+  function onSubmit(values: CoachingSchemaType) {
+    startTransition(() => {
+      createCoaching(values).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        toast.success(res.message);
+        form.reset();
+        if (res.checkoutUrl) {
+          window.location.href = res.checkoutUrl;
+        }
+      });
+    });
   }
 
   return (
@@ -325,9 +317,9 @@ export default function CoachingSubmissionForm() {
             <Button
               type="submit"
               className="bg-blue-700 hover:bg-blue-800 text-white px-6"
-              disabled={isSubmitting}
+              disabled={pending}
             >
-              {isSubmitting ? "Submitting..." : "Confirm Booking"}
+              {pending ? "Submitting..." : "Confirm Booking"}
             </Button>
             <Button
               type="button"
