@@ -2,7 +2,7 @@ import { Briefcase, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { JobBoardStats } from "./_components/job-board-stats";
+import JobBoardStats from "./_components/job-board-stats";
 import { JobBoardTableContainer } from "./_components/job-board-table-container";
 
 export default function JobBoardPage() {

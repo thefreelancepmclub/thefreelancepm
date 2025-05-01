@@ -2,6 +2,7 @@ import { Briefcase } from "lucide-react";
 import type React from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma";
 
 interface StatCardProps {
   title: string;
@@ -42,23 +43,36 @@ const StatCard = ({
   );
 };
 
-export function JobBoardStats() {
+export default async function JobBoardStats() {
+  const totalJobs = await prisma.job.count();
+  const totalPublished = await prisma.job.count({
+    where: {
+      published: true,
+    },
+  });
+  const totalexpired = await prisma.job.count({
+    where: {
+      expiration: {
+        lt: new Date(),
+      },
+    },
+  });
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <StatCard
         title="Total Jobs"
-        value="###"
+        value={totalJobs.toString()}
         icon={<Briefcase className="h-6 w-6" />}
       />
       <StatCard
         title="Published"
-        value="###"
+        value={totalPublished.toString()}
         icon={<Briefcase className="h-6 w-6" />}
         variant="published"
       />
       <StatCard
         title="Expired"
-        value="###"
+        value={totalexpired.toString()}
         icon={<Briefcase className="h-6 w-6" />}
         variant="expired"
       />
