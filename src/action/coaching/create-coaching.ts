@@ -208,8 +208,8 @@ export async function createCheckoutSession({
       userId,
       for: "coaching" as webhookFor, // helpful for distinguishing in webhook
     },
-    success_url: `${process.env.AUTH_URL}/dashboard?success=true`,
-    cancel_url: `${process.env.AUTH_URL}/dashboard?canceled=true`,
+    success_url: `${process.env.AUTH_URL}/success`,
+    cancel_url: `${process.env.AUTH_URL}/success`,
   });
 
   return { url: session.url };
