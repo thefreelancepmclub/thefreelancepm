@@ -36,6 +36,7 @@ model User {
   calendarLink String?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
+  coaching Coaching[]
 
   // Add relation to track subscriptions
   userSubscriptions  UserSubscription[]
@@ -322,10 +323,15 @@ model Coaching {
   time String
   focusArea String[]
   isPaid Boolean @default(false)
+  amount Int
   notes String
 
   status CoachingStatus @default(opened)
   meetingLink String? 
+
+   // Relation to User
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
 
 
   createdAt   DateTime     @default(now())
