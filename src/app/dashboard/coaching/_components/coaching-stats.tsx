@@ -3,6 +3,7 @@ import type React from "react";
 
 import { Card, CardContent } from "@/components/ui/card";
 
+
 interface StatCardProps {
   title: string;
   value: string;
@@ -24,6 +25,7 @@ const StatCard = ({ title, value, icon }: StatCardProps) => (
 );
 
 export function CoachingStats() {
+ 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <StatCard
