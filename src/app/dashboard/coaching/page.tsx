@@ -1,13 +1,13 @@
-import { Calendar, Download, } from "lucide-react";
+import { Calendar, Download } from "lucide-react";
 
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { CoachingStats } from "./_components/coaching-stats";
 import { CoachingTableContainer } from "./_components/coaching-table-container";
-import Image from "next/image";
 
 export default async function CoachingPage() {
   const cu = await auth();
@@ -24,10 +24,16 @@ export default async function CoachingPage() {
   });
   if (admin?.grantEmail || admin?.grantId) {
     return (
-      <div className="bg-[#F5F7FA]  p-6 ">
+      <div className=" p-6 ">
         <div className="mb-16 flex items-center justify-between ">
           <div className="flex items-center gap-5">
-            <Image src="/coaching.png" width={500} height={500} alt="coaching" className="w-8 h-8"/>
+            <Image
+              src="/coaching.png"
+              width={500}
+              height={500}
+              alt="coaching"
+              className="w-8 h-8"
+            />
             <h1 className="text-2xl font-bold">Coaching</h1>
           </div>
           <Button variant="default" className="gap-1">
