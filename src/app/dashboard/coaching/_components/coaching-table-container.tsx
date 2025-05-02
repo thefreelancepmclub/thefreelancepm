@@ -23,8 +23,8 @@ import { Coaching } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Search } from "lucide-react";
 import moment from "moment";
-import Link from "next/link";
 import { useState } from "react";
+import CoachingTableAction from "./coaching-table-action";
 
 interface ApiRes {
   success: boolean;
@@ -173,12 +173,7 @@ export function CoachingTableContainer() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={coaching?.meetingLink || "/"}
-                      className="inline-block rounded-md bg-[#004AAD] px-3 py-1 text-sm text-white"
-                    >
-                      Join Meeting
-                    </Link>
+                    <CoachingTableAction data={coaching} />
                   </TableCell>
                 </TableRow>
               ))}
