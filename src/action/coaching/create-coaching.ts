@@ -1,19 +1,13 @@
 "use server";
 
 import { auth } from "@/auth";
+import { tierModel } from "@/helper/subscription";
 import { nylas } from "@/lib/nylas";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
 import { DateTime } from "luxon";
 import { redirect } from "next/navigation";
-
-// Map Stripe Subscription IDs to tier labels
-const model = {
-  "680e40a854471484d23cd2af": "free",
-  "680e40f354471484d23cd2b0": "pro",
-  "680e413c54471484d23cd2b1": "elite",
-};
 
 export type webhookFor = "subscription" | "coaching";
 
@@ -72,13 +66,13 @@ export async function createCoaching(data: CoachingSchemaType) {
 
   const subscription = user.userSubscriptions[0];
   const tier =
-    model[subscription.subscriptionId as keyof typeof model] || "pro";
+    tierModel[subscription.subscriptionId as keyof typeof tierModel] || "pro";
 
   // Convert date + time string to Luxon DateTime object (in UTC)
   const startDateTime = DateTime.fromFormat(
     `${date} ${time}`,
     "yyyy-MM-dd h:mm a",
-    { zone: "utc" }
+    { zone: "utc" },
   );
   const endDateTime = startDateTime.plus({ minutes: 30 });
 

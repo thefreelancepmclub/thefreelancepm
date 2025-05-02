@@ -13,6 +13,11 @@ export async function handleSubscriptionCheckout(
     throw new Error("Missing required metadata for subscription");
   }
 
+  console.log({
+    userId,
+    planId,
+  });
+
   // Define features per plan
   const features = [];
   switch (planId) {
@@ -109,22 +114,22 @@ export async function handleSubscriptionCheckout(
   const endDate = new Date(startDate);
   endDate.setMonth(endDate.getMonth() + 1);
 
-  const userSubscription = await prisma.userSubscription.upsert({
+  const deletedSubscription = await prisma.userSubscription.delete({
     where: {
-      userId_subscriptionId: {
-        userId,
-        subscriptionId: subscription.id,
-      },
+      userId,
     },
-    create: {
+  });
+
+  await prisma.feature.deleteMany({
+    where: {
+      userSubscriptionId: deletedSubscription.id,
+    },
+  });
+
+  const userSubscription = await prisma.userSubscription.create({
+    data: {
       userId,
       subscriptionId: subscription.id,
-      stripeSessionId: session.id,
-      status: "active",
-      startDate,
-      endDate,
-    },
-    update: {
       stripeSessionId: session.id,
       status: "active",
       startDate,

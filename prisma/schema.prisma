@@ -148,7 +148,7 @@ enum SubscriptionType {
 // New model to track user subscriptions and feature usage
 model UserSubscription {
   id              String             @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String             @db.ObjectId
+  userId          String             @db.ObjectId 
   subscriptionId  String             @db.ObjectId
   stripeSessionId String? // Store Stripe session ID for reference
   status          SubscriptionStatus @default(active)
@@ -160,7 +160,9 @@ model UserSubscription {
   user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   subscription    Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, subscriptionId])
+
+@@unique([userId])
+ 
 }
 
 model Feature {
