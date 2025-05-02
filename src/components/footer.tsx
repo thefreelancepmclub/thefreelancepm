@@ -1,5 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaGoogle, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -8,13 +10,21 @@ const Footer = () => {
         {/* Left Section */}
         <div className="space-y-4">
           <div className="text-black font-bold">
-            <div>the</div>
-            <div className="text-blue-800 text-2xl">freelance pm club</div>
+            <Image
+              src="/Logo.png"
+              alt="logo"
+              height={500}
+              width={500}
+              className="w-[79px] h-[103px]"
+            />
           </div>
           <p className="text-sm text-gray-600 max-w-xs">
             Your complete resource hub for freelance project management success.
           </p>
           <div className="flex gap-3 mt-2">
+            <a href="#" className="text-blue-800">
+              <FaGoogle />
+            </a>
             <a href="#" className="text-blue-800">
               <FaFacebookF />
             </a>
@@ -28,24 +38,24 @@ const Footer = () => {
         </div>
 
         {/* Center Links */}
-        <div className="flex flex-wrap gap-12 text-sm">
+        <div className="flex flex-wrap gap-24 text-sm">
           <div>
             <h4 className="font-semibold mb-2">Resources</h4>
             <ul className="space-y-1">
               <li>
-                <a href="#">Templates</a>
+                <Link href="/templates">Templates</Link>
               </li>
               <li>
-                <a href="#">Courses</a>
+                <Link href="/courses">Courses</Link>
               </li>
               <li>
-                <a href="#">Job Board</a>
+                <Link href="/jobBoard">Job Board</Link>
               </li>
               <li>
-                <a href="#">Quizzes</a>
+                <Link href="/quizzes">Quizzes</Link>
               </li>
               <li>
-                <a href="#">Testimonial</a>
+                <Link href="/testmonial">Testimonial</Link>
               </li>
             </ul>
           </div>
@@ -62,7 +72,7 @@ const Footer = () => {
                 <a href="#">Benefits</a>
               </li>
               <li>
-                <a href="#">FAQs</a>
+                <Link href="/faq">FAQs</Link>
               </li>
             </ul>
           </div>
@@ -87,7 +97,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Line */}
-      <div className="border-t mt-8 pt-4 text-center text-xs text-gray-500">
+      <div className="container border-t border-[#004AAD] mt-8 pt-4 text-center text-xs text-gray-500">
         © 2025 The Freelance PM Club. All rights reserved.
       </div>
     </footer>
