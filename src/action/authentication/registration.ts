@@ -1,7 +1,9 @@
 "use server";
 import bcrypt from "bcryptjs";
 
+import EmailVerification from "@/email-templates/email-verification";
 import { prisma } from "@/lib/prisma";
+import { resend } from "@/lib/resend";
 import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
 import { manageRememberMeCookies } from "./login";
 
@@ -47,8 +49,21 @@ export async function registeruser(data: SignUpFormValues) {
     await manageRememberMeCookies(
       !!data.rememberMe,
       data.rememberMe ? data.email : undefined,
-      data.rememberMe ? data.password : undefined
+      data.rememberMe ? data.password : undefined,
     );
+
+    // send email to the student
+    const email = await resend.emails.send({
+      from: "FreelanceClub PM <thefreelancepmclub@gmail.com>",
+      to: [newUser.email as string],
+      subject: "Please verify your email address",
+      react: EmailVerification({
+        username: newUser?.name ?? "",
+        verificationUrl: `${process.env.AUTH_URL}/email-verification/${newUser.id}`,
+      }),
+    });
+
+    console.log({ email });
 
     return {
       success: true,

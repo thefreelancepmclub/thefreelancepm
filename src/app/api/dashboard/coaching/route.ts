@@ -5,65 +5,97 @@ import { NextRequest, NextResponse } from "next/server";
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = new URL(request.url);
 
-    const status = searchParams.get("status");
+    const status = searchParams.get("status") || "all";
+    const query = searchParams.get("query") || "";
     const page = parseInt(searchParams.get("page") || "1", 10);
     const limit = parseInt(searchParams.get("limit") || "10", 10);
 
-    const currentPage = Math.max(page, 1);
-    const itemsPerPage = Math.max(limit, 1);
-    const skip = (currentPage - 1) * itemsPerPage;
-
-    // Validate and set status filter
-    let statusFilter: CoachingStatus | undefined = undefined;
-    if (
-      status &&
-      Object.values(CoachingStatus).includes(status as CoachingStatus)
-    ) {
-      statusFilter = status as CoachingStatus;
-    } else if (status) {
+    // Validate pagination
+    if (page < 1 || limit < 1) {
       return NextResponse.json(
-        { success: false, message: "Invalid status filter" },
-        { status: 400 }
+        {
+          success: false,
+          message: "Invalid pagination parameters",
+          data: [],
+          meta: {
+            totalPages: 0,
+            totalItems: 0,
+            currentPage: page,
+            itemsPerPage: limit,
+          },
+        },
+        { status: 400 },
       );
     }
 
-    const whereClause = statusFilter ? { status: statusFilter } : {};
+    // Build `where` clause
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: any = {};
 
-    const [totalItems, data] = await Promise.all([
-      prisma.coaching.count({ where: whereClause }),
-      prisma.coaching.findMany({
-        where: whereClause,
-        skip,
-        take: itemsPerPage,
-        orderBy: { createdAt: "desc" },
-      }),
-    ]);
+    if (status !== "all") {
+      if (Object.values(CoachingStatus).includes(status as CoachingStatus)) {
+        where.status = status;
+      } else {
+        return NextResponse.json(
+          { success: false, message: "Invalid status filter", data: [] },
+          { status: 400 },
+        );
+      }
+    }
 
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    if (query) {
+      where.OR = [
+        { firstName: { contains: query, mode: "insensitive" } },
+        { lastName: { contains: query, mode: "insensitive" } },
+      ];
+    }
 
+    const totalItems = await prisma.coaching.count({ where });
+    const totalPages = Math.ceil(totalItems / limit);
+    const skip = (page - 1) * limit;
+
+    const coachings = await prisma.coaching.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json({
+      success: true,
+      message:
+        coachings.length > 0
+          ? "Coaching records fetched successfully"
+          : "No coaching records found",
+      data: coachings,
+      meta: {
+        totalPages,
+        totalItems,
+        currentPage: page,
+        itemsPerPage: limit,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching coachings:", error);
     return NextResponse.json(
       {
-        success: true,
-        message: "",
-        data,
-        pagination: {
-          currentPage,
-          totalPages,
-          totalItems,
-          itemsPerPage,
+        success: false,
+        message: "Internal server error",
+        data: [],
+        meta: {
+          totalPages: 0,
+          totalItems: 0,
+          currentPage: 1,
+          itemsPerPage: 10,
         },
       },
-      { status: 200 }
+      { status: 500 },
     );
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { success: false, message: "Server error" },
-      { status: 500 }
-    );
+  } finally {
+    await prisma.$disconnect();
   }
 }

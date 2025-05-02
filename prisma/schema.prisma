@@ -31,18 +31,19 @@ model User {
   accounts      Account[]
   sessions      Session[]
   isActive      Boolean         @default(false)
-  grantId String?
-  grantEmail String?
-  calendarLink String?
+  grantId       String?
+  grantEmail    String?
+  conf_grant_id String?
+  calendarLink  String?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-  coaching Coaching[]
+  coaching      Coaching[]
 
   // Add relation to track subscriptions
   userSubscriptions  UserSubscription[]
   purchasedTemplates UserPurchasedTemplate[]
   jobActivities      UserJobActivity[] // Jobs the user applied for or interacted with
-  courses UserPurchasedCourse[]
+  courses            UserPurchasedCourse[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -236,7 +237,7 @@ model Job {
   salary      Int
   description String
   url         String
-  expiration   DateTime
+  expiration  DateTime
   published   Boolean  @default(false)
 
   skills    String[]
@@ -264,19 +265,19 @@ model UserJobActivity {
 model Course {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  instructor String
+  instructor  String
   description String
-   category    TemplateType @default(free)
+  category    TemplateType @default(free)
   file        String
   price       Int?
   plan        String       @db.ObjectId
   published   Boolean      @default(false)
-  enrolled Int @default(0)
-  
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  enrolled    Int          @default(0)
 
-  purchases   UserPurchasedCourse[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  purchases UserPurchasedCourse[]
 
   @@map("courses")
 }
@@ -287,24 +288,24 @@ model UserPurchasedCourse {
   courseId    String   @db.ObjectId
   purchasedAt DateTime @default(now())
 
-  user        User     @relation(fields: [userId], references: [id])
-  course      Course   @relation(fields: [courseId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
 
   @@map("user_purchased_courses")
 }
 
 model Testmonial {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
   fullName String
   jobTitle String
-  message String
-  rating Int
+  message  String
+  rating   Int
 
   active Boolean @default(false)
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum CoachingStatus {
@@ -315,26 +316,25 @@ enum CoachingStatus {
 }
 
 model Coaching {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String
-  lastName String
-  email String 
-  phone String
-  date DateTime
-  time String
+  lastName  String
+  email     String
+  phone     String
+  date      DateTime
+  time      String
   focusArea String[]
-  isPaid Boolean @default(false)
-  amount Int
-  notes String
+  isPaid    Boolean  @default(false)
+  amount    Int
+  notes     String
 
-  status CoachingStatus @default(opened)
-  meetingLink String? 
+  status      CoachingStatus @default(opened)
+  meetingLink String?
 
-   // Relation to User
-  userId      String   @db.ObjectId
-  user        User     @relation(fields: [userId], references: [id])
+  // Relation to User
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
 
-
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

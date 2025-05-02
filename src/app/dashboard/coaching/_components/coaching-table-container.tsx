@@ -19,10 +19,12 @@ import {
 } from "@/components/ui/table";
 import { TablePagination } from "@/components/ui/table-pagination";
 import useCoachingStore from "@/zustand/dashboard/coaching";
+import { Coaching } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Search } from "lucide-react";
-import Link from "next/link";
+import moment from "moment";
 import { useState } from "react";
+import CoachingTableAction from "./coaching-table-action";
 
 interface ApiRes {
   success: boolean;
@@ -50,7 +52,7 @@ export function CoachingTableContainer() {
       queryKey: ["Users", currentPage, item_per_page],
       queryFn: () =>
         fetch(
-          `/api/dashboard/coaching?status=${status}&query=${searchQuery}&page=${currentPage}&limit=${item_per_page}`
+          `/api/dashboard/coaching?status=${status}&query=${searchQuery}&page=${currentPage}&limit=${item_per_page}`,
         ).then((res) => res.json()),
     });
 
@@ -71,7 +73,7 @@ export function CoachingTableContainer() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center min-h-[400px]">
         <Loader2 className="h-4 w-4 animate-spin" />
       </div>
     );
@@ -83,7 +85,7 @@ export function CoachingTableContainer() {
       </div>
     );
   }
-console.log(data?.data, "coaching data");
+
   return (
     <div>
       <div className="my-14 shadow-[0px_4px_12px_0px_#0000001A] py-6 px-6 rounded-lg">
@@ -93,21 +95,22 @@ console.log(data?.data, "coaching data");
             <Input
               type="search"
               placeholder="Search..."
-              className="w-full pl-8"
+              className="w-full pl-4"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex items-center gap-2">
             <Select value={status} onValueChange={setStatus}>
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-[140px] h-[40px]">
                 <SelectValue placeholder="Select Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Completed">Completed</SelectItem>
-                <SelectItem value="Scheduled">Scheduled</SelectItem>
-                <SelectItem value="Canceled">Canceled</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="canceled">Canceled</SelectItem>
+                <SelectItem value="opened">Opened</SelectItem>
               </SelectContent>
             </Select>
             <Button onClick={() => refetch()} disabled={isRefetching}>
@@ -122,20 +125,19 @@ console.log(data?.data, "coaching data");
         <div className="rounded-lg overflow-hidden w-full ">
           <Table>
             <TableHeader>
-              <TableRow className="bg-[#E5E7EB] text-[#004AAD] *:px-8">
+              <TableRow className="bg-[#E5E7EB] text-[#004AAD] ">
                 <TableHead className="">Session ID</TableHead>
                 <TableHead>User</TableHead>
                 <TableHead>User Email</TableHead>
                 <TableHead>Date & Time</TableHead>
                 <TableHead>Focus Area</TableHead>
-                <TableHead>Confirmation </TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.data.map((coaching) => (
-                <TableRow className="border-none  *:px-8 *:py-8" key={coaching.id}>
+              {data?.data?.map((coaching: Coaching) => (
+                <TableRow className="border-none  " key={coaching.id}>
                   <TableCell className="font-medium">{coaching?.id}</TableCell>
                   <TableCell className="font-medium">
                     {coaching?.firstName}
@@ -144,7 +146,10 @@ console.log(data?.data, "coaching data");
                     {coaching?.email}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {coaching?.date}
+                    <div className="flex flex-col gap-1">
+                      <span>{moment(coaching.date).format("MM/DD/YYYY")}</span>
+                      <span>{coaching.time}</span>
+                    </div>
                   </TableCell>
                   <TableCell className="font-semibold text-[16px]">
                     <div className="flex flex-wrap gap-1">
@@ -159,32 +164,16 @@ console.log(data?.data, "coaching data");
                     </div>
                   </TableCell>
                   <TableCell className="font-medium">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only peer"
-                        checked={coaching?.confirmation || false}
-                        readOnly
-                      />
-                      <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#004AAD]"></div>
-                    </label>
-                  </TableCell>
-                  <TableCell className="font-medium">
                     <span
                       className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusClass(
-                        coaching?.status
+                        coaching?.status,
                       )}`}
                     >
                       {coaching?.status}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href={coaching?.meetingLink || "/"}
-                      className="inline-block rounded-md bg-[#004AAD] px-3 py-1 text-sm text-white"
-                    >
-                      Join Meeting
-                    </Link>
+                    <CoachingTableAction data={coaching} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -192,13 +181,15 @@ console.log(data?.data, "coaching data");
           </Table>
         </div>
 
-        <TablePagination
-          currentPage={currentPage}
-          totalPages={data?.pagination?.totalPages ?? 0}
-          totalItems={data?.pagination?.totalItems ?? 0}
-          itemsPerPage={item_per_page}
-          onPageChange={(p) => setCurrentPage(p)}
-        />
+        {(data?.pagination?.totalPages ?? 0) > 1 && (
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={data?.pagination?.totalPages ?? 0}
+            totalItems={data?.pagination?.totalItems ?? 0}
+            itemsPerPage={item_per_page}
+            onPageChange={(p) => setCurrentPage(p)}
+          />
+        )}
       </div>
       {/* </CardContent>
       </Card> */}

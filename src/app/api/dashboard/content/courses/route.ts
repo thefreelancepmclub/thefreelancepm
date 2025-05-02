@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
             itemsPerPage: limit,
           },
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
           itemsPerPage: 10,
         },
       },
-      { status: 500 }
+      { status: 500 },
     );
   } finally {
     await prisma.$disconnect();
