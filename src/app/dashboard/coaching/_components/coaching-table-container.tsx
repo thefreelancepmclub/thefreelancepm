@@ -83,11 +83,11 @@ export function CoachingTableContainer() {
       </div>
     );
   }
-
+console.log(data?.data, "coaching data");
   return (
     <div>
       <div className="my-14 shadow-[0px_4px_12px_0px_#0000001A] py-6 px-6 rounded-lg">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col  gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full sm:max-w-xs">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input

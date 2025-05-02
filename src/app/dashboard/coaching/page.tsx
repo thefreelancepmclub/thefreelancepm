@@ -23,7 +23,7 @@ export default async function CoachingPage() {
   });
   if (admin?.grantEmail || admin?.grantId) {
     return (
-      <div className="   p-6">
+      <div className="bg-[#F5F7FA]  p-6">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Video className="h-6 w-6 text-primary" />
