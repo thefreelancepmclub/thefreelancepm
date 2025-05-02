@@ -52,7 +52,7 @@ export function SignUpForm() {
         // handle success
         setLoading(true);
         toast.success(res.message);
-        router.push("/login");
+        router.push("/sign-up/confirmation");
       });
     });
   }
