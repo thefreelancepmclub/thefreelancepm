@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import JobRightFit from "../../jobBoard/_components/JobRightFit";
 
 export default function TemplatesContainer() {
   // Array of template card data
@@ -37,7 +38,7 @@ export default function TemplatesContainer() {
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
                   <Select>
                     <SelectTrigger className="w-full sm:w-[140px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Location" />
+                      <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="light">Light</SelectItem>
@@ -50,7 +51,7 @@ export default function TemplatesContainer() {
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
                   <Select>
                     <SelectTrigger className="w-full sm:w-[145px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Job Type" />
+                      <SelectValue placeholder="Industry" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="light">Light</SelectItem>
@@ -63,7 +64,7 @@ export default function TemplatesContainer() {
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
                   <Select>
                     <SelectTrigger className="w-full sm:w-[203px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Experience Level" />
+                      <SelectValue placeholder="Free" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="light">Light</SelectItem>
@@ -98,7 +99,7 @@ export default function TemplatesContainer() {
       </div>
 
       {/* Template Cards Grid */}
-      <div className="lg:py-6 lg:px-4 flex-grow">
+      <div className="lg:py-6 lg:px-4 lg:flex-grow">
         <div className="">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] lg:container lg:mx-auto">
             <TemplateCard />
@@ -124,28 +125,7 @@ export default function TemplatesContainer() {
       </div>
 
       {/* Footer - Newsletter */}
-      <footer className="bg-blue-600 text-white py-6 px-4 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-xl font-bold mb-2">
-            Dont See The <span className="text-yellow-300">Right Fit?</span>
-          </h2>
-          <p className="mb-4 text-sm">
-            We update our job board every week with fresh opportunities. Set up
-            job alerts to get notified when new roles match your criteria.
-          </p>
-
-          <div className="flex max-w-md mx-auto gap-2">
-            <input
-              type="email"
-              placeholder="Your email address"
-              className="flex-grow p-2 rounded text-gray-800"
-            />
-            <button className="bg-yellow-400 text-blue-800 font-medium py-2 px-4 rounded hover:bg-yellow-300 transition">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </footer><div className=""></div>
+      <JobRightFit />
     </div>
   );
 }

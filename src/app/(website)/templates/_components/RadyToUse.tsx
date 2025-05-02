@@ -1,15 +1,17 @@
 import React from "react";
 
-const RadyToUse = () => {
+const NextGig = () => {
   return (
-    <header className="bg-blue-600 text-white py-6 px-4 text-center">
-      <h1 className="text-xl font-bold mb-1">
-        Project Management <span className="text-yellow-300">Templates</span> –
-        Ready to Use!
-      </h1>
-      <p className="text-sm">Power up your projects with ready-to-use tools</p>
+    <header className="bg-blue-600 h-[175px] text-white py-6 px-4 flex items-center justify-center text-center">
+      <div>
+        <h1 className="text-[32px] font-semibold mb-1">Project Management <span className="text-[#ffa400] border-b-2 border-b-[#ffa400]">Templates</span> – Ready to Use!</h1>
+        <p className="text-lg">
+        Power up your projects with ready-to-use tools
+        </p>
+      </div>
     </header>
   );
 };
 
-export default RadyToUse;
+export default NextGig;
+  
