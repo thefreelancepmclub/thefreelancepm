@@ -309,8 +309,9 @@ model Testmonial {
 
 enum CoachingStatus {
   opened
-  confirmed
-  closed
+  scheduled
+  completed
+  camceled
 }
 
 model Coaching {
