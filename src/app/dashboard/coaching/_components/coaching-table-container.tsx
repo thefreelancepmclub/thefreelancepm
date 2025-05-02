@@ -146,7 +146,7 @@ console.log(data?.data, "coaching data");
                   <TableCell className="font-medium">
                     {coaching?.date}
                   </TableCell>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-semibold text-[16px]">
                     <div className="flex flex-wrap gap-1">
                       {coaching?.focusArea.map((area: string) => (
                         <span
