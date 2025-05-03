@@ -36,7 +36,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { courseCreateSchema, CourseCreateType } from "@/schemas/course";
-import { Course, Subscription } from "@prisma/client";
+import { Course, CourseType, Subscription } from "@prisma/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
@@ -70,6 +70,7 @@ export default function AddCoursePage({ trigger, initialData }: Props) {
       file: initialData?.file ?? "",
       plan: initialData?.plan ?? "",
       publishNow: initialData?.published ?? false,
+      type: initialData?.type ?? ("Beginner" as CourseType),
     },
   });
 
@@ -163,6 +164,32 @@ export default function AddCoursePage({ trigger, initialData }: Props) {
                     />
                   </FormControl>
                   <FormMessage className="col-start-2" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="grid grid-cols-[100px_1fr] items-start gap-4">
+                  <FormLabel className="text-right pt-2">Level:</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select job type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(CourseType).map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.replace("_", " ")}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />

@@ -10,6 +10,7 @@ export const courseCreateSchema = z.object({
   file: z.string().min(1, { message: "File is required" }),
   plan: z.string().min(1, { message: "Plan is required" }),
   publishNow: z.boolean().default(false).optional(),
+  type: z.string(),
 });
 
 export type CourseCreateType = z.infer<typeof courseCreateSchema>;
