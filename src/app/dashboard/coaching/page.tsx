@@ -1,4 +1,4 @@
-import { Calendar, Download } from "lucide-react";
+import { Calendar } from "lucide-react";
 
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CoachingStats } from "./_components/coaching-stats";
+import CoachingStats from "./_components/coaching-stats";
 import { CoachingTableContainer } from "./_components/coaching-table-container";
 
 export default async function CoachingPage() {
@@ -36,10 +36,10 @@ export default async function CoachingPage() {
             />
             <h1 className="text-2xl font-bold">Coaching</h1>
           </div>
-          <Button variant="default" className="gap-1">
+          {/* <Button variant="default" className="gap-1">
             <Download className="h-4 w-4" />
             Export
-          </Button>
+          </Button> */}
         </div>
 
         {/* Coaching Stats Component */}
