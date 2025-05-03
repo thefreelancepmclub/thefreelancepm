@@ -1,8 +1,5 @@
-// import { useState } from 'react';
-import { Search } from "lucide-react";
-import CourseHeader from "./CourseHeader";
-import JobRightFit from "../../jobBoard/_components/JobRightFit";
-import CoursesCard from "./CoursesCard";
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -10,112 +7,78 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+import useDebounce from "@/hooks/useDebounce";
+import useCoursesStore from "@/zustand/website/courses";
+import { CourseType, TemplateType } from "@prisma/client";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Loader2, Search } from "lucide-react";
+import JobRightFit from "../../jobBoard/_components/JobRightFit";
+import CourseHeader from "./CourseHeader";
+import CoursesCard from "./CoursesCard";
 
 export default function CoursesContainer() {
-  // Array of course card data
-  // const courseCards = [
-  //   {
-  //     id: 1,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: null,
-  //     hours: 8,
-  //     difficulty: "POPULAR",
-  //     difficultyColor: "bg-green-500",
-  //     isNew: false,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: "$49",
-  //     hours: 10,
-  //     difficulty: "ADVANCED",
-  //     difficultyColor: "bg-red-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: null,
-  //     hours: 12,
-  //     difficulty: "INTERMEDIATE",
-  //     difficultyColor: "bg-yellow-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: "$49",
-  //     hours: 6,
-  //     difficulty: "POPULAR",
-  //     difficultyColor: "bg-green-500",
-  //     isNew: false,
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: null,
-  //     hours: 9,
-  //     difficulty: "BEGINNER",
-  //     difficultyColor: "bg-green-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: "$49",
-  //     hours: 11,
-  //     difficulty: "BEGINNER",
-  //     difficultyColor: "bg-green-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: null,
-  //     hours: 8,
-  //     difficulty: "POPULAR",
-  //     difficultyColor: "bg-green-500",
-  //     isNew: false,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 8,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: "$59",
-  //     hours: 10,
-  //     difficulty: "ADVANCED",
-  //     difficultyColor: "bg-red-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  //   {
-  //     id: 9,
-  //     title: "Course Title",
-  //     description: "Explore advanced concepts in managing IoT networks",
-  //     price: null,
-  //     hours: 12,
-  //     difficulty: "INTERMEDIATE",
-  //     difficultyColor: "bg-yellow-500",
-  //     isNew: true,
-  //     isHot: false,
-  //   },
-  // ];
+  const { query, setQuery, level, setlevel, sortBy, setSortBy, type, setType } =
+    useCoursesStore();
 
+  const searchQuery = useDebounce(query, 500);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["courses", sortBy, searchQuery, type, level],
+    queryFn: ({ pageParam = 1 }) =>
+      fetch(
+        `/api/dashboard/courses?searchQuery=${searchQuery}&page=${pageParam}&limit=3&sortBy=${sortBy}&category=${type}&type=${level}`,
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          throw err;
+        }),
+    getNextPageParam: (lastPage) => {
+      const currentPage = lastPage?.meta?.page ?? 1;
+      const totalPages = lastPage?.meta?.totalPages ?? 1;
+
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    initialPageParam: 1,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <div className="min-h-[400px] flex justify-center items-center">
+        Loading
+      </div>
+    );
+  } else if (isError) {
+    content = (
+      <div className="min-h-[400px] flex justify-center items-center">
+        Something went wrong: {error.message}
+      </div>
+    );
+  } else if (!data || data.pages[0]?.data?.length === 0) {
+    content = (
+      <div className="min-h-[400px] flex justify-center items-center">
+        No jobs found
+      </div>
+    );
+  } else {
+    const allCourses = data.pages.flatMap((page) => page.data);
+    content = (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px]">
+        {allCourses.map((course) => (
+          <CoursesCard key={course.id} data={course} />
+        ))}
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -130,6 +93,8 @@ export default function CoursesContainer() {
                 type="text"
                 placeholder="Search job titles, companies, or keywords..."
                 className="w-full p-2 pl-3 pr-10 h-[52px] rounded-[15px] outline-[#004AAD] border-[1.5px] border-gray-500"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
               />
               <Search className="absolute right-3 top-4 text-black" size={20} />
             </div>
@@ -138,40 +103,31 @@ export default function CoursesContainer() {
               {/* Left Filters */}
               <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
-                  <Select>
+                  <Select value={level} onValueChange={setlevel}>
                     <SelectTrigger className="w-full sm:w-[140px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Location" />
+                      <SelectValue placeholder="Select Level" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      {Object.values(CourseType).map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.replace("_", " ")}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
-                  <Select>
+                  <Select value={type} onValueChange={setType}>
                     <SelectTrigger className="w-full sm:w-[145px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Job Type" />
+                      <SelectValue placeholder="Select Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
-                  <Select>
-                    <SelectTrigger className="w-full sm:w-[203px] h-[39px] rounded-[30px]">
-                      <SelectValue placeholder="Experience Level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      {Object.values(TemplateType).map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type.replace("_", " ")}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -183,14 +139,13 @@ export default function CoursesContainer() {
                   Sort By:
                 </p>
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
-                  <Select>
+                  <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-[200px] h-[39px] rounded-[30px]">
                       <SelectValue placeholder="Newest First" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      <SelectItem value="asc">Ascending</SelectItem>
+                      <SelectItem value="desc">Descinding</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -203,27 +158,23 @@ export default function CoursesContainer() {
       {/* Course Cards Grid */}
       <div className="lg:py-6 lg:px-4 lg:flex-grow">
         <div className="container mx-auto ">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px]">
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-            <CoursesCard />
-          </div>
+          {content}
 
-          {/* Load More Button */}
-          <div className="flex items-center justify-center mt-[30px] mb-[50px]">
-            <Button className="w-[175px] h-[52px] text-base text-white">
-              Load More
-            </Button>
-          </div>
+          {hasNextPage && (
+            <div className="flex items-center justify-center mt-[30px] mb-[50px]">
+              <Button
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage || !hasNextPage}
+                className="w-[175px] h-[45px] text-base"
+                variant="outline"
+              >
+                Load More{" "}
+                {isFetchingNextPage && (
+                  <Loader2 className="animate-spin ml-2" />
+                )}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 

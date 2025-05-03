@@ -59,8 +59,6 @@ const JobBoardContainer = () => {
     initialPageParam: 1,
   });
 
-  console.log("data", data);
-
   let content;
 
   if (isLoading) {

@@ -3,7 +3,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { CourseCreateType } from "@/schemas/course";
-import { TemplateType } from "@prisma/client";
+import { CourseType, TemplateType } from "@prisma/client";
 
 export async function createCourse(data: CourseCreateType) {
   const cu = await auth();
@@ -29,6 +29,7 @@ export async function createCourse(data: CourseCreateType) {
         file: data.file, // assumes this is a file path or URL
         plan: data.plan, // assuming plan ID is provided
         published: data.publishNow ?? false,
+        type: data.type as CourseType,
       },
     });
 

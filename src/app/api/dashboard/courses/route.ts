@@ -9,8 +9,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
-    const location = searchParams.get("location") || undefined;
-    const status = searchParams.get("status") || "all";
+    const category = searchParams.get("category") || undefined;
     const type = searchParams.get("type") || undefined;
     const searchQuery = searchParams.get("searchQuery") || undefined;
     const sortBy = searchParams.get("sortBy") || undefined;
@@ -37,59 +36,57 @@ export async function GET(request: NextRequest) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {};
 
-    // Filter by location
-    if (location !== "all") {
-      where.location = {
-        contains: location,
-        mode: "insensitive",
-      };
+    // Filter by category
+    if (category && category !== "all") {
+      where.category = category;
     }
 
-    // Filter by status (published field)
-    if (status !== "all") {
-      where.published = status === "true";
-    }
-
-    // Filter by type
-    if (type !== "all") {
+    // Filter by type (CourseType)
+    if (type && type !== "all") {
       where.type = type;
     }
 
     // Determine orderBy condition
-    const orderBy: { expiration: "asc" | "desc" } = {
-      expiration: sortBy === "asc" ? "asc" : "desc",
-    };
+    const orderBy: { [key: string]: "asc" | "desc" } = {};
+    if (sortBy === "asc" || sortBy === "desc") {
+      orderBy.createdAt = sortBy;
+    } else {
+      orderBy.createdAt = "desc"; // Default sort
+    }
 
-    // You can add more sort options here if needed (e.g., sortBy=title, sortBy=company)
-
-    // Filter by search query (searches title, company, and description)
+    // Search by title, description, or skills
     if (searchQuery) {
       const sanitizedQuery = searchQuery.trim();
       where.OR = [
         { title: { contains: sanitizedQuery, mode: "insensitive" } },
-        { company: { contains: sanitizedQuery, mode: "insensitive" } },
+        { description: { contains: sanitizedQuery, mode: "insensitive" } },
+        // If you have a field like `skills`, add:
+        { skills: { hasSome: [sanitizedQuery] } },
       ];
     }
 
     // Get total count for pagination
-    const totalItems = await prisma.job.count({ where });
+    const totalItems = await prisma.course.count({ where });
 
     // Calculate pagination
     const totalPages = Math.ceil(totalItems / limit);
     const skip = (page - 1) * limit;
 
-    // Fetch jobs
-    const jobs = await prisma.job.findMany({
+    // Fetch courses
+    const courses = await prisma.course.findMany({
       where,
       skip,
       take: limit,
-      orderBy: orderBy,
+      orderBy,
     });
 
     return NextResponse.json({
       success: true,
-      message: jobs.length > 0 ? "Jobs fetched successfully" : "No jobs found",
-      data: jobs,
+      message:
+        courses.length > 0
+          ? "Courses fetched successfully"
+          : "No courses found",
+      data: courses,
       meta: {
         totalPages,
         totalItems,
@@ -98,7 +95,7 @@ export async function GET(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    console.error("Error fetching courses:", error);
     return NextResponse.json(
       {
         success: false,

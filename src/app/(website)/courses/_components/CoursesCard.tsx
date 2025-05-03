@@ -1,35 +1,39 @@
-import { ChartNoAxesColumnIncreasing, CircleCheckBig, Clock } from "lucide-react";
-import React from "react";
+import { truncate } from "@/lib/utils";
+import { Course } from "@prisma/client";
+import { ChartNoAxesColumnIncreasing, Clock } from "lucide-react";
 
-const CoursesCard = () => {
+interface CoursesCardProps {
+  data: Course;
+}
+
+const CoursesCard = ({ data }: CoursesCardProps) => {
+  const desc = truncate(data.description, 117);
   return (
-    <div className="bg-white rounded-[10px] overflow-hidden shadow-sm border-[1px_solid_#F2F2F2]">
+    <div className="bg-white rounded-[10px] overflow-hidden shadow-sm  border-input border-[1px]">
       {/* Course Image Placeholder */}
-      <div className="bg-gray-200 lg:h-[180px] h-36 relative">
+      {/* <div className="bg-gray-200 lg:h-[180px] h-36 relative">
         <span className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-        <CircleCheckBig size={12} />
+          <CircleCheckBig size={12} />
         </span>
-      </div>
+      </div> */}
 
       {/* Course Content */}
       <div className="p-4">
         <div className="flex justify-between items-start mb-2">
           <h3 className="font-medium text-base mb-[25px] mt-[15px]">
-            Course Title
+            {data.title}
           </h3>
 
           <span className="text-sm text-blue-600 font-medium"></span>
         </div>
-        <p className="text-sm text-gray-700 mb-4">
-          Explore advanced concepts in managing IoT networks
-        </p>
+        <p className="text-sm text-gray-700 mb-4">{desc}</p>
 
         <div className="flex justify-between items-center my-[50px]">
           <div className="flex items-center justify-center gap-1 px-2 py-1 rounded-full bg-[#DCFCE7]">
             <p>
               <ChartNoAxesColumnIncreasing size={14} />
             </p>
-            <p className="text-xs text-[#166534]">POPULAR</p>
+            <p className="text-xs text-[#166534]">{data.type}</p>
           </div>
           <div className="flex items-center text-xs text-gray-500">
             <Clock size={14} className="mr-1" />

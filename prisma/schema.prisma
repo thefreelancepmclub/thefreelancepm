@@ -264,12 +264,19 @@ model UserJobActivity {
   updatedAt DateTime @updatedAt
 }
 
+enum CourseType {
+  Beginner
+  Intermediate
+  Advanced
+}
+
 model Course {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   instructor  String
   description String
   category    TemplateType @default(free)
+  type        CourseType  @default(Beginner)
   file        String
   price       Int?
   plan        String       @db.ObjectId
