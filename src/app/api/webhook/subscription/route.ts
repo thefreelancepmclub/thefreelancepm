@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      case "invoice.paid": {
+      case "invoice.payment_succeeded": {
         const invoice = event.data.object as Stripe.Invoice;
         await handleInvoicePaid(invoice);
         break;

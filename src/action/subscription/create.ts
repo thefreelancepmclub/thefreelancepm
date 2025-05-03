@@ -103,7 +103,7 @@ export async function createSubscription(values: SubscriptionCreateFormValues) {
 export async function createCheckoutLink(
   priceId: string,
   productId: string,
-  planId: string
+  planId: string,
 ) {
   // Step 1: Authenticate the user
   const cu = await auth();
@@ -118,6 +118,7 @@ export async function createCheckoutLink(
     // Step 2: Create a Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"], // Allow card payments
+      customer_email: cu.user.email as string, // Pre-fill the email field with the user's email
       line_items: [
         {
           price: priceId, // The price ID of the subscription plan
