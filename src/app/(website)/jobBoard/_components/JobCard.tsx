@@ -1,24 +1,34 @@
-import React from "react";
+import { truncate } from "@/lib/utils";
+import { Job } from "@prisma/client";
+import moment from "moment";
 
-const JobCard = () => {
+interface JobCardProps {
+  data: Job;
+}
+
+const JobCard = ({ data }: JobCardProps) => {
+  const desc = truncate(data.description, 117);
   return (
-    <div className="bg-white border rounded-[15px] overflow-hidden shadow-sm lg:w-[394px] w-full">
+    <div className="bg-white border rounded-[15px] overflow-hidden shadow-sm  w-full">
       <div className="p-4">
-        <h3 className="font-bold text-lg mb-4 text-[#004AAD]">
-          Senior Digital Project Manager
-        </h3>
-        <p className="text-[#009FFD] font-medium text-sm mb-3">Agency A</p>
+        <h3 className="font-bold text-lg mb-4 text-[#004AAD]">{data.title}</h3>
+        <p className="text-[#009FFD] font-medium text-sm mb-3">
+          {data.company}
+        </p>
         <div className="bg-[#EAF6FF] rounded-[10px] p-[10px] my-[15px]">
-          <p className="text-lg text-[#2A2A2A]">
-            Lead cross-functional teams for digital marketing campaigns.
-            Experience with agile methodologies required.
-          </p>
+          <p className="text-lg text-[#2A2A2A]">{desc}</p>
         </div>
 
         <div className="flex gap-[30px] items-center">
-          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">Freelance</span>
-          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">Remote</span>
-          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">$80-100k+</span>
+          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
+            Freelance
+          </span>
+          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
+            {data.type}
+          </span>
+          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
+            ${data.salary}
+          </span>
         </div>
       </div>
 
@@ -30,8 +40,8 @@ const JobCard = () => {
         </div>
 
         <div className="flex justify-between px-4 py-2 text-base text-[#595959] mb-2">
-          <span>Posted 3 days ago</span>
-          <span>New York (Remote)</span>
+          <span>Posted {moment(data.createdAt, "YYYYMMDD").fromNow()}</span>
+          <span>{data.location}</span>
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ interface UsersState {
   setQuery: (query: string) => void;
   localtionFilter: string;
   setLocationFilter: (location: string) => void;
+  sortBy: string;
+  setSortBy: (sortBy: string) => void;
 }
 
 const useJobBoardStore = create<UsersState>((set) => ({
@@ -20,6 +22,8 @@ const useJobBoardStore = create<UsersState>((set) => ({
   setQuery: (query) => set({ query }),
   localtionFilter: "",
   setLocationFilter: (location) => set({ localtionFilter: location }),
+  sortBy: "asc",
+  setSortBy: (sortBy) => set({ sortBy }),
 }));
 
 export default useJobBoardStore;

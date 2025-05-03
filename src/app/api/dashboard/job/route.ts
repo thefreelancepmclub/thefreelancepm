@@ -13,6 +13,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get("status") || "all";
     const type = searchParams.get("type") || undefined;
     const searchQuery = searchParams.get("searchQuery") || undefined;
+    const sortBy = searchParams.get("sortBy") || undefined;
 
     // Validate pagination parameters
     if (page < 1 || limit < 1) {
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
             itemsPerPage: limit,
           },
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -54,6 +55,13 @@ export async function GET(request: NextRequest) {
       where.type = type;
     }
 
+    // Determine orderBy condition
+    const orderBy: { expiration: "asc" | "desc" } = {
+      expiration: sortBy === "asc" ? "asc" : "desc",
+    };
+
+    // You can add more sort options here if needed (e.g., sortBy=title, sortBy=company)
+
     // Filter by search query (searches title, company, and description)
     if (searchQuery) {
       const sanitizedQuery = searchQuery.trim();
@@ -75,9 +83,7 @@ export async function GET(request: NextRequest) {
       where,
       skip,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: orderBy,
     });
 
     return NextResponse.json({
@@ -105,7 +111,7 @@ export async function GET(request: NextRequest) {
           itemsPerPage: 10,
         },
       },
-      { status: 500 }
+      { status: 500 },
     );
   } finally {
     await prisma.$disconnect();

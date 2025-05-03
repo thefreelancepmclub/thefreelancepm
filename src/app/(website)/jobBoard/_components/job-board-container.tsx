@@ -11,21 +11,10 @@ import {
 import { countries } from "@/data/countries";
 import useDebounce from "@/hooks/useDebounce";
 import useJobBoardStore from "@/zustand/website/jobBoard";
-import { ExperiencesType, Job, JobType } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { Search } from "lucide-react";
+import { ExperiencesType, JobType } from "@prisma/client";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Loader2, Search } from "lucide-react";
 import JobCard from "./JobCard";
-
-interface ApiResponse {
-  success: true;
-  data: Job[];
-  meta: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-}
 
 const JobBoardContainer = () => {
   const {
@@ -37,17 +26,40 @@ const JobBoardContainer = () => {
     setType,
     query,
     setQuery,
+    sortBy,
+    setSortBy,
   } = useJobBoardStore();
 
   const searchQuery = useDebounce(query, 500);
 
-  const { data, isLoading, isError, error } = useQuery<ApiResponse>({
-    queryKey: ["job", status, type, localtionFilter, searchQuery],
-    queryFn: () =>
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["jobs", status, type, localtionFilter, searchQuery, sortBy],
+    queryFn: ({ pageParam = 1 }) =>
       fetch(
-        `/api/dashboard/job?status=${status}&type=${type}&location=${localtionFilter}&searchQuery=${searchQuery}`,
-      ).then((res) => res.json()),
+        `/api/dashboard/job?status=${status}&type=${type}&location=${localtionFilter}&searchQuery=${searchQuery}&page=${pageParam}&limit=3&sortBy=${sortBy}`,
+      )
+        .then((res) => res.json())
+        .catch((err) => {
+          throw err;
+        }),
+    getNextPageParam: (lastPage) => {
+      const currentPage = lastPage?.meta?.page ?? 1;
+      const totalPages = lastPage?.meta?.totalPages ?? 1;
+
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    initialPageParam: 1,
   });
+
+  console.log("data", data);
 
   let content;
 
@@ -63,23 +75,27 @@ const JobBoardContainer = () => {
         Something went wrong: {error.message}
       </div>
     );
-  } else if (data?.data?.length === 0) {
+  } else if (!data || data.pages[0]?.data?.length === 0) {
     content = (
       <div className="min-h-[400px] flex justify-center items-center">
         No jobs found
       </div>
     );
-  } else if (data?.data && data.data.length > 0) {
+  } else {
+    const allJobs = data.pages.flatMap((page) => page.data);
     content = (
       <div className="bg-white lg:py-6 lg:px-4 flex-grow">
         <div className="">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[30px] container mx-auto">
-            {data?.data?.map(({ id }) => <JobCard key={id} />)}
+            {allJobs.map((job) => (
+              <JobCard key={job.id} data={job} />
+            ))}
           </div>
         </div>
       </div>
     );
   }
+
   return (
     <div>
       {/* Search Section */}
@@ -157,14 +173,13 @@ const JobBoardContainer = () => {
                   Sort By:
                 </p>
                 <div className="shadow-[0px_4px_12px_0px_#0000001A] rounded-[30px]">
-                  <Select>
+                  <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-[200px] h-[39px] rounded-[30px]">
                       <SelectValue placeholder="Newest First" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      <SelectItem value="desc">Desc</SelectItem>
+                      <SelectItem value="asc">Asc</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -176,11 +191,19 @@ const JobBoardContainer = () => {
 
       {content}
 
-      <div className="flex items-center justify-center mt-[30px] mb-[50px]">
-        <Button className="w-[175px] h-[52px] text-base text-white">
-          Load More
-        </Button>
-      </div>
+      {hasNextPage && (
+        <div className="flex items-center justify-center mt-[30px] mb-[50px]">
+          <Button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage || !hasNextPage}
+            className="w-[175px] h-[45px] text-base"
+            variant="outline"
+          >
+            Load More{" "}
+            {isFetchingNextPage && <Loader2 className="animate-spin ml-2" />}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
