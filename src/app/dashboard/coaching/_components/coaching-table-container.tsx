@@ -153,14 +153,20 @@ export function CoachingTableContainer() {
                   </TableCell>
                   <TableCell className="font-semibold text-[16px]">
                     <div className="flex flex-wrap gap-1">
-                      {coaching?.focusArea.map((area: string) => (
-                        <span
-                          key={area}
-                          className="inline-block rounded  px-2 py-0.5 text-xs"
-                        >
-                          {area}
+                      {coaching?.focusArea.length > 0 ? (
+                        coaching.focusArea.map((area: string) => (
+                          <span
+                            key={area}
+                            className="inline-block rounded  px-2 py-0.5 text-xs"
+                          >
+                            {area}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="inline-block rounded  px-2 py-0.5 text-xs">
+                          {coaching.focusArea[0]}
                         </span>
-                      ))}
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="font-medium">

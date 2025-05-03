@@ -109,6 +109,7 @@ export default function Navbar({ isLoggedin }: Props) {
                   asChild
                   key={id}
                   className="text-black"
+                  onClick={() => setOpen(false)}
                 >
                   <Link href={href} className="w-full">
                     {label}

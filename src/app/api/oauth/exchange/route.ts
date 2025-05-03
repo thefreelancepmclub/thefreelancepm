@@ -29,7 +29,6 @@ export async function GET(req: NextRequest) {
 
     const { grantId, email } = response;
 
-    //
     await prisma.user.update({
       where: {
         id: session?.user?.id,

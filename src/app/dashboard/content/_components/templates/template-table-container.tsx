@@ -47,7 +47,7 @@ const TemplatetableContainer = ({
     queryKey: ["templates", status, planId, page],
     queryFn: () =>
       fetch(
-        `/api/dashboard/content/templates?status=${status}&plan=${planId}&page=${page}`
+        `/api/dashboard/content/templates?status=${status}&plan=${planId}&page=${page}`,
       ).then((res) => res.json()),
   });
   return (
@@ -82,7 +82,6 @@ const TemplatetableContainer = ({
           </Select>
         </div>
         <AddTemplatesPage
-          subscription={subscripton}
           trigger={
             <Button>
               Add Template <span className="ml-1">+</span>

@@ -2,7 +2,13 @@ import { stripe } from "@/lib/stripe";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { handleCoachingCheckout } from "./handlers/coaching";
-import { handleSubscriptionCheckout } from "./handlers/subscription";
+import {
+  handleInvoiceFailed,
+  handleInvoicePaid,
+  handleSubscriptionCheckout,
+  handleSubscriptionDeleted,
+  handleSubscriptionUpdated,
+} from "./handlers/subscription";
 
 export async function POST(req: NextRequest) {
   const buf = await req.text();
@@ -20,7 +26,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       buf,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET!,
     );
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
@@ -29,21 +35,48 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const purpose = session.metadata?.for;
+    switch (event.type) {
+      case "checkout.session.completed": {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const purpose = session.metadata?.for;
 
-      switch (purpose) {
-        case "subscription":
+        if (purpose === "subscription") {
           await handleSubscriptionCheckout(session);
-          break;
-        case "coaching":
+        } else if (purpose === "coaching") {
           await handleCoachingCheckout(session);
-          break;
-        default:
+        } else {
           console.warn(`Unhandled checkout purpose: ${purpose}`);
           return new NextResponse("Unknown purpose", { status: 400 });
+        }
+        break;
       }
+
+      case "invoice.paid": {
+        const invoice = event.data.object as Stripe.Invoice;
+        await handleInvoicePaid(invoice);
+        break;
+      }
+
+      case "invoice.payment_failed": {
+        const invoice = event.data.object as Stripe.Invoice;
+        await handleInvoiceFailed(invoice);
+        break;
+      }
+
+      case "customer.subscription.updated": {
+        const subscription = event.data.object as Stripe.Subscription;
+        await handleSubscriptionUpdated(subscription);
+        break;
+      }
+
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object as Stripe.Subscription;
+        await handleSubscriptionDeleted(subscription);
+        break;
+      }
+
+      default:
+        console.log(`Unhandled event type: ${event.type}`);
     }
 
     return NextResponse.json({ received: true });

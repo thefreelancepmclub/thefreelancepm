@@ -2,6 +2,8 @@
 
 import { createCheckoutLink } from "@/action/subscription/create";
 import { Button } from "@/components/ui/button";
+import { tierModel } from "@/helper/subscription";
+import { CurrentSubscription } from "@/helper/user";
 import { cn } from "@/lib/utils";
 import { Subscription } from "@prisma/client";
 import { Check, Loader2 } from "lucide-react";
@@ -9,20 +11,55 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
+const tierOrder = {
+  free: 0,
+  pro: 1,
+  elite: 2,
+};
+
 interface PricingCardProps {
   plan: Subscription;
+  currentSubscription?: CurrentSubscription;
 }
 
-export default function PricingCard({ plan }: PricingCardProps) {
+export default function PricingCard({
+  plan,
+  currentSubscription,
+}: PricingCardProps) {
   const [pending, startTransition] = useTransition();
   const router = useRouter();
+
+  const isPurchased = currentSubscription?.subscriptionId === plan.id;
+  const isExpired = currentSubscription?.isExpired;
+
+  const getActionLabel = () => {
+    if (!currentSubscription) return "Choose Plan";
+
+    const currentTier = tierModel[
+      currentSubscription.subscriptionId as keyof typeof tierModel
+    ] as keyof typeof tierOrder;
+    const selectedTier = tierModel[
+      plan.id as keyof typeof tierModel
+    ] as keyof typeof tierOrder;
+
+    if (!currentTier || !selectedTier) return "Choose Plan";
+
+    const currentRank = tierOrder[currentTier];
+    const selectedRank = tierOrder[selectedTier];
+
+    if (isPurchased && !isExpired) return "Current Plan";
+    if (selectedRank > currentRank) return "Upgrade";
+    if (selectedRank < currentRank) return "Downgrade";
+
+    return "Choose Plan";
+  };
 
   const onPurchase = () => {
     startTransition(() => {
       createCheckoutLink(
         plan.stripePriceId,
         plan.stripeProductId,
-        plan.id
+        plan.id,
       ).then((res) => {
         if (!res.success) {
           toast.error(res.message);
@@ -38,13 +75,13 @@ export default function PricingCard({ plan }: PricingCardProps) {
     <div
       className={cn(
         "flex flex-col p-6 py-10 rounded-lg border max-w-[373px]",
-        plan.isActive ? "border-blue-500 shadow-lg" : "border-gray-200"
+        plan.isActive ? "border-blue-500 shadow-lg" : "border-gray-200",
       )}
     >
       <h3
         className={cn(
           "text-lg font-medium mb-2",
-          plan.isActive ? "text-brand" : ""
+          plan.isActive ? "text-brand" : "",
         )}
       >
         {plan.title}
@@ -69,9 +106,9 @@ export default function PricingCard({ plan }: PricingCardProps) {
       <Button
         className={cn("mt-auto w-full bg-brand relative")}
         onClick={onPurchase}
-        disabled={pending}
+        disabled={pending || isPurchased}
       >
-        Choose Plan{" "}
+        {getActionLabel()}
         {pending && <Loader2 className="animate-spin ml-2 absolute right-3" />}
       </Button>
     </div>

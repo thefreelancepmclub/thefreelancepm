@@ -3,7 +3,7 @@ import { FeatureName } from "@prisma/client";
 import Stripe from "stripe";
 
 export async function handleSubscriptionCheckout(
-  session: Stripe.Checkout.Session
+  session: Stripe.Checkout.Session,
 ) {
   const userId = session.metadata?.userId;
   const planId = session.metadata?.planId;
@@ -12,6 +12,11 @@ export async function handleSubscriptionCheckout(
   if (!userId || !planId || !stripeProductId) {
     throw new Error("Missing required metadata for subscription");
   }
+
+  console.log({
+    userId,
+    planId,
+  });
 
   // Define features per plan
   const features = [];
@@ -25,7 +30,7 @@ export async function handleSubscriptionCheckout(
           value: 5000,
           enabled: null,
         },
-        { name: "courses", total: 1, remaining: 1, value: 5000, enabled: null }
+        { name: "courses", total: 1, remaining: 1, value: 5000, enabled: null },
       );
       break;
     case "680e40f354471484d23cd2b0": // Pro
@@ -65,7 +70,7 @@ export async function handleSubscriptionCheckout(
           remaining: null,
           value: null,
           enabled: true,
-        }
+        },
       );
       break;
     case "680e413c54471484d23cd2b1": // Elite
@@ -92,7 +97,7 @@ export async function handleSubscriptionCheckout(
           remaining: null,
           value: 50,
           enabled: true,
-        }
+        },
       );
       break;
     default:
@@ -109,22 +114,22 @@ export async function handleSubscriptionCheckout(
   const endDate = new Date(startDate);
   endDate.setMonth(endDate.getMonth() + 1);
 
-  const userSubscription = await prisma.userSubscription.upsert({
+  const deletedSubscription = await prisma.userSubscription.delete({
     where: {
-      userId_subscriptionId: {
-        userId,
-        subscriptionId: subscription.id,
-      },
+      userId,
     },
-    create: {
+  });
+
+  await prisma.feature.deleteMany({
+    where: {
+      userSubscriptionId: deletedSubscription.id,
+    },
+  });
+
+  const userSubscription = await prisma.userSubscription.create({
+    data: {
       userId,
       subscriptionId: subscription.id,
-      stripeSessionId: session.id,
-      status: "active",
-      startDate,
-      endDate,
-    },
-    update: {
       stripeSessionId: session.id,
       status: "active",
       startDate,
@@ -146,4 +151,106 @@ export async function handleSubscriptionCheckout(
       enabled: feature.enabled,
     })),
   });
+}
+
+/**
+ * When an invoice is successfully paid
+ */
+export async function handleInvoicePaid(invoice: Stripe.Invoice) {
+  const userId = invoice.metadata?.userId;
+  if (!userId) {
+    console.warn("Missing userId in invoice metadata.");
+    return;
+  }
+
+  const startDate = new Date();
+  const endDate = new Date(startDate);
+  endDate.setMonth(endDate.getMonth() + 1);
+
+  await prisma.userSubscription.updateMany({
+    where: {
+      userId,
+      status: "active",
+    },
+    data: {
+      startDate,
+      endDate,
+    },
+  });
+
+  console.log(`Invoice paid and subscription renewed for user ${userId}.`);
+}
+
+/**
+ * When a payment fails for a subscription
+ */
+export async function handleInvoiceFailed(invoice: Stripe.Invoice) {
+  const userId = invoice.metadata?.userId;
+  if (!userId) {
+    console.warn("Missing userId in failed invoice metadata.");
+    return;
+  }
+
+  await prisma.userSubscription.updateMany({
+    where: {
+      userId,
+      status: "active",
+    },
+    data: {
+      status: "expired",
+    },
+  });
+
+  // Optional: send email or trigger a notification
+  console.warn(`Payment failed for user ${userId}. Status set to past_due.`);
+}
+
+/**
+ * When a subscription is updated (e.g., upgraded/downgraded)
+ */
+export async function handleSubscriptionUpdated(
+  subscription: Stripe.Subscription,
+) {
+  const userId = subscription.metadata?.userId;
+  if (!userId) {
+    console.warn("Missing userId in subscription metadata.");
+    return;
+  }
+
+  const status = subscription.status; // active, past_due, canceled, etc.
+
+  await prisma.userSubscription.updateMany({
+    where: {
+      userId,
+    },
+    data: {
+      status: "active",
+    },
+  });
+
+  console.log(`Subscription updated for user ${userId} to status: ${status}`);
+}
+
+/**
+ * When a subscription is cancelled (manually or due to failed payment)
+ */
+export async function handleSubscriptionDeleted(
+  subscription: Stripe.Subscription,
+) {
+  const userId = subscription.metadata?.userId;
+  if (!userId) {
+    console.warn("Missing userId in deleted subscription metadata.");
+    return;
+  }
+
+  await prisma.userSubscription.updateMany({
+    where: {
+      userId,
+    },
+    data: {
+      status: "canceled",
+    },
+  });
+
+  console.warn(`Subscription canceled for user ${userId}. Access revoked.`);
 }

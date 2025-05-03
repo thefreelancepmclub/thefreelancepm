@@ -1,7 +1,7 @@
-import NProgress from "@/components/ui/NProgress";
 import AppProvider from "@/provider/AppProvider";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; // Optional: For fallback fonts
+import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -28,7 +28,8 @@ export default function RootLayout({
         <AppProvider>{children}</AppProvider>
 
         <Toaster closeButton richColors />
-        <NProgress />
+
+        <NextTopLoader />
       </body>
     </html>
   );
