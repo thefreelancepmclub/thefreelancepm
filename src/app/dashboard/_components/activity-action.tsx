@@ -1,3 +1,5 @@
+import AddCoursePage from "@/components/shared/models/add-course-modal";
+import AddTemplatesPage from "@/components/shared/models/add-template-modal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
@@ -56,8 +58,16 @@ const ActivityAction = async () => {
             <Button className="w-full bg-primary h-[40px]" asChild>
               <Link href="/dashboard/job-board/new">Add Job Post</Link>
             </Button>
-            <Button className="w-full bg-primary">Upload Templates</Button>
-            <Button className="w-full bg-primary">Create Course</Button>
+            <AddTemplatesPage
+              trigger={
+                <Button className="w-full bg-primary">Upload Templates</Button>
+              }
+            />
+            <AddCoursePage
+              trigger={
+                <Button className="w-full bg-primary">Create Course</Button>
+              }
+            />
           </div>
         </CardContent>
       </Card>

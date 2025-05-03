@@ -36,17 +36,23 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { teamplateCreateSchema, TemplateCreateType } from "@/schemas/templates";
 import { Subscription } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface Props {
-  subscription: Subscription[];
   trigger: ReactNode;
 }
 
-export default function AddTemplatesPage({ subscription, trigger }: Props) {
+export default function AddTemplatesPage({ trigger }: Props) {
   const [open, setOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  const { data: subscription, isLoading } = useQuery<Subscription[]>({
+    queryKey: ["subscription"],
+    queryFn: () =>
+      fetch("/api/dashboard/subscription").then((res) => res.json()),
+  });
 
   // Initialize the form
   const form = useForm<TemplateCreateType>({
@@ -190,12 +196,12 @@ export default function AddTemplatesPage({ subscription, trigger }: Props) {
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger disabled={isLoading}>
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {subscription.map(({ id, title }) => (
+                      {subscription?.map(({ id, title }) => (
                         <SelectItem value={id} key={id}>
                           {title}
                         </SelectItem>
