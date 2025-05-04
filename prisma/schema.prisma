@@ -214,6 +214,7 @@ model UserPurchasedTemplate {
   userId      String   @db.ObjectId
   template    Template @relation(fields: [templateId], references: [id])
   templateId  String   @db.ObjectId
+  isPaid    Boolean  @default(false)
   purchasedAt DateTime @default(now())
 }
 

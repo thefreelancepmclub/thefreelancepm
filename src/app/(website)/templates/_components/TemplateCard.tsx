@@ -1,13 +1,38 @@
+import { templateDownload } from "@/action/templates/downloadReq";
 import { Button } from "@/components/ui/button";
+import { downloadFile } from "@/helper/downloadFile";
 import { cn, truncate } from "@/lib/utils";
 import { Template } from "@prisma/client";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface Props {
   data: Template;
 }
 
 const TemplateCard = ({ data }: Props) => {
+  const [pending, startTransition] = useTransition();
   const desc = truncate(data.description, 117);
+
+  const handleDownload = () => {
+    startTransition(() => {
+      templateDownload(data.id).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        } else if (res.success && res.url) {
+          console.log(res);
+          toast.success(res.message);
+          window.location.href = res.url;
+        }
+
+        if (res.file) {
+          downloadFile(res.file, data.title);
+        }
+      });
+    });
+  };
+
   return (
     <div
       className="bg-[#FFFFFF] rounded-[15px] overflow-hidden border-[1px_solid_#F2F2F2] w-[95%] mx-auto lg:w-full lg:mx-0 shadow-[0px_4px_12px_0px_#0000001A]
@@ -38,8 +63,12 @@ const TemplateCard = ({ data }: Props) => {
           {/* <button className="bg-white border lg:w-[127px] lg:h-[37px] border-blue-600 text-blue-600 py-1 px-4 rounded text-sm font-medium hover:bg-blue-50 transition flex-1">
             Preview
           </button> */}
-          <Button className="bg-[#004AAD] text-white rounded-[8px] py-[10px] px-[16px]">
-            Download
+          <Button
+            className="bg-[#004AAD] text-white rounded-[8px] py-[10px] px-[16px]"
+            onClick={handleDownload}
+            disabled={pending}
+          >
+            {pending ? "Downloading..." : "Download"}
           </Button>
         </div>
       </div>

@@ -54,7 +54,7 @@ export async function registeruser(data: SignUpFormValues) {
 
     // send email to the student
     const email = await resend.emails.send({
-      from: "FreelanceClub PM <thefreelancepmclub@gmail.com>",
+      from: "FreelanceClub PM <monirhrabby.com>",
       to: [newUser.email as string],
       subject: "Please verify your email address",
       react: EmailVerification({
