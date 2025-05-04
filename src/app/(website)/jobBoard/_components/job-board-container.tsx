@@ -51,7 +51,7 @@ const JobBoardContainer = () => {
           throw err;
         }),
     getNextPageParam: (lastPage) => {
-      const currentPage = lastPage?.meta?.page ?? 1;
+      const currentPage = lastPage?.meta?.currentPage ?? 1;
       const totalPages = lastPage?.meta?.totalPages ?? 1;
 
       return currentPage < totalPages ? currentPage + 1 : undefined;
@@ -190,7 +190,7 @@ const JobBoardContainer = () => {
       {content}
 
       {hasNextPage && (
-        <div className="flex items-center justify-center mt-[30px] mb-[50px]">
+        <div className="flex items-center justify-center mt-[50px] mb-[50px]">
           <Button
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage || !hasNextPage}

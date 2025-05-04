@@ -9,7 +9,7 @@ import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
 import { DateTime } from "luxon";
 import { redirect } from "next/navigation";
 
-export type webhookFor = "subscription" | "coaching";
+export type webhookFor = "subscription" | "coaching" | "template" | "course";
 
 export async function createCoaching(data: CoachingSchemaType) {
   const cu = await auth();
@@ -203,7 +203,7 @@ export async function createCheckoutSession({
       for: "coaching" as webhookFor, // helpful for distinguishing in webhook
     },
     success_url: `${process.env.AUTH_URL}/success`,
-    cancel_url: `${process.env.AUTH_URL}/success`,
+    cancel_url: `${process.env.AUTH_URL}/cancel`,
   });
 
   return { url: session.url };

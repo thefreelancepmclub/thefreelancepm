@@ -1,13 +1,31 @@
+import { ClickedJob } from "@/action/job/update";
+import { Button } from "@/components/ui/button";
 import { truncate } from "@/lib/utils";
 import { Job } from "@prisma/client";
 import moment from "moment";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface JobCardProps {
   data: Job;
 }
 
 const JobCard = ({ data }: JobCardProps) => {
+  const [pending, startTransition] = useTransition();
   const desc = truncate(data.description, 117);
+
+  const onApply = () => {
+    startTransition(() => {
+      ClickedJob(data.id).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        window.location.href = data.url;
+      });
+    });
+  };
   return (
     <div className="bg-white border rounded-[15px] overflow-hidden shadow-sm  w-full">
       <div className="p-4">
@@ -34,9 +52,14 @@ const JobCard = ({ data }: JobCardProps) => {
 
       <div className="flex flex-col">
         <div className="w-[90%] mx-auto">
-          <button className="bg-[#004AAD] text-white py-2 px-4 font-medium hover:bg-blue-700 transition w-full my-3 rounded-[8px]">
-            Apply Now
-          </button>
+          <Button
+            className="bg-[#004AAD] text-white py-2 px-4 font-medium hover:bg-blue-700 transition w-full my-3 rounded-[8px]"
+            onClick={onApply}
+            variant={pending ? "outline" : "default"}
+            disabled={pending}
+          >
+            {pending ? "Checking..." : "Apply Now"}
+          </Button>
         </div>
 
         <div className="flex justify-between px-4 py-2 text-base text-[#595959] mb-2">

@@ -36,7 +36,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { teamplateCreateSchema, TemplateCreateType } from "@/schemas/templates";
 import { Subscription } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface Props {
@@ -47,6 +47,8 @@ export default function AddTemplatesPage({ trigger }: Props) {
   const [open, setOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [pending, startTransition] = useTransition();
+
+  const queryClient = useQueryClient();
 
   const { data: subscription, isLoading } = useQuery<Subscription[]>({
     queryKey: ["subscription"],
@@ -80,6 +82,8 @@ export default function AddTemplatesPage({ trigger }: Props) {
         // handle sucess
         toast.success(res.message);
         setOpen(false);
+        form.reset();
+        queryClient.invalidateQueries({ queryKey: ["templates"] });
       });
     });
   }

@@ -214,6 +214,7 @@ model UserPurchasedTemplate {
   userId      String   @db.ObjectId
   template    Template @relation(fields: [templateId], references: [id])
   templateId  String   @db.ObjectId
+  isPaid    Boolean  @default(false)
   purchasedAt DateTime @default(now())
 }
 
@@ -241,6 +242,7 @@ model Job {
   url         String
   expiration  DateTime
   published   Boolean  @default(false)
+  applications String[] @db.ObjectId
 
   skills    String[]
   experienc ExperiencesType @default(entry_level)
@@ -296,6 +298,7 @@ model UserPurchasedCourse {
   userId      String   @db.ObjectId
   courseId    String   @db.ObjectId
   purchasedAt DateTime @default(now())
+  isPaid      Boolean  @default(false)
 
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])

@@ -41,10 +41,15 @@ export default function CoursesContainer() {
           throw err;
         }),
     getNextPageParam: (lastPage) => {
-      const currentPage = lastPage?.meta?.page ?? 1;
-      const totalPages = lastPage?.meta?.totalPages ?? 1;
-
-      return currentPage < totalPages ? currentPage + 1 : undefined;
+      console.log(lastPage);
+      // Check if there are more pages
+      if (
+        lastPage.success &&
+        lastPage.meta.totalPages > lastPage.meta.currentPage
+      ) {
+        return lastPage.meta.currentPage + 1; // Return the next page number
+      }
+      return undefined; // No more pages
     },
     initialPageParam: 1,
   });
