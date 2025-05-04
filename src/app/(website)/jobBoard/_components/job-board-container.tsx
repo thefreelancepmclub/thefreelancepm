@@ -190,7 +190,7 @@ const JobBoardContainer = () => {
       {content}
 
       {hasNextPage && (
-        <div className="flex items-center justify-center mt-[30px] mb-[50px]">
+        <div className="flex items-center justify-center mt-[50px] mb-[50px]">
           <Button
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage || !hasNextPage}
