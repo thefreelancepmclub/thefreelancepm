@@ -9,11 +9,20 @@ export async function handleCourseDownload(session: Stripe.Checkout.Session) {
     throw new Error("Missing metadata fields for template checkout");
   }
 
-  await prisma.userPurchasedCourse.update({
+  const data = await prisma.userPurchasedCourse.update({
     where: { id: purchaseId },
     data: {
       isPaid: true,
       purchasedAt: new Date(),
+    },
+  });
+
+  await prisma.course.update({
+    where: { id: data.courseId },
+    data: {
+      enrolled: {
+        increment: 1,
+      },
     },
   });
 }

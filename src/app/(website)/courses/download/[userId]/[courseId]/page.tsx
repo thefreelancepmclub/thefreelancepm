@@ -1,4 +1,3 @@
-import TemplateDownloadbutton from "@/app/(website)/templates/download/[userId]/[templateId]/_components/TemplateDownloadbutton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,6 +9,7 @@ import { prisma } from "@/lib/prisma";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import CourseDownloadButton from "./_components/CourseDownloadButton";
 
 const Page = async ({
   params,
@@ -78,7 +78,7 @@ const Page = async ({
           </CardContent>
 
           <CardFooter className="flex flex-col gap-3 px-6 pb-6">
-            <TemplateDownloadbutton
+            <CourseDownloadButton
               file={data?.course.file ?? ""}
               title={data?.course?.title ?? ""}
             />

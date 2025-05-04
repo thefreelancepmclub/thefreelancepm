@@ -81,6 +81,7 @@ const Page = async ({
             <TemplateDownloadbutton
               file={data?.template.file ?? ""}
               title={data?.template?.title ?? ""}
+              templateId={data?.templateId ?? ""}
             />
             <Link href="/" className="w-full">
               <Button variant="outline" className="w-full">

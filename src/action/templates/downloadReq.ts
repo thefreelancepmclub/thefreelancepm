@@ -44,6 +44,7 @@ export async function templateDownload(templateId: string) {
   const isFreeUser = currentSubscription.tier === "free";
 
   if (isFreeTemplate && isFreeUser) {
+    await incrementDownloads(template.id);
     // Return file download link or stream file
     return {
       success: true,
@@ -61,6 +62,7 @@ export async function templateDownload(templateId: string) {
   });
 
   if (isAlreadyPurchased) {
+    await incrementDownloads(template.id);
     // Return file download link or stream file
     return {
       success: true,
@@ -113,4 +115,15 @@ export async function templateDownload(templateId: string) {
     success: false,
     message: "You don't have access to this template",
   };
+}
+
+export async function incrementDownloads(templateId: string) {
+  await prisma.template.update({
+    where: { id: templateId },
+    data: {
+      download: {
+        increment: 1,
+      },
+    },
+  });
 }
