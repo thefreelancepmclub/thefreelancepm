@@ -298,6 +298,7 @@ model UserPurchasedCourse {
   userId      String   @db.ObjectId
   courseId    String   @db.ObjectId
   purchasedAt DateTime @default(now())
+  isPaid      Boolean  @default(false)
 
   user   User   @relation(fields: [userId], references: [id])
   course Course @relation(fields: [courseId], references: [id])

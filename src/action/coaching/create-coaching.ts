@@ -9,7 +9,7 @@ import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
 import { DateTime } from "luxon";
 import { redirect } from "next/navigation";
 
-export type webhookFor = "subscription" | "coaching" | "template";
+export type webhookFor = "subscription" | "coaching" | "template" | "course";
 
 export async function createCoaching(data: CoachingSchemaType) {
   const cu = await auth();

@@ -1,13 +1,38 @@
+import { courseDownload } from "@/action/course/downloadReq";
+import { Button } from "@/components/ui/button";
+import { downloadFile } from "@/helper/downloadFile";
 import { cn, truncate } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { ChartNoAxesColumnIncreasing, Clock } from "lucide-react";
+import { useTransition } from "react";
+import { toast } from "sonner";
 
 interface CoursesCardProps {
   data: Course;
 }
 
 const CoursesCard = ({ data }: CoursesCardProps) => {
+  const [pending, startTransition] = useTransition();
   const desc = truncate(data.description, 117);
+
+  const handleDownload = () => {
+    startTransition(() => {
+      courseDownload(data.id).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        } else if (res.success && res.url) {
+          console.log(res);
+          toast.success(res.message);
+          window.location.href = res.url;
+        }
+
+        if (res.file) {
+          downloadFile(res.file, data.title);
+        }
+      });
+    });
+  };
   return (
     <div className="bg-white rounded-[10px] overflow-hidden shadow-sm  border-input border-[1px]">
       {/* Course Image Placeholder */}
@@ -61,9 +86,13 @@ const CoursesCard = ({ data }: CoursesCardProps) => {
           </div>
         </div>
 
-        <button className="bg-blue-600 text-white py-2 px-4 rounded text-sm font-medium hover:bg-blue-700 transition w-full">
-          View Course
-        </button>
+        <Button
+          className="bg-blue-600 text-white h-[40px] py-2 px-4 rounded text-sm font-medium hover:bg-blue-700 transition w-full"
+          onClick={handleDownload}
+          disabled={pending}
+        >
+          {pending ? "Downloading..." : "Download"}
+        </Button>
       </div>
     </div>
   );
