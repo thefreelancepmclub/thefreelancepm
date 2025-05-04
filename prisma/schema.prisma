@@ -241,6 +241,7 @@ model Job {
   url         String
   expiration  DateTime
   published   Boolean  @default(false)
+  applications String[] @db.ObjectId
 
   skills    String[]
   experienc ExperiencesType @default(entry_level)
