@@ -52,10 +52,17 @@ export function JobBoardTableContainer() {
   const itemsPerPage = 5;
 
   const { data, isLoading, isError, error } = useQuery<ApiResponse>({
-    queryKey: ["job", statusFilter, typeFilter, locationFilter, query],
+    queryKey: [
+      "job",
+      statusFilter,
+      typeFilter,
+      locationFilter,
+      query,
+      currentPage,
+    ],
     queryFn: () =>
       fetch(
-        `/api/dashboard/job?status=${statusFilter}&type=${typeFilter}&location=${locationFilter}&searchQuery=${query}`
+        `/api/dashboard/job?status=${statusFilter}&type=${typeFilter}&location=${locationFilter}&searchQuery=${query}&page=${currentPage}&limit=10`,
       ).then((res) => res.json()),
   });
 
@@ -120,7 +127,7 @@ export function JobBoardTableContainer() {
                 <TableCell>
                   <span
                     className={`rounded-full px-2 py-1 text-xs font-medium ${getStatusBadgeClass(
-                      job.published ? "Published" : "Draft"
+                      job.published ? "Published" : "Draft",
                     )}`}
                   >
                     {job.published ? "Published" : "Draft"}
@@ -131,7 +138,9 @@ export function JobBoardTableContainer() {
                     <div>{moment(job.expiration).format()}</div>
                   </div>
                 </TableCell>
-                <TableCell>{0}</TableCell>
+                <TableCell className="text-start">
+                  {job.applications.length}
+                </TableCell>
                 <TableCell className="text-right">
                   <JobBordTableAction job={job} />
                 </TableCell>
