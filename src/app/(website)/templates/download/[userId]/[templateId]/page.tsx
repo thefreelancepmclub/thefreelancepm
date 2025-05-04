@@ -55,7 +55,7 @@ const Page = async ({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Price:</span>
-                    <span className="font-medium">{data.template.price}</span>
+                    <span className="font-medium">${data.template.price}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Email:</span>
