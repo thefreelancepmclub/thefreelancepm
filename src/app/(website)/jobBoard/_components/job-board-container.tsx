@@ -51,7 +51,7 @@ const JobBoardContainer = () => {
           throw err;
         }),
     getNextPageParam: (lastPage) => {
-      const currentPage = lastPage?.meta?.page ?? 1;
+      const currentPage = lastPage?.meta?.currentPage ?? 1;
       const totalPages = lastPage?.meta?.totalPages ?? 1;
 
       return currentPage < totalPages ? currentPage + 1 : undefined;

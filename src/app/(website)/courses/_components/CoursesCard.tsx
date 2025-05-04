@@ -1,4 +1,4 @@
-import { truncate } from "@/lib/utils";
+import { cn, truncate } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { ChartNoAxesColumnIncreasing, Clock } from "lucide-react";
 
@@ -29,11 +29,31 @@ const CoursesCard = ({ data }: CoursesCardProps) => {
         <p className="text-sm text-gray-700 mb-4">{desc}</p>
 
         <div className="flex justify-between items-center my-[50px]">
-          <div className="flex items-center justify-center gap-1 px-2 py-1 rounded-full bg-[#DCFCE7]">
+          <div
+            className={cn(
+              "flex items-center justify-center gap-1 px-2 py-1 rounded-full ",
+              data.type === "Beginner"
+                ? "bg-[#DCFCE7]"
+                : data.type == "Intermediate"
+                  ? "bg-[#FEF9C3]"
+                  : "bg-[#FEE2E2]",
+            )}
+          >
             <p>
               <ChartNoAxesColumnIncreasing size={14} />
             </p>
-            <p className="text-xs text-[#166534]">{data.type}</p>
+            <p
+              className={cn(
+                "text-xs",
+                data.type === "Beginner"
+                  ? "text-[#166534]"
+                  : data.type === "Intermediate"
+                    ? "text-[#854D0E]"
+                    : "text-[#991B1B]",
+              )}
+            >
+              {data.type}
+            </p>
           </div>
           <div className="flex items-center text-xs text-gray-500">
             <Clock size={14} className="mr-1" />
