@@ -1,6 +1,9 @@
 "use client";
 
-import { incrementDownloads } from "@/action/templates/downloadReq";
+import {
+  decrementCourseRemaining,
+  incrementDownloads,
+} from "@/action/templates/downloadReq";
 import { Button } from "@/components/ui/button";
 import { downloadFile } from "@/helper/downloadFile";
 import { Download } from "lucide-react";
@@ -9,9 +12,18 @@ interface Props {
   file: string;
   title: string;
   templateId: string;
+  featureId: string;
+  templatePrice: number;
 }
-const TemplateDownloadbutton = ({ file, title, templateId }: Props) => {
+const TemplateDownloadbutton = ({
+  file,
+  title,
+  templateId,
+  featureId,
+  templatePrice,
+}: Props) => {
   const onDownload = async () => {
+    await decrementCourseRemaining(featureId, templatePrice);
     await incrementDownloads(templateId);
     downloadFile(file, title);
   };
