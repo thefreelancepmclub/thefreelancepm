@@ -1,18 +1,11 @@
 import { auth } from "@/auth";
-import { getCurrentSubscription } from "@/helper/subscription";
 import { redirect } from "next/navigation";
 import AccountInfo from "./_components/account_Info";
-import BillingHistory from "./_components/billing_History";
-import BillingInformation from "./_components/billing_Information";
 
 const page = async () => {
   const cu = await auth();
 
   if (!cu) redirect("/login");
-  const subscriptionData = await getCurrentSubscription(cu.user.id as string);
-
-  console.log("subscriptionData", subscriptionData);
-  console.log("total templates", subscriptionData?.getFeature("templates"));
 
   return (
     <div>
@@ -29,8 +22,8 @@ const page = async () => {
         <div>
           <div className="flex flex-col gap-5 mb-14">
             <AccountInfo />
-            <BillingInformation />
-            <BillingHistory />
+            {/* <BillingInformation /> */}
+            {/* <BillingHistory /> */}
           </div>
         </div>
       </div>

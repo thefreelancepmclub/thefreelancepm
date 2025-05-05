@@ -5,9 +5,9 @@ import { Feature, FeatureName } from "@prisma/client";
 
 // Map Stripe Subscription IDs to tier labels
 export const tierModel = {
-  [`${process.env.free_plan_id}`]: "free",
-  [`${process.env.pro_plan_id}`]: "pro",
-  [`${process.env.elite_plan_id}`]: "elite",
+  "68183cb81ba9897a815d627d": "free",
+  "68183ce51ba9897a815d627e": "pro",
+  "68183d161ba9897a815d627f": "elite",
 };
 
 export default async function getSubscriptionById(id: string) {
@@ -56,6 +56,10 @@ export async function getCurrentSubscription(userId: string) {
     subscription: currentSubscription.subscription,
   };
 }
+
+export type CurrentSubscriptionType = Awaited<
+  ReturnType<typeof getCurrentSubscription>
+>;
 
 export type CurrentSubscription = {
   isActive: boolean;

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Subscription } from "@prisma/client";
 import { Check, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 const tierOrder = {
@@ -27,7 +27,12 @@ export default function PricingCard({
   currentSubscription,
 }: PricingCardProps) {
   const [pending, startTransition] = useTransition();
+  const [hasMounted, setHasMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
   const isPurchased = currentSubscription?.subscriptionId === plan.id;
   const isExpired = currentSubscription?.isExpired;
@@ -51,6 +56,7 @@ export default function PricingCard({
     if (selectedRank > currentRank) return "Upgrade";
     if (selectedRank < currentRank) return "Downgrade";
 
+    // If same tier but not purchased (maybe expired)
     return "Choose Plan";
   };
 
@@ -103,14 +109,18 @@ export default function PricingCard({
         ))}
       </ul>
 
-      <Button
-        className={cn("mt-auto w-full bg-brand relative")}
-        onClick={onPurchase}
-        disabled={pending || isPurchased}
-      >
-        {getActionLabel()}
-        {pending && <Loader2 className="animate-spin ml-2 absolute right-3" />}
-      </Button>
+      {hasMounted && (
+        <Button
+          className={cn("mt-auto w-full bg-brand relative")}
+          onClick={onPurchase}
+          disabled={pending || isPurchased}
+        >
+          {getActionLabel()}
+          {pending && (
+            <Loader2 className="animate-spin ml-2 absolute right-3" />
+          )}
+        </Button>
+      )}
     </div>
   );
 }

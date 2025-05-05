@@ -1,15 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { Clock, Download, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -19,6 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Clock, Download } from "lucide-react";
+import { useState } from "react";
 
 const mockData = [
   {
@@ -53,13 +45,13 @@ const mockData = [
   },
 ];
 
-const statuses = ["All", "Active", "Cancelled", "Expired"];
-const plans = ["All", "Freelancer Lite", "Freelancer Pro"];
+// const statuses = ["All", "Active", "Cancelled", "Expired"];
+// const plans = ["All", "Freelancer Lite", "Freelancer Pro"];
 
 export default function BillingHistory() {
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("All");
-  const [plan, setPlan] = useState("All");
+  const [search] = useState("");
+  const [status] = useState("All");
+  const [plan] = useState("All");
   const [page, setPage] = useState(1);
   const pageSize = 10;
 
@@ -83,9 +75,9 @@ export default function BillingHistory() {
       </h2>
 
       {/* Filters */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-[232px] mb-8 border border-[#E5E7EB] rounded-lg p-6">
+      <div>
         {/* Search Input */}
-        <div className="relative w-full">
+        {/* <div className="relative w-full">
           <Search
             className="absolute z-10 left-3 top-2.5 text-[#595959]"
             size={18}
@@ -96,12 +88,12 @@ export default function BillingHistory() {
             onChange={(e) => setSearch(e.target.value)}
             className="pl-10 w-full"
           />
-        </div>
+        </div> */}
 
         {/* Filters + Search Button */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 w-full">
           {/* <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4 w-full lg:items-center"> */}
-          <Select value={status} onValueChange={setStatus}>
+          {/* <Select value={status} onValueChange={setStatus}>
             <SelectTrigger className="w-full sm:w-[160px]">
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
@@ -112,9 +104,9 @@ export default function BillingHistory() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
 
-          <Select value={plan} onValueChange={setPlan}>
+          {/* <Select value={plan} onValueChange={setPlan}>
             <SelectTrigger className="w-full sm:w-[180px]">
               <SelectValue placeholder="Select Plan" />
             </SelectTrigger>
@@ -125,13 +117,13 @@ export default function BillingHistory() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
           {/* </div> */}
 
           {/* Button aligned right on large screens */}
-          <Button className="bg-[#004AAD] hover:bg-[#003b8e] w-full sm:w-auto lg:w-auto">
+          {/* <Button className="bg-[#004AAD] hover:bg-[#003b8e] w-full sm:w-auto lg:w-auto">
             Search
-          </Button>
+          </Button> */}
         </div>
       </div>
 
