@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -135,85 +136,91 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
-      <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
+    <>
+      <Header subtitile="Discover Your Project Management Path">
+        Find Your Perfect{" "}
+        <span className="text-[#FFA400] underline">PM Certification</span>Path
+      </Header>
+      <div className="container mx-auto px-4 py-8 ">
+        <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
+        <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
 
-      <div className="space-y-8">
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-        {currentQuiz.questions.map((question: any, index: number) => (
-          <div key={index} className="bg-blue-50 rounded-lg p-6">
-            <h2 className="font-semibold mb-4">
-              Question {index + 1}: {question.question}
-            </h2>
+        <div className="space-y-8">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {currentQuiz.questions.map((question: any, index: number) => (
+            <div key={index} className="bg-blue-50 rounded-lg p-6">
+              <h2 className="font-semibold mb-4">
+                Question {index + 1}: {question.question}
+              </h2>
 
-            {question.multiSelect ? (
-              <div className="space-y-3">
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {question.options.map((option: any) => (
-                  <div
-                    key={option.value}
-                    className="flex items-start space-x-2"
-                  >
-                    <Checkbox
-                      id={`q${index}-${option.value}`}
-                      checked={(multiSelectAnswers[index] || []).includes(
-                        option.value,
-                      )}
-                      onCheckedChange={() =>
-                        handleMultiSelectAnswerToggle(index, option.value)
-                      }
-                      className="mt-1"
-                    />
-                    <Label
-                      htmlFor={`q${index}-${option.value}`}
-                      className="cursor-pointer"
+              {question.multiSelect ? (
+                <div className="space-y-3">
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {question.options.map((option: any) => (
+                    <div
+                      key={option.value}
+                      className="flex items-start space-x-2"
                     >
-                      {option.text}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <RadioGroup
-                value={answers[index] || ""}
-                onValueChange={(value) => handleAnswerSelect(index, value)}
-                className="space-y-3"
-              >
-                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                {question.options.map((option: any) => (
-                  <div
-                    key={option.value}
-                    className="flex items-start space-x-2"
-                  >
-                    <RadioGroupItem
-                      value={option.value}
-                      id={`q${index}-${option.value}`}
-                      className="mt-1"
-                    />
-                    <Label
-                      htmlFor={`q${index}-${option.value}`}
-                      className="cursor-pointer"
+                      <Checkbox
+                        id={`q${index}-${option.value}`}
+                        checked={(multiSelectAnswers[index] || []).includes(
+                          option.value,
+                        )}
+                        onCheckedChange={() =>
+                          handleMultiSelectAnswerToggle(index, option.value)
+                        }
+                        className="mt-1"
+                      />
+                      <Label
+                        htmlFor={`q${index}-${option.value}`}
+                        className="cursor-pointer"
+                      >
+                        {option.text}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <RadioGroup
+                  value={answers[index] || ""}
+                  onValueChange={(value) => handleAnswerSelect(index, value)}
+                  className="space-y-3"
+                >
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  {question.options.map((option: any) => (
+                    <div
+                      key={option.value}
+                      className="flex items-start space-x-2"
                     >
-                      {option.text}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            )}
-          </div>
-        ))}
-      </div>
+                      <RadioGroupItem
+                        value={option.value}
+                        id={`q${index}-${option.value}`}
+                        className="mt-1"
+                      />
+                      <Label
+                        htmlFor={`q${index}-${option.value}`}
+                        className="cursor-pointer"
+                      >
+                        {option.text}
+                      </Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+            </div>
+          ))}
+        </div>
 
-      <div className="mt-8 flex justify-center">
-        <Button
-          onClick={handleSubmit}
-          disabled={!allQuestionsAnswered}
-          className="bg-blue-600 hover:bg-blue-700 px-8"
-        >
-          Submit
-        </Button>
+        <div className="mt-8 flex justify-center">
+          <Button
+            onClick={handleSubmit}
+            disabled={!allQuestionsAnswered}
+            className="bg-blue-600 hover:bg-blue-700 px-8"
+          >
+            Submit
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
