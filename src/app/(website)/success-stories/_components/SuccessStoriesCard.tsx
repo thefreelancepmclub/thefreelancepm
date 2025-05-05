@@ -1,15 +1,20 @@
 "use client";
+import { Testmonial } from "@prisma/client";
 import { Rating, Star } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import Image from "next/image";
 
-const SuccessStoriesCard = () => {
+interface Props {
+  data: Testmonial;
+}
+
+const SuccessStoriesCard = ({ data }: Props) => {
   return (
     <section className="w-[390px] p-5 rounded-xl felx items-center">
       <div className="flex gap-4">
         <Rating
           style={{ maxWidth: 200 }}
-          value={2}
+          value={data.rating}
           itemStyles={{
             itemShapes: Star,
             itemStrokeWidth: 2,
@@ -22,9 +27,7 @@ const SuccessStoriesCard = () => {
         />
       </div>
       <p className="font-normal leading-[120%] text-[18px] pt-[15px] pb-[32px]">
-        The Freelance PM Club templates saved me countless hours of preparation.
-        Within three months of joining, I landed my first major client and
-        haven&apos;t looked back since.
+        {data.message}
       </p>
       <div className="flex items-center gap-x-[15px]">
         <div className="h-[60px] w-[60px] object-cover relative">
@@ -37,9 +40,9 @@ const SuccessStoriesCard = () => {
         </div>
         <div>
           <h4 className="text-[#004AAD] text-[18px] font-medium leading-[120%]">
-            Sarah K.
+            {data.fullName}
           </h4>
-          <p>Digital Project Manager</p>
+          <p>{data.jobTitle}</p>
         </div>
       </div>
     </section>

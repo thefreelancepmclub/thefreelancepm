@@ -23,7 +23,7 @@ model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?         @unique
-  emailVerified DateTime?
+  emailVerified DateTime?       @default(now())
   image         String?
   phone         String?
   role          Role            @default(user)
@@ -148,7 +148,7 @@ enum SubscriptionType {
 // New model to track user subscriptions and feature usage
 model UserSubscription {
   id              String             @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String             @db.ObjectId 
+  userId          String             @db.ObjectId
   subscriptionId  String             @db.ObjectId
   stripeSessionId String? // Store Stripe session ID for reference
   status          SubscriptionStatus @default(active)
@@ -160,9 +160,7 @@ model UserSubscription {
   user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   subscription    Subscription       @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
 
-
-@@unique([userId])
- 
+  @@unique([userId])
 }
 
 model Feature {
@@ -214,7 +212,7 @@ model UserPurchasedTemplate {
   userId      String   @db.ObjectId
   template    Template @relation(fields: [templateId], references: [id])
   templateId  String   @db.ObjectId
-  isPaid    Boolean  @default(false)
+  isPaid      Boolean  @default(false)
   purchasedAt DateTime @default(now())
 }
 
@@ -232,16 +230,16 @@ enum ExperiencesType {
 }
 
 model Job {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  company     String
-  type        JobType  @default(full_time)
-  location    String
-  salary      Int
-  description String
-  url         String
-  expiration  DateTime
-  published   Boolean  @default(false)
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  company      String
+  type         JobType  @default(full_time)
+  location     String
+  salary       Int
+  description  String
+  url          String
+  expiration   DateTime
+  published    Boolean  @default(false)
   applications String[] @db.ObjectId
 
   skills    String[]
@@ -278,7 +276,7 @@ model Course {
   instructor  String
   description String
   category    TemplateType @default(free)
-  type        CourseType  @default(Beginner)
+  type        CourseType   @default(Beginner)
   file        String
   price       Int?
   plan        String       @db.ObjectId

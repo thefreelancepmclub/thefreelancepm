@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  decrementCourseRemaining,
+  decrementTemplateRemaining,
   incrementDownloads,
 } from "@/action/templates/downloadReq";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ const TemplateDownloadbutton = ({
   templatePrice,
 }: Props) => {
   const onDownload = async () => {
-    await decrementCourseRemaining(featureId, templatePrice);
+    await decrementTemplateRemaining(featureId, templatePrice);
     await incrementDownloads(templateId);
     downloadFile(file, title);
   };
