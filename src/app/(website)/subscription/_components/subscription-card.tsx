@@ -35,8 +35,6 @@ export default function PricingCard({
   const getActionLabel = () => {
     if (!currentSubscription) return "Choose Plan";
 
-    console.log(currentSubscription);
-
     const currentTier = tierModel[
       currentSubscription.subscriptionId as keyof typeof tierModel
     ] as keyof typeof tierOrder;

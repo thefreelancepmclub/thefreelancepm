@@ -1,13 +1,13 @@
 "use sever";
 
 import { prisma } from "@/lib/prisma";
-import { FeatureName } from "@prisma/client";
+import { Feature, FeatureName } from "@prisma/client";
 
 // Map Stripe Subscription IDs to tier labels
 export const tierModel = {
-  "680e40a854471484d23cd2af": "free",
-  "680e40f354471484d23cd2b0": "pro",
-  "680e413c54471484d23cd2b1": "elite",
+  [`${process.env.free_plan_id}`]: "free",
+  [`${process.env.pro_plan_id}`]: "pro",
+  [`${process.env.elite_plan_id}`]: "elite",
 };
 
 export default async function getSubscriptionById(id: string) {
@@ -56,3 +56,21 @@ export async function getCurrentSubscription(userId: string) {
     subscription: currentSubscription.subscription,
   };
 }
+
+export type CurrentSubscription = {
+  isActive: boolean;
+  tier: string; // or define an enum if you have fixed tiers
+  subscriptionId: string | null;
+  startDate: Date | null;
+  endDate: Date | null;
+  features: Feature[];
+  getFeature: (name: FeatureName) => Feature | null;
+  subscription: {
+    id: string;
+    name: string;
+    price: number;
+    interval: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+} | null;

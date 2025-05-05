@@ -1,9 +1,19 @@
-import React from "react";
+import { auth } from "@/auth";
+import { getCurrentSubscription } from "@/helper/subscription";
+import { redirect } from "next/navigation";
 import AccountInfo from "./_components/account_Info";
-import BillingInformation from "./_components/billing_Information";
 import BillingHistory from "./_components/billing_History";
+import BillingInformation from "./_components/billing_Information";
 
-const page = () => {
+const page = async () => {
+  const cu = await auth();
+
+  if (!cu) redirect("/login");
+  const subscriptionData = await getCurrentSubscription(cu.user.id as string);
+
+  console.log("subscriptionData", subscriptionData);
+  console.log("total templates", subscriptionData?.getFeature("templates"));
+
   return (
     <div>
       <div className="mt-32 container">

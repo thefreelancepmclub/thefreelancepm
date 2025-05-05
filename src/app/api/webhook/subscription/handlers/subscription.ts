@@ -16,7 +16,7 @@ export async function handleSubscriptionCheckout(
   // Define features per plan
   const features = [];
   switch (planId) {
-    case "680e40a854471484d23cd2af": // Free
+    case process.env.free_plan_id: // Free
       features.push(
         {
           name: "templates",
@@ -28,7 +28,7 @@ export async function handleSubscriptionCheckout(
         { name: "courses", total: 1, remaining: 1, value: 5000, enabled: null },
       );
       break;
-    case "680e40f354471484d23cd2b0": // Pro
+    case process.env.pro_plan_id: // Pro
       features.push(
         {
           name: "templates",
@@ -68,7 +68,7 @@ export async function handleSubscriptionCheckout(
         },
       );
       break;
-    case "680e413c54471484d23cd2b1": // Elite
+    case process.env.elite_plan_id: // Elite
       features.push(
         {
           name: "templates",

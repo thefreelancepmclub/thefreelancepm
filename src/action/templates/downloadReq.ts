@@ -70,7 +70,9 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  if (feature.remaining !== null && feature.remaining <= 10) {
+  console.log("Feature", feature);
+
+  if (feature.remaining !== null && feature.remaining === 0) {
     return {
       success: false,
       message: "You have reached the limit of templates you can download",

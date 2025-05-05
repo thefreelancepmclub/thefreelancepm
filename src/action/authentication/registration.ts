@@ -53,8 +53,8 @@ export async function registeruser(data: SignUpFormValues) {
     );
 
     // send email to the student
-    const email = await resend.emails.send({
-      from: "FreelanceClub PM <monirhrabby.com>",
+    await resend.emails.send({
+      from: "FreelanceClub PM <monir@monirhrabby.com>",
       to: [newUser.email as string],
       subject: "Please verify your email address",
       react: EmailVerification({
@@ -62,8 +62,6 @@ export async function registeruser(data: SignUpFormValues) {
         verificationUrl: `${process.env.AUTH_URL}/email-verification/${newUser.id}`,
       }),
     });
-
-    console.log({ email });
 
     return {
       success: true,
