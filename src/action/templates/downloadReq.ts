@@ -70,8 +70,6 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  console.log("Feature", feature);
-
   if (feature.remaining !== null && feature.remaining === 0) {
     return {
       success: false,
@@ -89,7 +87,7 @@ export async function templateDownload(templateId: string) {
     });
     await incrementDownloads(template.id);
 
-    await decrementCourseRemaining(feature.id, template.price ?? 0);
+    await decrementTemplateRemaining(feature.id, template.price ?? 0);
 
     // Return file download link or stream file
     return {
@@ -156,7 +154,7 @@ export async function incrementDownloads(templateId: string) {
   });
 }
 
-export async function decrementCourseRemaining(id: string, price: number) {
+export async function decrementTemplateRemaining(id: string, price: number) {
   await prisma.feature.update({
     where: {
       id: id,

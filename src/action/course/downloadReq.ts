@@ -40,17 +40,6 @@ export async function courseDownload(courseId: string) {
     };
   }
 
-  const isFreeCourse = course.category === "free";
-  const isFreeUser = currentSubscription.tier === "free";
-
-  if (isFreeCourse && isFreeUser) {
-    return {
-      success: true,
-      message: "File download Link",
-      file: course.file, // Assuming this is a URL or path to the file
-    };
-  }
-
   const isAlreadyPurchased = await prisma.userPurchasedCourse.findFirst({
     where: {
       userId: cu.user.id as string,
@@ -64,6 +53,34 @@ export async function courseDownload(courseId: string) {
       success: true,
       message: "File download Link",
       file: course.file,
+    };
+  }
+
+  const isFreeCourse = course.category === "free";
+  const isFreeUser = currentSubscription.tier === "free";
+
+  const feature = currentSubscription.getFeature("courses");
+
+  if (!feature) {
+    return {
+      success: false,
+      message: "No feature found",
+    };
+  }
+
+  if (feature.remaining !== null && feature.remaining === 0) {
+    return {
+      success: false,
+      message: "You have reached the limit of templates you can download",
+    };
+  }
+
+  if (isFreeCourse && isFreeUser) {
+    await decrementCourseRemaining(feature.id, course.price ?? 0);
+    return {
+      success: true,
+      message: "File download Link",
+      file: course.file, // Assuming this is a URL or path to the file
     };
   }
 
@@ -111,4 +128,20 @@ export async function courseDownload(courseId: string) {
     success: false,
     message: "You don't have access to this course",
   };
+}
+
+export async function decrementCourseRemaining(id: string, price: number) {
+  await prisma.feature.update({
+    where: {
+      id: id,
+    },
+    data: {
+      remaining: {
+        decrement: 1,
+      },
+      value: {
+        decrement: price,
+      },
+    },
+  });
 }
