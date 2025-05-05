@@ -5,6 +5,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import { getCurrentSubscription } from "@/helper/subscription";
 import { prisma } from "@/lib/prisma";
 import { ArrowLeft, CheckCircle } from "lucide-react";
 import Link from "next/link";
@@ -29,7 +30,11 @@ const Page = async ({
     },
   });
 
+  const currentSubscription = await getCurrentSubscription(userId);
+  if (!currentSubscription) notFound();
   if (!data) notFound();
+
+  const feature = currentSubscription.getFeature("templates");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -82,6 +87,8 @@ const Page = async ({
               file={data?.template.file ?? ""}
               title={data?.template?.title ?? ""}
               templateId={data?.templateId ?? ""}
+              featureId={feature?.id ?? ""}
+              templatePrice={data?.template.price ?? 0}
             />
             <Link href="/" className="w-full">
               <Button variant="outline" className="w-full">

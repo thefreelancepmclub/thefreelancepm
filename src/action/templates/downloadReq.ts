@@ -40,19 +40,6 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  const isFreeTemplate = template.category === "free";
-  const isFreeUser = currentSubscription.tier === "free";
-
-  if (isFreeTemplate && isFreeUser) {
-    await incrementDownloads(template.id);
-    // Return file download link or stream file
-    return {
-      success: true,
-      message: "File download Link",
-      file: template.file, // Assuming this is a URL or path to the file
-    };
-  }
-
   const isAlreadyPurchased = await prisma.userPurchasedTemplate.findFirst({
     where: {
       userId: cu.user.id as string,
@@ -63,6 +50,45 @@ export async function templateDownload(templateId: string) {
 
   if (isAlreadyPurchased) {
     await incrementDownloads(template.id);
+    // Return file download link or stream file
+    return {
+      success: true,
+      message: "File download Link",
+      file: template.file, // Assuming this is a URL or path to the file
+    };
+  }
+
+  const isFreeTemplate = template.category === "free";
+  const isFreeUser = currentSubscription.tier === "free";
+
+  const feature = currentSubscription.getFeature("templates");
+
+  if (!feature) {
+    return {
+      success: false,
+      message: "No feature found",
+    };
+  }
+
+  if (feature.remaining !== null && feature.remaining <= 10) {
+    return {
+      success: false,
+      message: "You have reached the limit of templates you can download",
+    };
+  }
+
+  if (isFreeTemplate && isFreeUser) {
+    await prisma.userPurchasedTemplate.create({
+      data: {
+        userId: cu.user.id as string,
+        templateId: template.id,
+        isPaid: true,
+      },
+    });
+    await incrementDownloads(template.id);
+
+    await decrementCourseRemaining(feature.id, template.price ?? 0);
+
     // Return file download link or stream file
     return {
       success: true,
@@ -123,6 +149,22 @@ export async function incrementDownloads(templateId: string) {
     data: {
       download: {
         increment: 1,
+      },
+    },
+  });
+}
+
+export async function decrementCourseRemaining(id: string, price: number) {
+  await prisma.feature.update({
+    where: {
+      id: id,
+    },
+    data: {
+      remaining: {
+        decrement: 1,
+      },
+      value: {
+        decrement: price,
       },
     },
   });
