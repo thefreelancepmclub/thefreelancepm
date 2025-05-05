@@ -71,11 +71,21 @@ export async function courseDownload(courseId: string) {
   if (feature.remaining !== null && feature.remaining === 0) {
     return {
       success: false,
-      message: "You have reached the limit of templates you can download",
+      message: "You have reached the limit of courses you can download",
     };
   }
 
   if (isFreeCourse && isFreeUser) {
+    await prisma.course.update({
+      where: {
+        id: course.id,
+      },
+      data: {
+        enrolled: {
+          increment: 1,
+        },
+      },
+    });
     await decrementCourseRemaining(feature.id, course.price ?? 0);
     return {
       success: true,
