@@ -200,27 +200,149 @@ export const quizData = [
     id: "leadership-style",
     title: "How Do You Lead? Discover Your Project Management Style!",
     description:
-      "This quiz is designed to help project managers identify their leadership style match.",
+      "This quiz is designed to help project managers identify their leadership approach.",
     questions: [
       {
-        question: "When making decisions, you typically:",
+        question: "How do you prefer to make decisions?",
         options: [
           {
             value: "A",
-            text: "Gather all the facts and make a logical choice",
+            text: "I set a clear direction and expect my team to follow.",
           },
           {
             value: "B",
-            text: "Consider the impact on people and relationships",
+            text: "I involve my team in discussions and value their input.",
           },
-          { value: "C", text: "Make quick decisions based on experience" },
           {
-            value: "D",
-            text: "Involve the team in collaborative decision-making",
+            value: "C",
+            text: "I inspire my team to think big and push boundaries.",
+          },
+          { value: "D", text: "I focus on supporting and empowering my team." },
+          {
+            value: "E",
+            text: "I trust my team to make decisions on their own.",
           },
         ],
       },
-      // More questions would be added here
+      {
+        question: "How do you handle team challenges?",
+        options: [
+          {
+            value: "A",
+            text: "I take control and implement a structured plan to resolve the issue.",
+          },
+          {
+            value: "B",
+            text: "I gather input from my team to find the best solution collaboratively.",
+          },
+          {
+            value: "C",
+            text: "I motivate my team to think outside the box and push through obstacles.",
+          },
+          {
+            value: "D",
+            text: "I ensure my team has what they need to succeed, offering guidance and support.",
+          },
+          {
+            value: "E",
+            text: "I step back and let my team handle it, only intervening when absolutely necessary.",
+          },
+        ],
+      },
+      {
+        question: "What best describes your communication style?",
+        options: [
+          {
+            value: "A",
+            text: "Direct and clear—I set expectations and ensure alignment.",
+          },
+          {
+            value: "B",
+            text: "Open and inclusive—I encourage discussions and brainstorming.",
+          },
+          {
+            value: "C",
+            text: "Inspirational and forward-thinking—I get my team excited about the vision.",
+          },
+          {
+            value: "D",
+            text: "Supportive and empathetic—I focus on listening and guiding my team.",
+          },
+          {
+            value: "E",
+            text: "Hands-off—I let my team communicate freely and step in when needed.",
+          },
+        ],
+      },
+      {
+        question: "How do you motivate your team?",
+        options: [
+          {
+            value: "A",
+            text: "By providing a strong vision and structured goals.",
+          },
+          {
+            value: "B",
+            text: "By fostering collaboration and valuing their ideas.",
+          },
+          {
+            value: "C",
+            text: "By inspiring them to achieve more than they thought possible.",
+          },
+          {
+            value: "D",
+            text: "By prioritizing their well-being and personal growth.",
+          },
+          {
+            value: "E",
+            text: "By giving them freedom to work how they see fit.",
+          },
+        ],
+      },
+      {
+        question: "What is your biggest leadership strength?",
+        options: [
+          {
+            value: "A",
+            text: "Providing clear direction and ensuring efficiency.",
+          },
+          { value: "B", text: "Encouraging teamwork and inclusivity." },
+          {
+            value: "C",
+            text: "Inspiring innovation and pushing for excellence.",
+          },
+          {
+            value: "D",
+            text: "Building strong relationships and trust within my team.",
+          },
+          {
+            value: "E",
+            text: "Allowing my team full autonomy and flexibility.",
+          },
+        ],
+      },
+      {
+        question: "What is your biggest leadership challenge?",
+        options: [
+          { value: "A", text: "Sometimes I can be too rigid and controlling." },
+          {
+            value: "B",
+            text: "Decision-making can take too long with too many opinions.",
+          },
+          {
+            value: "C",
+            text: "I set high expectations that can sometimes overwhelm my team.",
+          },
+          {
+            value: "D",
+            text: "I prioritize my team's needs so much that I may not take charge when needed.",
+          },
+          {
+            value: "E",
+            text: "My hands-off approach can sometimes lead to a lack of structure.",
+          },
+        ],
+      },
     ],
   },
   {

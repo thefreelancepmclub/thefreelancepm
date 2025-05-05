@@ -59,8 +59,17 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
       }
     });
 
+    // Determine the quiz type
+    const quizType = quizId === "leadership-style" ? "leadership" : "role";
+
+    // For leadership quiz, we need to pass the counts to handle special cases
+    const queryParams =
+      quizType === "leadership"
+        ? `role=${mostFrequentAnswer}&type=${quizType}&counts=${encodeURIComponent(JSON.stringify(answerCounts))}`
+        : `role=${mostFrequentAnswer}&type=${quizType}`;
+
     // Navigate to results page with the most frequent answer
-    router.push(`/quizzes/results?role=${mostFrequentAnswer}`);
+    router.push(`/quizzes/results?${queryParams}`);
   };
 
   // Check if all questions have been answered
@@ -73,7 +82,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
         Find Your Perfect{" "}
         <span className="text-[#FFA400] underline">PM Certification</span>Path
       </Header>
-      <div className="container mx-auto px-4 py-8 w-full mt-[50px]">
+      <div className="container mx-auto px-4 py-8  mt-[50px]">
         <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
         <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
 
