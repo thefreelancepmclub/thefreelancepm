@@ -1,6 +1,12 @@
+import { prisma } from "@/lib/prisma";
 import SuccessStoriesCard from "./_components/SuccessStoriesCard";
 
-const page = () => {
+const page = async () => {
+  const testmonial = await prisma.testmonial.findMany({
+    where: {
+      active: true,
+    },
+  });
   return (
     <main className="py-12">
       <section className="container mx-auto">
@@ -17,9 +23,9 @@ const page = () => {
           </p>
         </div>
         <div className="grid grid-cols-3 py-[60px]">
-          <SuccessStoriesCard />
-          <SuccessStoriesCard />
-          <SuccessStoriesCard />
+          {testmonial.map((item) => (
+            <SuccessStoriesCard key={item.id} data={item} />
+          ))}
         </div>
       </section>
     </main>

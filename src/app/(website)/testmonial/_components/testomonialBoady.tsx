@@ -1,7 +1,12 @@
-import React from "react";
-import { TestimonialCard } from "../testomonial_card";
+import { prisma } from "@/lib/prisma";
+import TestimonialCard from "../testomonial_card";
 
-const TestomonialBoady = () => {
+const TestomonialBoady = async () => {
+  const testmonial = await prisma.testmonial.findMany({
+    where: {
+      active: true,
+    },
+  });
   return (
     <div className="container mx-auto mt-7  ">
       <div className="mb-16">
@@ -17,9 +22,8 @@ const TestomonialBoady = () => {
         </p>
       </div>
       <div className="mb-20">
-        <TestimonialCard/>
+        <TestimonialCard data={testmonial} />
       </div>
-      <div></div>
     </div>
   );
 };
