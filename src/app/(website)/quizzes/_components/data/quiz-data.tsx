@@ -353,15 +353,333 @@ export const quizData = [
       "This quiz ensures aspiring and current PMs can find the right industry based on their interests and skills.",
     questions: [
       {
-        question: "Which of these topics interests you the most?",
+        question: "What type of work environment do you thrive in?",
         options: [
-          { value: "A", text: "Technology and innovation" },
-          { value: "B", text: "Healthcare and wellbeing" },
-          { value: "C", text: "Construction and infrastructure" },
-          { value: "D", text: "Creative arts and entertainment" },
+          { value: "A", text: "Fast-paced, innovative, and ever-changing" },
+          { value: "B", text: "Structured and process-driven" },
+          { value: "C", text: "Creative and collaborative" },
+          { value: "D", text: "Hands-on and practical" },
+          { value: "E", text: "Mission-driven and people-focused" },
         ],
       },
-      // More questions would be added here
+      {
+        question: "What excites you the most about project management?",
+        options: [
+          {
+            value: "A",
+            text: "Using technology and automation to improve workflows",
+          },
+          { value: "B", text: "Helping people and improving lives" },
+          {
+            value: "C",
+            text: "Managing budgets, investments, and financial risks",
+          },
+          {
+            value: "D",
+            text: "Overseeing large-scale projects and construction",
+          },
+          {
+            value: "E",
+            text: "Creating compelling campaigns and branding strategies",
+          },
+        ],
+      },
+      {
+        question: "How do you prefer to work with teams?",
+        options: [
+          { value: "A", text: "Leading teams in high-tech environments" },
+          {
+            value: "B",
+            text: "Supporting frontline workers with essential projects",
+          },
+          { value: "C", text: "Coordinating across global financial teams" },
+          { value: "D", text: "Organizing logistics and supply chains" },
+          {
+            value: "E",
+            text: "Engaging audiences through storytelling and marketing",
+          },
+        ],
+      },
+      {
+        question: "Which of these topics interests you the most?",
+        options: [
+          {
+            value: "A",
+            text: "Artificial Intelligence and software development",
+          },
+          { value: "B", text: "Medical breakthroughs and patient care" },
+          {
+            value: "C",
+            text: "Stock markets, banking, and investment strategies",
+          },
+          {
+            value: "D",
+            text: "Civil engineering and large-scale infrastructure",
+          },
+          {
+            value: "E",
+            text: "Digital media, advertising, and social engagement",
+          },
+        ],
+      },
+      {
+        question: "What is your problem-solving style?",
+        options: [
+          { value: "A", text: "I leverage data and technology for efficiency" },
+          {
+            value: "B",
+            text: "I focus on empathy and people-driven solutions",
+          },
+          {
+            value: "C",
+            text: "I use analytical thinking and financial forecasting",
+          },
+          {
+            value: "D",
+            text: "I apply hands-on approaches and real-world applications",
+          },
+          {
+            value: "E",
+            text: "I think outside the box with creative solutions",
+          },
+        ],
+      },
+      {
+        question: "What is your ideal work setting?",
+        options: [
+          {
+            value: "A",
+            text: "A modern office or remote work with cutting-edge technology",
+          },
+          { value: "B", text: "Hospitals, clinics, or public health spaces" },
+          { value: "C", text: "A corporate setting with a financial focus" },
+          {
+            value: "D",
+            text: "Construction sites, factories, or engineering spaces",
+          },
+          {
+            value: "E",
+            text: "A marketing agency, production studio, or creative workspace",
+          },
+        ],
+      },
+      {
+        question: "How do you handle risks in projects?",
+        options: [
+          {
+            value: "A",
+            text: "Through predictive analytics and cybersecurity measures",
+          },
+          {
+            value: "B",
+            text: "By ensuring compliance with health and safety regulations",
+          },
+          {
+            value: "C",
+            text: "By analyzing market trends and financial risks",
+          },
+          {
+            value: "D",
+            text: "By prioritizing structural integrity and engineering standards",
+          },
+          {
+            value: "E",
+            text: "By adapting quickly to changing consumer trends",
+          },
+        ],
+      },
+      {
+        question: "Which of these hobbies do you enjoy the most?",
+        options: [
+          { value: "A", text: "Coding, gaming, or exploring AI tools" },
+          { value: "B", text: "Volunteering at health organizations" },
+          { value: "C", text: "Managing personal investments or budgeting" },
+          { value: "D", text: "DIY projects and home renovations" },
+          { value: "E", text: "Content creation, branding, or event planning" },
+        ],
+      },
+      {
+        question:
+          "What type of clients or stakeholders do you want to work with?",
+        options: [
+          { value: "A", text: "Tech startups and software engineers" },
+          { value: "B", text: "Doctors, nurses, and healthcare professionals" },
+          { value: "C", text: "Banking executives and investment firms" },
+          { value: "D", text: "Construction firms and real estate developers" },
+          { value: "E", text: "Creative agencies and marketing professionals" },
+        ],
+      },
+      {
+        question: "What's your approach to learning and growth?",
+        options: [
+          {
+            value: "A",
+            text: "Constantly keeping up with emerging technology trends",
+          },
+          {
+            value: "B",
+            text: "Studying human health and medical advancements",
+          },
+          { value: "C", text: "Tracking economic and financial data" },
+          {
+            value: "D",
+            text: "Learning practical skills through real-world applications",
+          },
+          {
+            value: "E",
+            text: "Experimenting with new storytelling and branding methods",
+          },
+        ],
+      },
+      {
+        question: "What kind of challenges do you enjoy solving?",
+        options: [
+          {
+            value: "A",
+            text: "How to make processes more efficient with technology",
+          },
+          {
+            value: "B",
+            text: "How to improve patient care and healthcare systems",
+          },
+          {
+            value: "C",
+            text: "How to maximize financial growth and minimize risks",
+          },
+          {
+            value: "D",
+            text: "How to build better infrastructure and engineering solutions",
+          },
+          { value: "E", text: "How to create engaging marketing campaigns" },
+        ],
+      },
+      {
+        question: "Which phrase best describes you?",
+        options: [
+          { value: "A", text: "Tech-savvy and always ahead of the curve" },
+          { value: "B", text: "Compassionate and driven to help others" },
+          { value: "C", text: "Financially strategic and business-minded" },
+          { value: "D", text: "Hands-on and detail-oriented" },
+          { value: "E", text: "Creative and a natural storyteller" },
+        ],
+      },
+      {
+        question:
+          "If you had to pick a career outside of project management, which would it be?",
+        options: [
+          { value: "A", text: "Software engineer or cybersecurity expert" },
+          { value: "B", text: "Doctor, nurse, or public health specialist" },
+          { value: "C", text: "Financial analyst or investment banker" },
+          { value: "D", text: "Architect, contractor, or supply chain expert" },
+          { value: "E", text: "Marketing director or content creator" },
+        ],
+      },
+      {
+        question: "What impact do you want your work to have?",
+        options: [
+          { value: "A", text: "Driving innovation and digital transformation" },
+          { value: "B", text: "Saving lives and improving healthcare systems" },
+          { value: "C", text: "Strengthening economies and financial markets" },
+          { value: "D", text: "Building the physical world around us" },
+          {
+            value: "E",
+            text: "Shaping brand identities and customer experiences",
+          },
+        ],
+      },
+      {
+        question: "What's your ideal pace of work?",
+        options: [
+          { value: "A", text: "Fast-moving and tech-driven" },
+          {
+            value: "B",
+            text: "Methodical with a focus on people's well-being",
+          },
+          { value: "C", text: "Highly analytical with data-driven strategies" },
+          {
+            value: "D",
+            text: "Structured but hands-on with physical outcomes",
+          },
+          { value: "E", text: "Fast-paced with creativity and storytelling" },
+        ],
+      },
+      {
+        question: "How do you define success in your career?",
+        options: [
+          {
+            value: "A",
+            text: "Making an impact with new technology and efficiency",
+          },
+          {
+            value: "B",
+            text: "Improving lives and making a social difference",
+          },
+          {
+            value: "C",
+            text: "Growing wealth and creating financial security",
+          },
+          { value: "D", text: "Seeing real-world projects come to life" },
+          { value: "E", text: "Building a brand and influencing audiences" },
+        ],
+      },
+      {
+        question: "If you could work for any company, which would it be?",
+        options: [
+          { value: "A", text: "Google, Microsoft, or Amazon (Tech)" },
+          { value: "B", text: "Mayo Clinic, WHO, or CDC (Healthcare)" },
+          { value: "C", text: "Goldman Sachs, JPMorgan, or PayPal (Finance)" },
+          {
+            value: "D",
+            text: "Tesla, Bechtel, or Caterpillar (Engineering/Manufacturing)",
+          },
+          { value: "E", text: "Nike, Disney, or Ogilvy (Marketing & Media)" },
+        ],
+      },
+      {
+        question: "What kind of projects excite you?",
+        options: [
+          { value: "A", text: "Developing cutting-edge apps and AI solutions" },
+          {
+            value: "B",
+            text: "Rolling out public health initiatives and medical programs",
+          },
+          { value: "C", text: "Managing investments and risk portfolios" },
+          {
+            value: "D",
+            text: "Overseeing large-scale construction and infrastructure projects",
+          },
+          {
+            value: "E",
+            text: "Creating viral advertising and entertainment content",
+          },
+        ],
+      },
+      {
+        question: "What's your favorite type of challenge?",
+        options: [
+          { value: "A", text: "Solving complex tech problems" },
+          {
+            value: "B",
+            text: "Navigating healthcare regulations and policies",
+          },
+          { value: "C", text: "Managing economic trends and financial risks" },
+          {
+            value: "D",
+            text: "Overcoming engineering and logistical barriers",
+          },
+          { value: "E", text: "Crafting a compelling brand story" },
+        ],
+      },
+      {
+        question: "Which of these best describes your personality?",
+        options: [
+          { value: "A", text: "Logical and innovative" },
+          { value: "B", text: "Compassionate and service-oriented" },
+          { value: "C", text: "Strategic and financially savvy" },
+          { value: "D", text: "Practical and detail-focused" },
+          { value: "E", text: "Creative and expressive" },
+        ],
+      },
     ],
   },
   {

@@ -40,6 +40,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     });
   };
 
+  // Update the handleSubmit function to correctly identify the industry quiz
   const handleSubmit = () => {
     // Count the frequency of each answer
     const answerCounts: Record<string, number> = {};
@@ -60,13 +61,18 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     });
 
     // Determine the quiz type
-    const quizType = quizId === "leadership-style" ? "leadership" : "role";
+    let quizType = "role";
+    if (quizId === "leadership-style") {
+      quizType = "leadership";
+    } else if (quizId === "industry-match") {
+      quizType = "industry";
+    }
 
-    // For leadership quiz, we need to pass the counts to handle special cases
+    // For leadership and industry quizzes, we need to pass the counts to handle special cases
     const queryParams =
-      quizType === "leadership"
-        ? `role=${mostFrequentAnswer}&type=${quizType}&counts=${encodeURIComponent(JSON.stringify(answerCounts))}`
-        : `role=${mostFrequentAnswer}&type=${quizType}`;
+      quizType === "role"
+        ? `role=${mostFrequentAnswer}&type=${quizType}`
+        : `role=${mostFrequentAnswer}&type=${quizType}&counts=${encodeURIComponent(JSON.stringify(answerCounts))}`;
 
     // Navigate to results page with the most frequent answer
     router.push(`/quizzes/results?${queryParams}`);
@@ -82,7 +88,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
         Find Your Perfect{" "}
         <span className="text-[#FFA400] underline">PM Certification</span>Path
       </Header>
-      <div className="container mx-auto px-4 py-8  mt-[50px]">
+      <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
         <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
 
