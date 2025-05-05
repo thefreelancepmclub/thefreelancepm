@@ -1,7 +1,7 @@
 "use client";
 
-import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,9 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [currentQuiz, setCurrentQuiz] = useState<any>(null);
   const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [multiSelectAnswers, setMultiSelectAnswers] = useState<
+    Record<number, string[]>
+  >({});
 
   useEffect(() => {
     // Find the quiz data based on the quizId
@@ -40,8 +43,48 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
     });
   };
 
-  // Update the handleSubmit function to correctly identify the industry quiz
+  const handleMultiSelectAnswerToggle = (
+    questionIndex: number,
+    value: string,
+  ) => {
+    const currentValues = multiSelectAnswers[questionIndex] || [];
+
+    // If "None" is selected, clear all other selections
+    if (value === "none") {
+      setMultiSelectAnswers({
+        ...multiSelectAnswers,
+        [questionIndex]: currentValues.includes("none") ? [] : ["none"],
+      });
+      return;
+    }
+
+    // If any other option is selected, remove "None" if it exists
+    const newValues = currentValues.includes(value)
+      ? currentValues.filter((v) => v !== value && v !== "none")
+      : [...currentValues.filter((v) => v !== "none"), value];
+
+    setMultiSelectAnswers({
+      ...multiSelectAnswers,
+      [questionIndex]: newValues,
+    });
+  };
+
   const handleSubmit = () => {
+    // For certification quiz, we need to handle differently
+    if (quizId === "certification-match") {
+      // Get the answers we need for certification recommendations
+      const currentCertifications = multiSelectAnswers[0] || [];
+      const pmExperience = answers[3] || "0-1"; // Default to entry level if not answered
+      const industry = answers[4] || "technology"; // Default to technology if not answered
+
+      // Navigate to certification recommendations page
+      router.push(
+        `/quizzes/certifications?certs=${currentCertifications.join(",")}&exp=${pmExperience}&industry=${industry}`,
+      );
+      return;
+    }
+
+    // For other quizzes, use the existing logic
     // Count the frequency of each answer
     const answerCounts: Record<string, number> = {};
 
@@ -79,26 +122,59 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
   };
 
   // Check if all questions have been answered
-  const allQuestionsAnswered =
-    currentQuiz.questions.length === Object.keys(answers).length;
+  const allQuestionsAnswered = currentQuiz.questions.every(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (question: any, index: number) => {
+      if (question.multiSelect) {
+        return (
+          multiSelectAnswers[index] && multiSelectAnswers[index].length > 0
+        );
+      }
+      return answers[index] !== undefined;
+    },
+  );
 
   return (
-    <>
-      <Header subtitile="Discover Your Project Management Path">
-        Find Your Perfect{" "}
-        <span className="text-[#FFA400] underline">PM Certification</span>Path
-      </Header>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
-        <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
+    <div className="container mx-auto px-4 py-8 max-w-3xl">
+      <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
+      <p className="text-gray-600 mb-8">{currentQuiz.description}</p>
 
-        <div className="space-y-8">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {currentQuiz.questions.map((question: any, index: number) => (
-            <div key={index} className="bg-blue-50 rounded-lg p-6">
-              <h2 className="font-semibold mb-4">
-                Question {index + 1}: {question.question}
-              </h2>
+      <div className="space-y-8">
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {currentQuiz.questions.map((question: any, index: number) => (
+          <div key={index} className="bg-blue-50 rounded-lg p-6">
+            <h2 className="font-semibold mb-4">
+              Question {index + 1}: {question.question}
+            </h2>
+
+            {question.multiSelect ? (
+              <div className="space-y-3">
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {question.options.map((option: any) => (
+                  <div
+                    key={option.value}
+                    className="flex items-start space-x-2"
+                  >
+                    <Checkbox
+                      id={`q${index}-${option.value}`}
+                      checked={(multiSelectAnswers[index] || []).includes(
+                        option.value,
+                      )}
+                      onCheckedChange={() =>
+                        handleMultiSelectAnswerToggle(index, option.value)
+                      }
+                      className="mt-1"
+                    />
+                    <Label
+                      htmlFor={`q${index}-${option.value}`}
+                      className="cursor-pointer"
+                    >
+                      {option.text}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            ) : (
               <RadioGroup
                 value={answers[index] || ""}
                 onValueChange={(value) => handleAnswerSelect(index, value)}
@@ -124,20 +200,20 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
                   </div>
                 ))}
               </RadioGroup>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <Button
-            onClick={handleSubmit}
-            disabled={!allQuestionsAnswered}
-            className="bg-blue-600 hover:bg-blue-700 px-8"
-          >
-            Submit
-          </Button>
-        </div>
+            )}
+          </div>
+        ))}
       </div>
-    </>
+
+      <div className="mt-8 flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          disabled={!allQuestionsAnswered}
+          className="bg-blue-600 hover:bg-blue-700 px-8"
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
   );
 }
