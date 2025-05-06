@@ -58,3 +58,13 @@ export const resetReqestForm = z.object({
 
 // Infer the type from the schema
 export type ResetRequestFormValues = z.infer<typeof resetReqestForm>;
+
+// Define the form schema with Zod
+export const forgetPassword = z.object({
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Invalid email address" }),
+});
+
+export type ForgetPasswordType = z.infer<typeof forgetPassword>;
