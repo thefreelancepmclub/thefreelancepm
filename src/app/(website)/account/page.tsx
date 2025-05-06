@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import AccountInfo from "./_components/account_Info";
 
@@ -6,6 +7,14 @@ const page = async () => {
   const cu = await auth();
 
   if (!cu) redirect("/login");
+
+  const user = await prisma.user.findFirst({
+    where: {
+      id: cu.user.id,
+    },
+  });
+
+  if (!user) redirect("/login");
 
   return (
     <div>
@@ -21,7 +30,7 @@ const page = async () => {
         </div>
         <div>
           <div className="flex flex-col gap-5 mb-14">
-            <AccountInfo />
+            <AccountInfo user={user} />
             {/* <BillingInformation /> */}
             {/* <BillingHistory /> */}
           </div>

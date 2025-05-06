@@ -1,10 +1,7 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { updateUser } from "@/action/users/users";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,33 +11,43 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { profileSchema, ProfileSchemaType } from "@/schemas/user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { User as LoggedInUser } from "@prisma/client";
+import { Loader2, Mail, Phone, User } from "lucide-react";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-const schema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email"),
-  phone: z.string().min(7, "Invalid phone number"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
+interface Props {
+  user: LoggedInUser;
+}
 
-type FormData = z.infer<typeof schema>;
+const AccountInfoFrom = ({ user }: Props) => {
+  const [isUpdateReady, setIUpdateReady] = useState(false);
+  const [pending, startTransition] = useTransition();
 
-const AccountInfoFrom = () => {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const form = useForm<ProfileSchemaType>({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
+      name: user.name ?? "",
+      email: user?.email ?? "",
+      phone: user.phone ?? "",
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = (data: ProfileSchemaType) => {
+    startTransition(() => {
+      updateUser(data).then((res) => {
+        if (res.success) {
+          toast.success(res.message);
+          setIUpdateReady(false);
+        }
+      });
+    });
   };
+
+  const isDisabled = !isUpdateReady;
 
   return (
     <div>
@@ -55,7 +62,7 @@ const AccountInfoFrom = () => {
                 <FormLabel className="text-[#004AAD]">Name</FormLabel>
                 <div className="relative">
                   <User
-                    className="absolute left-3 top-2.5 text-[#999999]"
+                    className="absolute left-3 top-2.5 z-30 text-[#999999]"
                     size={17}
                   />
                   <FormControl>
@@ -63,6 +70,7 @@ const AccountInfoFrom = () => {
                       {...field}
                       placeholder="Enter your Full Name"
                       className="pl-10 border-[#004AAD]"
+                      disabled={isDisabled}
                     />
                   </FormControl>
                 </div>
@@ -80,7 +88,7 @@ const AccountInfoFrom = () => {
                 <FormLabel className="text-[#004AAD]">Email</FormLabel>
                 <div className="relative">
                   <Mail
-                    className="absolute left-3 top-2.5 text-[#999999]"
+                    className="absolute left-3 top-2.5 z-30 text-[#999999]"
                     size={17}
                   />
                   <FormControl>
@@ -88,6 +96,7 @@ const AccountInfoFrom = () => {
                       {...field}
                       placeholder="Enter your Email"
                       className="pl-10 border-[#004AAD]"
+                      disabled={isDisabled}
                     />
                   </FormControl>
                 </div>
@@ -105,7 +114,7 @@ const AccountInfoFrom = () => {
                 <FormLabel className="text-[#004AAD]">Phone Number</FormLabel>
                 <div className="relative">
                   <Phone
-                    className="absolute left-3 top-2.5 text-[#999999]"
+                    className="absolute left-3 top-2.5 z-30 text-[#999999]"
                     size={17}
                   />
                   <FormControl>
@@ -113,6 +122,7 @@ const AccountInfoFrom = () => {
                       {...field}
                       placeholder="Enter your Phone Number"
                       className="pl-10 border-[#004AAD]"
+                      disabled={isDisabled}
                     />
                   </FormControl>
                 </div>
@@ -121,44 +131,30 @@ const AccountInfoFrom = () => {
             )}
           />
 
-          {/* Password */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#004AAD]">Password</FormLabel>
-                <div className="relative">
-                  <Lock
-                    className="absolute left-3 top-2.5 text-[#999999]"
-                    size={17}
-                  />
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Create a Password"
-                      className="pl-10 pr-10 border-[#004AAD]"
-                    />
-                  </FormControl>
-                  <div
-                    className="absolute right-3 top-2.5 cursor-pointer text-[#999999]"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </div>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {!isUpdateReady && (
+            <div className="flex justify-start">
+              <Button
+                type="button"
+                className="rounded-full bg-[#004AAD] hover:bg-blue-700"
+                onClick={() => setIUpdateReady((p) => !p)}
+                disabled={pending}
+              >
+                Update Info
+              </Button>
+            </div>
+          )}
 
-          <Button
-            type="submit"
-            className="rounded-full bg-[#004AAD] hover:bg-blue-700"
-          >
-            Update Info
-          </Button>
+          {isUpdateReady && (
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                className="rounded-full bg-[#004AAD] hover:bg-blue-700"
+                disabled={pending}
+              >
+                Save {pending && <Loader2 className="animate-spin" />}
+              </Button>
+            </div>
+          )}
         </form>
       </Form>
     </div>
