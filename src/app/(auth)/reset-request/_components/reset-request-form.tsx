@@ -2,9 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
+import { sendOtp } from "@/action/authentication/reset-request";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,9 +16,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { resetReqestForm, ResetRequestFormValues } from "@/schemas/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function ResetRequestForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
 
   // Initialize the form
   const form = useForm<ResetRequestFormValues>({
@@ -29,22 +33,19 @@ export default function ResetRequestForm() {
 
   // Handle form submission
   async function onSubmit(data: ResetRequestFormValues) {
-    setIsLoading(true);
+    startTransition(() => {
+      sendOtp(data.email).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
 
-    try {
-      // In a real app, you would call your authentication API here
-      console.log("Login data:", data);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Redirect to dashboard or home page after successful login
-      // router.push("/dashboard")
-    } catch (error) {
-      console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
-    }
+        // handle success
+        toast.success(res.message);
+        form.reset();
+        router.push(`/reset-request/otp/${res.otpId}`);
+      });
+    });
   }
 
   return (
@@ -60,11 +61,10 @@ export default function ResetRequestForm() {
                 <div className="relative">
                   <Input
                     {...field}
-                    placeholder="Enter your Full Name"
-                    type="text"
-                    autoComplete="name"
+                    placeholder="Enter your email"
+                    type="email"
                     className="border-primary border-[1px]  min-h-[45px] "
-                    disabled={isLoading}
+                    disabled={pending}
                     startIcon={Mail}
                   />
                 </div>
@@ -78,10 +78,10 @@ export default function ResetRequestForm() {
         <Button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 min-h-[45px]"
-          disabled={isLoading}
+          disabled={pending}
           effect="gooeyLeft"
         >
-          {isLoading ? "Signing In..." : "Sign In"}
+          {pending ? "Please wait..." : "Send OTP"}
         </Button>
       </form>
     </Form>

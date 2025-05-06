@@ -2,10 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 
 const otpSchema = z.object({
@@ -18,19 +15,6 @@ const otpSchema = z.object({
 
 type OTPSchemaType = z.infer<typeof otpSchema>;
 const OTPForm = () => {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const searchparams = useSearchParams();
-
-  const email = searchparams.get("email");
-
-  useEffect(() => {
-    if (!email) {
-      setLoading(true);
-      router.push("/reset-request");
-    }
-  }, [email, router]);
-
   const form = useForm<OTPSchemaType>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -73,7 +57,7 @@ const OTPForm = () => {
                 // Move focus to the next input
                 if (value && i < 5) {
                   const nextInput = document.getElementById(
-                    `otp-input-${i + 1}`
+                    `otp-input-${i + 1}`,
                   );
                   if (nextInput) (nextInput as HTMLInputElement).focus();
                 }
@@ -82,7 +66,7 @@ const OTPForm = () => {
                 // Handle Backspace key to focus on the previous input
                 if (e.key === "Backspace" && !form.watch("otp")[i] && i > 0) {
                   const prevInput = document.getElementById(
-                    `otp-input-${i - 1}`
+                    `otp-input-${i - 1}`,
                   );
                   if (prevInput) {
                     (prevInput as HTMLInputElement).focus();
@@ -102,8 +86,8 @@ const OTPForm = () => {
                 form.formState.errors.otp
                   ? "bg-red-200/50 border-red-500/50"
                   : form.watch("otp")[i]
-                  ? "border-orange-500 "
-                  : "border-[#121D42] bg-white"
+                    ? "border-orange-500 "
+                    : "border-[#121D42] bg-white"
               }`}
             />
           ))}
@@ -117,16 +101,6 @@ const OTPForm = () => {
             variant="link"
             className="text-gradient text-base font-normal leading-[19.2px] disabled:opacity-80 disabled:text-gray-500"
             onClick={() => {
-              if (!email) {
-                toast.warning(
-                  "Unable to retrieve your email from the provided parameters. Please verify and try again.",
-                  {
-                    position: "bottom-right",
-                    richColors: true,
-                  }
-                );
-                return;
-              }
               //   resendOtp({ email: email });
             }}
           >
@@ -136,10 +110,9 @@ const OTPForm = () => {
         <Button
           type="submit"
           className="w-full min-h-[45px]"
-          disabled={loading}
           effect="gooeyLeft"
         >
-          {loading ? "Wait a second..." : "Verify"}
+          {false ? "Wait a second..." : "Verify"}
         </Button>
       </form>
     </div>
