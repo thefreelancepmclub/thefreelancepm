@@ -143,10 +143,10 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="container mx-auto px-4 py-8 mt-[100px]">
       {quizType === "industry" ? (
         <div>
-          <h1 className="text-2xl font-bold text-center mb-2">
+          <h1 className="text-2xl font-bold text-start mb-2">
             Your Ideal Industry Match:
           </h1>
           <p className="text-center text-gray-600 mb-4">
@@ -195,14 +195,14 @@ export default function ResultsPage() {
           </div>
         </div>
       ) : quizType === "leadership" ? (
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-2xl font-bold text-center mb-8">
+        <div className="bg-white rounded-lg shadow-none p-8">
+          <h1 className="text-2xl font-bold text-start mb-8">
             Your Ideal Leadership Style:
           </h1>
 
           {result && (
             <>
-              <div className="mb-8 text-center">
+              <div className="mb-8 text-start">
                 <h2 className="text-3xl font-bold text-blue-600 mb-2">
                   {result.name}
                 </h2>
@@ -221,47 +221,41 @@ export default function ResultsPage() {
                 <p className="text-gray-700">{result.bestFor}</p>
               </div>
 
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-4">Pros</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  {result.pros.map((pro: string, index: number) => (
-                    <li key={index} className="text-gray-700">
-                      {pro}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-5">
+                <div className="mb-8">
+                  <h3 className="text-xl font-semibold mb-4">Pros</h3>
+                  <ul className="list-disc pl-5 space-y-2">
+                    {result.pros.map((pro: string, index: number) => (
+                      <li key={index} className="text-gray-700">
+                        {pro}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-              <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-4">Cons</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  {result.cons.map((con: string, index: number) => (
-                    <li key={index} className="text-gray-700">
-                      {con}
-                    </li>
-                  ))}
-                </ul>
+                <div className="mb-8">
+                  <h3 className="text-xl font-semibold mb-4">Cons</h3>
+                  <ul className="list-disc pl-5 space-y-2">
+                    {result.cons.map((con: string, index: number) => (
+                      <li key={index} className="text-gray-700">
+                        {con}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </>
           )}
-
-          <div className="mt-8 text-center">
-            <Link href="/">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                Take Another Quiz
-              </Button>
-            </Link>
-          </div>
         </div>
       ) : (
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-2xl font-bold text-center mb-8">
+        <div className="bg-white rounded-lg shadow-none p-8">
+          <h1 className="text-2xl font-bold text-start mb-8">
             Your Ideal PM-Related Role:
           </h1>
 
           {result && (
             <>
-              <div className="mb-8 text-center">
+              <div className="mb-8 text-start">
                 <h2 className="text-3xl font-bold text-blue-600 mb-2">
                   {result.name}
                 </h2>
@@ -290,14 +284,6 @@ export default function ResultsPage() {
               </div>
             </>
           )}
-
-          <div className="mt-8 text-center">
-            <Link href="/">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                Take Another Quiz
-              </Button>
-            </Link>
-          </div>
         </div>
       )}
     </div>

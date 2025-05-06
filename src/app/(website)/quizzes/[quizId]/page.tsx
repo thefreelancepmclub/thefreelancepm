@@ -211,7 +211,7 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
           ))}
         </div>
 
-        <div className="mt-8 flex justify-center">
+        <div className="my-8 flex justify-center">
           <Button
             onClick={handleSubmit}
             disabled={!allQuestionsAnswered}

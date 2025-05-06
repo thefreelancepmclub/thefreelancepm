@@ -1,4 +1,10 @@
-import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import Link from "next/link";
 import QuizzesSearch from "./quizzes_Search";
 
@@ -42,82 +48,34 @@ const QuizzesContainer = () => {
         {/* Quiz Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 flex-1 w-full">
           {quizzes.map((quiz, index) => (
-            <div
+            <Card
               key={index}
-              className="bg-white rounded-lg shadow-md flex flex-col justify-between w-full"
+              className="max-w-[393px] mx-auto shadow-none overflow-hidden p-0"
             >
-              <div className="w-full">
-                <div className="bg-gray-300 h-40 rounded-t-lg"></div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2 break-words">
-                    {quiz.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {quiz.description}
-                  </p>
-                </div>
+              <div className="bg-muted h-48 w-full" aria-hidden="true">
+                {/* Placeholder for image */}
               </div>
-              <div className="p-4 w-full">
-                <Link
-                  href={`/quizzes/${quiz.id}`}
-                  className="bg-[#004AAD] hover:bg-[#004AAD]/80 text-white font-medium py-2 px-4 rounded-lg w-full text-center text-[16px]"
+              <CardHeader className="p-[15px]  pb-0">
+                <h2 className="text-[18px] font-medium tracking-tight text-[#000000]">
+                  {quiz.title}
+                </h2>
+              </CardHeader>
+              <CardContent className="p-[15px] pt-[25px] pb-0">
+                <p className="text-muted-foreground text-[14px] min-h-[70px]">
+                  {quiz.description}
+                </p>
+              </CardContent>
+              <CardFooter className="p-[15px]">
+                <Button
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white "
+                  asChild
                 >
-                  Take Quiz
-                </Link>
-              </div>
-            </div>
+                  <Link href={`/quizzes/${quiz.id}`}>Take Quiz</Link>
+                </Button>
+              </CardFooter>
+            </Card>
           ))}
         </div>
-        {/* Right Section */}
-        {/* <div className="bg-[#F5F5F5] rounded-lg lg:w-[240px] w-full h-[300px] p-4">
-          <h2 className="text-[#003366] font-semibold text-[16px] ">
-            Your Progress
-          </h2>
-          <div>
-            <div className="mt-6 flex items-center gap-2">
-              <Image
-                src="/progress.png"
-                alt="progress.png"
-                width={1000}
-                height={1000}
-                className="w-4 h-4"
-              />
-              <h3 className="text-[#333333] text-[16px] font-semibold">
-                In Progress
-              </h3>
-            </div>
-            <div className="flex items-center gap-2 mt-3 bg-[#FFFFFF] shadow-[0px_0px_0px_0px_#00000000] rounded-lg">
-              <p className="py-3 px-4 text-[#666666] font-normal text-sm">
-                Advanced IoT Network Security
-              </p>
-            </div>
-          </div>
-          <div>
-            <div className="mt-6 flex items-center gap-2">
-              <Image
-                src="/progress1.png"
-                alt="progress.png"
-                width={1000}
-                height={1000}
-                className="w-4 h-4"
-              />
-              <h3 className="text-[#333333] text-[16px] font-semibold">
-                Completed
-              </h3>
-            </div>
-            <div className="flex items-center gap-2 mt-3 bg-[#FFFFFF] shadow-[0px_0px_0px_0px_#00000000] rounded-lg">
-              <p className="py-3 px-4 text-[#666666] font-normal text-sm">
-                Privacy in Smart Homes
-              </p>
-            </div>
-          </div>
-        </div> */}
-      </div>
-      <div className="flex justify-center mt-8">
-        <button className="flex gap-4 justify-between items-center bg-blue-700 hover:bg-blue-800 text-white  py-4 px-8 text-[16px] font-medium rounded-lg">
-          Load More
-          <Loader2 width={15} />
-        </button>
       </div>
     </div>
   );
