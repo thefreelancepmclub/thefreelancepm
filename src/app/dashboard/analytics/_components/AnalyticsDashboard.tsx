@@ -25,6 +25,7 @@ import {
 } from "recharts";
 
 import TopPerformingPlan from "./Top-performing-plan";
+import OverviewStats from "./overview-stats";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +33,6 @@ interface Props {
 }
 
 const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
-  const [overviewTimeframe, setOverviewTimeframe] = useState("weekly");
   const [performanceTimeframe, setPerformanceTimeframe] = useState("weekly");
 
   const days = [
@@ -43,16 +43,6 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
     { day: "Wed", value: 15 },
     { day: "Thu", value: 80 },
     { day: "Fri", value: 60 },
-  ];
-
-  // Data for overview stats
-  const overviewStats = [
-    { title: "Total Revenue", value: "$123,456" },
-    { title: "Active Subscriptions", value: "3,789" },
-    { title: "New Users", value: "1,234" },
-    { title: "Total Applications", value: "5,678" },
-    { title: "Churn Rate", value: "2.3%" },
-    { title: "ARPU", value: "$32.50" },
   ];
 
   // Data for Revenue Over Time chart
@@ -104,41 +94,7 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
       <TopPerformingPlan data={topPerformingPlan} />
 
       {/* Overview Stats */}
-      <div className="w-full bg-[#FFFFFF] p-10 rounded-[15px] shadow-[0px_4px_12px_0px_#0000001A]">
-        <div className="flex justify-between items-center mb-[35px]">
-          <h2 className="text-[24px] font-medium text-[#004AAD]">
-            Overview Stats
-          </h2>
-          <Select
-            value={overviewTimeframe}
-            onValueChange={setOverviewTimeframe}
-          >
-            <SelectTrigger className="w-32 bg-[#004AAD] text-white">
-              <SelectValue placeholder="Weekly" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
-              <SelectItem value="monthly">Monthly</SelectItem>
-              <SelectItem value="yearly">Yearly</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {overviewStats.map((stat, index) => (
-            <Card key={index}>
-              <CardContent className="pt-6 bg-[#F5F7FA] text-center">
-                <div className="text-[18px] font-medium text-[#000000] mb-[20px]">
-                  {stat.title}
-                </div>
-                <div className="text-[40px] font-bold text-[#004AAD] mt-2">
-                  ###
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <OverviewStats />
 
       {/* Performance Charts */}
       <div className="w-full bg-[#FFFFFF] p-10 rounded-[15px] mt-5 shadow-[0px_4px_12px_0px_#0000001A]">
