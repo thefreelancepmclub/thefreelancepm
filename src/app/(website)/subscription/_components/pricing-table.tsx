@@ -59,19 +59,21 @@ export default function PricingTable() {
               Feature
             </div>
             <div className="p-6 border-b border-white/20 font-medium text-lg text-center">
-              Freelancer Lite
+              <span className="hidden md:block">Freelancer</span> Lite
             </div>
             <div className="p-6 border-b border-white/20 font-medium text-lg text-center">
-              Freelancer Pro
+              <span className="hidden md:block">Freelancer</span> Pro
             </div>
             <div className="p-6 border-b border-white/20 font-medium text-lg text-center">
-              Freelance Elite
+              <span className="hidden md:block">Freelancer</span> Elite
             </div>
           </div>
 
           {features.map((feature, index) => (
             <div key={index} className="grid grid-cols-4">
-              <div className="p-6 text-white">{feature.name}</div>
+              <div className="p-6 text-white text-[12px] md:text-[16px]">
+                {feature.name}
+              </div>
               <div className="p-6 flex justify-center items-center">
                 {typeof feature.lite === "boolean" ? (
                   feature.lite ? (
@@ -80,7 +82,9 @@ export default function PricingTable() {
                     <X className="h-6 w-6 text-red-400" />
                   )
                 ) : (
-                  <span>{feature.lite}</span>
+                  <span className="text-[12px] md:text-[16px]">
+                    {feature.lite}
+                  </span>
                 )}
               </div>
               <div className="p-6 flex justify-center items-center">
@@ -91,7 +95,9 @@ export default function PricingTable() {
                     <X className="h-6 w-6 text-red-400" />
                   )
                 ) : (
-                  <span>{feature.pro}</span>
+                  <span className="text-[12px] md:text-[16px]">
+                    {feature.pro}
+                  </span>
                 )}
               </div>
               <div className="p-6 flex justify-center items-center">
@@ -102,7 +108,9 @@ export default function PricingTable() {
                     <X className="h-6 w-6 text-red-400" />
                   )
                 ) : (
-                  <span>{feature.elite}</span>
+                  <span className="text-[12px] md:text-[16px]">
+                    {feature.elite}
+                  </span>
                 )}
               </div>
             </div>

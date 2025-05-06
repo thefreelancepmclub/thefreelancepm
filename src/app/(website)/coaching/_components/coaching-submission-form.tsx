@@ -90,7 +90,7 @@ export default function CoachingSubmissionForm() {
   }
 
   return (
-    <div className="container  mx-auto p-12 bg-white rounded-lg shadow-[0px_4px_12px_0px_#0000001A]">
+    <div className="lg:container  mx-auto p-4 py-8 lg:p-12 bg-white rounded-lg shadow-[0px_4px_12px_0px_#0000001A]">
       <h1 className="text-2xl font-bold  text-[#004AAD] mb-6">
         Book Your Coaching Session
       </h1>
@@ -190,7 +190,7 @@ export default function CoachingSubmissionForm() {
                         variant={"outline"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
+                          !field.value && "text-muted-foreground",
                         )}
                       >
                         {field.value ? (
@@ -273,8 +273,8 @@ export default function CoachingSubmissionForm() {
                                 ? field.onChange([...field.value, area.id])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value) => value !== area.id
-                                    )
+                                      (value) => value !== area.id,
+                                    ),
                                   );
                             }}
                           />

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { FaFacebookF, FaGoogle, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
@@ -51,9 +50,7 @@ const Footer = () => {
               <li>
                 <Link href="/jobBoard">Job Board</Link>
               </li>
-              <li>
-                <Link href="/quizzes">Quizzes</Link>
-              </li>
+              <li></li>
               <li>
                 <Link href="/testmonial">Testimonial</Link>
               </li>
@@ -66,7 +63,7 @@ const Footer = () => {
                 <a href="#">Join Now</a>
               </li>
               <li>
-                <a href="#">Pricing</a>
+                <Link href="/subscription">Pricing</Link>
               </li>
               <li>
                 <a href="#">Benefits</a>

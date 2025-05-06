@@ -32,11 +32,6 @@ export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  console.log({
-    rememberedEmail,
-    rememberMePassword,
-  });
-
   const router = useRouter();
 
   // Initialize the form
@@ -157,7 +152,7 @@ export function LoginForm() {
             )}
           />
           <Link
-            href="/forgot-password"
+            href="/forget-password"
             className="text-sm font-medium text-orange-500 hover:text-orange-600"
           >
             Forgot password?
@@ -173,8 +168,8 @@ export function LoginForm() {
           {pending
             ? "Signing In..."
             : isLoading
-            ? "Just a second..."
-            : "Sign In"}
+              ? "Just a second..."
+              : "Sign In"}
         </Button>
       </form>
     </Form>
