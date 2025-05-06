@@ -2,16 +2,8 @@
 import logo from "@/../public/vector-icon-1.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Download } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
 import {
   // YAxis,
   CartesianGrid,
@@ -26,6 +18,7 @@ import {
 
 import TopPerformingPlan from "./Top-performing-plan";
 import OverviewStats from "./overview-stats";
+import RevenueOverTime from "./revenue-over-time";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,8 +26,6 @@ interface Props {
 }
 
 const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
-  const [performanceTimeframe, setPerformanceTimeframe] = useState("weekly");
-
   const days = [
     { day: "Sat", value: 30 },
     { day: "Sun", value: 70 },
@@ -43,17 +34,6 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
     { day: "Wed", value: 15 },
     { day: "Thu", value: 80 },
     { day: "Fri", value: 60 },
-  ];
-
-  // Data for Revenue Over Time chart
-  const revenueTimeData = [
-    { day: "Sat", value: 1000 },
-    { day: "Sun", value: 1500 },
-    { day: "Mon", value: 2000 },
-    { day: "Tue", value: 2500 },
-    { day: "Wed", value: 2300 },
-    { day: "Thu", value: 2700 },
-    { day: "Fri", value: 3000 },
   ];
 
   // Data for User Growth chart
@@ -98,59 +78,7 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
 
       {/* Performance Charts */}
       <div className="w-full bg-[#FFFFFF] p-10 rounded-[15px] mt-5 shadow-[0px_4px_12px_0px_#0000001A]">
-        <div className="flex justify-between items-center mb-[30px]">
-          <h2 className="text-[24px] text-[#004AAD] font-medium">
-            Performance Charts
-          </h2>
-          <Select
-            value={performanceTimeframe}
-            onValueChange={setPerformanceTimeframe}
-          >
-            <SelectTrigger className="w-32 bg-[#004AAD] text-white">
-              <SelectValue placeholder="Weekly" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="daily">Daily</SelectItem>
-              <SelectItem value="weekly">Weekly</SelectItem>
-              <SelectItem value="monthly">Monthly</SelectItem>
-              <SelectItem value="yearly">Yearly</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Revenue Over Time Chart */}
-        <Card className="mb-4 shadow-[0px_4px_12px_0px_#0000001A]">
-          <CardHeader className="pb-0">
-            <div className="flex justify-between items-center mb-[20px]">
-              <CardTitle className="text-md font-medium">
-                Revenue Over Time
-              </CardTitle>
-              <div className="font-bold">$XXX</div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  data={revenueTimeData}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="day" />
-                  {/* <YAxis /> */}
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="value"
-                    stroke="#3B82F6"
-                    strokeWidth={2}
-                    dot={{ r: 0 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+        <RevenueOverTime />
 
         {/* User Growth Chart */}
         {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
