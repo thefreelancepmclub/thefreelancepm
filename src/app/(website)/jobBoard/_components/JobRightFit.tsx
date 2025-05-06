@@ -1,10 +1,47 @@
+"use client";
+
+import { subscribeToJobAlert } from "@/action/job/job-alert";
+import { useRef, useTransition } from "react";
+import { toast } from "sonner";
+
 const JobRightFit = () => {
+  const [isPending, startTransition] = useTransition();
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+
+    if (!email) {
+      toast.warning("Please enter a valid email address.");
+      return;
+    }
+
+    startTransition(() => {
+      subscribeToJobAlert(email).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        toast.success(res.message);
+
+        if (formRef.current) {
+          formRef.current.reset(); // ✅ Safe access
+        }
+      });
+    });
+  };
+
   return (
     <div className="bg-[#004AAD] text-white py-8 px-4 lg:h-[287px]">
-      <div className="">
+      <div>
         <div className="mb-[60px]">
           <h2 className="text-[32px] font-semibold mb-[15px] text-center">
-            Dont See The{" "}
+            Don&apos;t See The{" "}
             <span className="text-[#ffa400] border-b-2 border-b-[#ffa400]">
               Right Fit?
             </span>
@@ -15,16 +52,24 @@ const JobRightFit = () => {
           </p>
         </div>
 
-        <div className="lg:flex max-w-md flex-row mx-auto lg:gap-[30px]">
-          <input
-            type="email"
-            placeholder="Your email address"
-            className="flex-grow lg:p-4 p-2.5  text-gray-800 lg:h-[52px] rounded-[15px] outline-none mr-3 lg:mr-0 w-full"
-          />
-          <button className="bg-[#FFFFFF] w-full mt-3 lg:mt-0 text-blue-800 font-medium py-2 px-4 rounded-[15px] hover:bg-yellow-300 transition">
-            Get Started
-          </button>
-        </div>
+        <form ref={formRef} onSubmit={onSubmit} className="max-w-md mx-auto">
+          <div className="lg:flex flex-row lg:gap-[30px] items-center">
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email address"
+              className="flex-grow lg:p-4 p-2.5 text-gray-800 lg:h-[52px] rounded-[15px] outline-none w-full mb-3 lg:mb-0"
+              required
+            />
+            <button
+              type="submit"
+              disabled={isPending}
+              className="bg-[#FFFFFF] w-full text-blue-800 font-medium py-2 px-4 rounded-[15px] hover:bg-yellow-300 transition disabled:opacity-70"
+            >
+              {isPending ? "Subscribing..." : "Get Started"}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
