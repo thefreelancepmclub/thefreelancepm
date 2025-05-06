@@ -13,6 +13,19 @@ export async function handleSubscriptionCheckout(
     throw new Error("Missing required metadata for subscription");
   }
 
+  // 💡 Get Stripe Customer ID from session
+  const stripeCustomerId = session.customer as string | undefined;
+
+  if (!stripeCustomerId) {
+    throw new Error("No customer found in Stripe session.");
+  }
+
+  // ✅ Update user with stripeCustomerId
+  await prisma.user.update({
+    where: { id: userId },
+    data: { stripeCustomerId },
+  });
+
   // Define features per plan
   const features = [];
   switch (planId) {

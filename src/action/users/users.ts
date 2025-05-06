@@ -2,7 +2,9 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma"; // Assuming you have a prisma client setup
+import { ProfileSchemaType } from "@/schemas/user";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function deleteUser(id: string) {
   try {
@@ -45,4 +47,26 @@ export async function deleteUser(id: string) {
       message: "An error occurred while deleting the user",
     };
   }
+}
+
+export async function updateUser(data: ProfileSchemaType) {
+  const cu = await auth();
+
+  if (!cu?.user.id) {
+    redirect("/login");
+  }
+
+  await prisma.user.update({
+    where: {
+      id: cu.user.id,
+    },
+    data: {
+      ...data,
+    },
+  });
+
+  return {
+    success: true,
+    message: "Profile updated successfully",
+  };
 }
