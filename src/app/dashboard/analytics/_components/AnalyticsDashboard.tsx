@@ -1,16 +1,5 @@
 "use client";
-import { useState } from "react";
-import {
-  // BarChart,
-  LineChart,
-  Line,
-  // Bar,
-  XAxis,
-  // YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import logo from "@/../public/vector-icon-1.png";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -22,30 +11,29 @@ import {
 } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import Image from "next/image";
-import logo from "@/../public/vector-icon-1.png";
-import logo2 from "@/../public/vector-icon-2.png";
+import { useState } from "react";
+import {
+  // YAxis,
+  CartesianGrid,
+  Line,
+  // BarChart,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  // Bar,
+  XAxis,
+} from "recharts";
 
-const AnalyticsDashboard = () => {
-  const [topPerformingTimeframe, setTopPerformingTimeframe] =
-    useState("monthly");
+import TopPerformingPlan from "./Top-performing-plan";
+
+interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  topPerformingPlan: any[];
+}
+
+const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
   const [overviewTimeframe, setOverviewTimeframe] = useState("weekly");
   const [performanceTimeframe, setPerformanceTimeframe] = useState("weekly");
-
-  // Data for Top Performing Plans chart
-  const planPerformanceData = [
-    { month: "Feb", lite: 120, pro: 150, enterprise: 180 },
-    { month: "Mar", lite: 130, pro: 160, enterprise: 185 },
-    { month: "Apr", lite: 140, pro: 165, enterprise: 190 },
-    { month: "May", lite: 150, pro: 170, enterprise: 195 },
-    { month: "Jun", lite: 160, pro: 175, enterprise: 200 },
-    { month: "Jul", lite: 165, pro: 180, enterprise: 210 },
-    { month: "Aug", lite: 170, pro: 185, enterprise: 220 },
-    { month: "Sep", lite: 175, pro: 190, enterprise: 215 },
-    { month: "Oct", lite: 180, pro: 195, enterprise: 225 },
-    { month: "Nov", lite: 185, pro: 200, enterprise: 230 },
-    { month: "Dec", lite: 190, pro: 205, enterprise: 235 },
-    { month: "Jan", lite: 195, pro: 210, enterprise: 240 },
-  ];
 
   const days = [
     { day: "Sat", value: 30 },
@@ -113,100 +101,7 @@ const AnalyticsDashboard = () => {
       </div>
 
       {/* Top Performing Plans Section */}
-      <Card className="w-full shadow-[0px_4px_12px_0px_#0000001A]">
-        <div className="flex justify-between items-center p-6 mb-8">
-          <div className="flex items-center gap-2">
-            {/* <TrendingUp className="h-5 w-5 text-blue-600" /> */}
-            <Image
-              src={logo2}
-              width={100}
-              height={100}
-              alt="logo"
-              className="w-7 h-7"
-            />
-            <h2 className="text-lg font-semibold">Top Performing Plans</h2>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant={
-                topPerformingTimeframe === "monthly" ? "default" : "outline"
-              }
-              onClick={() => setTopPerformingTimeframe("monthly")}
-              size="sm"
-            >
-              Monthly
-            </Button>
-            <Button
-              variant={
-                topPerformingTimeframe === "weekly" ? "default" : "outline"
-              }
-              onClick={() => setTopPerformingTimeframe("weekly")}
-              size="sm"
-            >
-              Weekly
-            </Button>
-            <Button
-              variant={
-                topPerformingTimeframe === "daily" ? "default" : "outline"
-              }
-              onClick={() => setTopPerformingTimeframe("daily")}
-              size="sm"
-            >
-              Yearly
-            </Button>
-          </div>
-        </div>
-        <CardContent>
-          <div className="h-[428px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={planPerformanceData}
-                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                {/* <YAxis /> */}
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="enterprise"
-                  stroke="#3B82F6"
-                  strokeWidth={2}
-                  dot={{ r: 0 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="pro"
-                  stroke="#F59E0B"
-                  strokeWidth={2}
-                  dot={{ r: 0 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="lite"
-                  stroke="#10B981"
-                  strokeWidth={2}
-                  dot={{ r: 0 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex items-center justify-start gap-6 mt-4">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-sm">Freelancer Elite</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <span className="text-sm">Freelancer Pro</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-sm">Freelancer Lite</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <TopPerformingPlan data={topPerformingPlan} />
 
       {/* Overview Stats */}
       <div className="w-full bg-[#FFFFFF] p-10 rounded-[15px] shadow-[0px_4px_12px_0px_#0000001A]">
