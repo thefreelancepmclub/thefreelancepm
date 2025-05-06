@@ -143,7 +143,7 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-[100px]">
+    <div className="lg:container mx-auto  py-8 mt-[100px]">
       {quizType === "industry" ? (
         <div>
           <h1 className="text-2xl font-bold text-start mb-2">

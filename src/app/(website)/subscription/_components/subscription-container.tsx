@@ -11,7 +11,7 @@ export default async function SubscriptionContainer() {
   return (
     <div className="flex flex-col items-center w-full  mt-[50px]">
       {data.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-16 container mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-16 container mx-auto">
           {data.map((plan, index) => (
             <PricingCard
               key={index}

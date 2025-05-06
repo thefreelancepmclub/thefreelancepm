@@ -47,8 +47,6 @@ export default async function CoachingPage() {
 
         {/* Coaching Table Container Component */}
         <CoachingTableContainer />
-
-        <Link href="/api/auth/zoom">Connect Zoom</Link>
       </div>
     );
   }

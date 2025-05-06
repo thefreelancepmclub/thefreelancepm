@@ -88,7 +88,7 @@ export default function TemplatesContainer() {
       {/* Search Section */}
       <div className="my-[50px] ">
         <div className="bg-white py-6 lg:px-4">
-          <div className="lg:container lg:mx-auto">
+          <div className="container mx-auto">
             <div className="relative mb-[30px] shadow-[0px_4px_12px_0px_#0000001A] rounded-[15px]">
               <input
                 type="text"

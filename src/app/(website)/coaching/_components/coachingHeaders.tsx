@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle2 } from "lucide-react";
-import React from "react";
 
 const CoachingHeaders = () => {
   return (
@@ -40,12 +39,20 @@ const CoachingHeaders = () => {
 
       {/* Pricing Section */}
       <div className="bg-[#004AAD] text-white rounded-xl px-6 py-8  text-center space-y-4 mt-12">
-        <h2 className="md:text-5xl text-2xl font-semibold mb-11 ">Coaching Session Pricing</h2>
-      <div className="flex flex-col gap-4">
-        <p className="font-semibold md:text-[20px] ">First consultation is FREE!</p>
-        <p className="font-semibold md:text-[20px] ">$50 per session after your free consultation.</p>
-        <p className="font-semibold md:text-[20px]  ">Freelancer Elite members get 1 FREE coaching session per month!</p>
-      </div>
+        <h2 className="md:text-5xl text-2xl font-semibold mb-11 ">
+          Coaching Session Pricing
+        </h2>
+        <div className="flex flex-col gap-4">
+          <p className="font-medium md:text-[20px] ">
+            First consultation is FREE!
+          </p>
+          <p className="font-medium md:text-[20px] ">
+            $50 per session after your free consultation.
+          </p>
+          <p className="font-medium md:text-[20px]  ">
+            Freelancer Elite members get 1 FREE coaching session per month!
+          </p>
+        </div>
         <button className="bg-[#FFA400]   text-black font-semibold px-6 py-3 rounded-md hover:brightness-110">
           Upgrade to Elite for Free Sessions
         </button>

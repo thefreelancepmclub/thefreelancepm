@@ -1,20 +1,8 @@
 "use client";
 import logo from "@/../public/vector-icon-1.png";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download } from "lucide-react";
 import Image from "next/image";
-import {
-  // YAxis,
-  CartesianGrid,
-  Line,
-  // BarChart,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  // Bar,
-  XAxis,
-} from "recharts";
 
 import TopPerformingPlan from "./Top-performing-plan";
 import OverviewStats from "./overview-stats";
@@ -26,27 +14,6 @@ interface Props {
 }
 
 const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
-  const days = [
-    { day: "Sat", value: 30 },
-    { day: "Sun", value: 70 },
-    { day: "Mon", value: 30 },
-    { day: "Tue", value: 50 },
-    { day: "Wed", value: 15 },
-    { day: "Thu", value: 80 },
-    { day: "Fri", value: 60 },
-  ];
-
-  // Data for User Growth chart
-  const userGrowthData = [
-    { day: "Sat", lineValue: 500, barValue: 80 },
-    { day: "Sun", lineValue: 300, barValue: 60 },
-    { day: "Mon", lineValue: 600, barValue: 120 },
-    { day: "Tue", lineValue: 400, barValue: 90 },
-    { day: "Wed", lineValue: 500, barValue: 110 },
-    { day: "Thu", lineValue: 450, barValue: 85 },
-    { day: "Fri", lineValue: 400, barValue: 100 },
-  ];
-
   return (
     <div className="w-full  space-y-[60px] p-4">
       {/* Analytics Header */}
@@ -139,41 +106,9 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mt-8">
           {/* Line Chart Card */}
-          <Card className="shadow-[0px_4px_12px_0px_#0000001A] h-full">
-            <CardHeader className="pb-0">
-              <div className="flex justify-between items-center mb-6">
-                <CardTitle className="text-md font-medium">
-                  User Growth
-                </CardTitle>
-                <div className="font-bold">##</div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-64 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={userGrowthData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    {/* <YAxis /> */}
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="lineValue"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      dot={{ r: 2 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
 
           {/* Custom Bar Chart Box */}
-          <div className="bg-white rounded-[15px] p-4 w-full h-full shadow-[0px_4px_12px_0px_#0000001A]">
+          {/* <div className="bg-white rounded-[15px] p-4 w-full h-full shadow-[0px_4px_12px_0px_#0000001A]">
             <div className="flex justify-between items-center mb-2">
               <div className="text-base font-normal">#################</div>
               <div className="text-black  text-base font-normal">$xxx</div>
@@ -192,7 +127,7 @@ const AnalyticsDashboard = ({ topPerformingPlan }: Props) => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
