@@ -39,6 +39,8 @@ model User {
   Authenticator Authenticator[]
   coaching      Coaching[]
 
+  stripeCustomerId String?
+
   // Add relation to track subscriptions
   userSubscriptions  UserSubscription[]
   purchasedTemplates UserPurchasedTemplate[]

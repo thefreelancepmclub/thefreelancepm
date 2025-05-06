@@ -1,12 +1,14 @@
 import { auth } from "@/auth";
+import { getSavedCards } from "@/helper/stripe";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import AccountInfo from "./_components/account_Info";
+import BillingInformation from "./_components/billing_Information";
 
 const page = async () => {
   const cu = await auth();
 
-  if (!cu) redirect("/login");
+  if (!cu?.user.id) redirect("/login");
 
   const user = await prisma.user.findFirst({
     where: {
@@ -15,6 +17,8 @@ const page = async () => {
   });
 
   if (!user) redirect("/login");
+
+  const savedCards = await getSavedCards(cu.user.id);
 
   return (
     <div>
@@ -31,7 +35,10 @@ const page = async () => {
         <div>
           <div className="flex flex-col gap-5 mb-14">
             <AccountInfo user={user} />
-            {/* <BillingInformation /> */}
+            {savedCards.length > 0 && (
+              <BillingInformation cardId={savedCards[0].id} />
+            )}
+
             {/* <BillingHistory /> */}
           </div>
         </div>
