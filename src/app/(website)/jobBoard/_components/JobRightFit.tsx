@@ -52,19 +52,23 @@ const JobRightFit = () => {
           </p>
         </div>
 
-        <form ref={formRef} onSubmit={onSubmit} className="max-w-md mx-auto">
+        <form
+          ref={formRef}
+          onSubmit={onSubmit}
+          className="max-w-[500px] mx-auto"
+        >
           <div className="lg:flex flex-row lg:gap-[30px] items-center">
             <input
               type="email"
               name="email"
               placeholder="Your email address"
-              className="flex-grow lg:p-4 p-2.5 text-gray-800 lg:h-[52px] rounded-[15px] outline-none w-full mb-3 lg:mb-0"
+              className="flex-grow lg:p-4 p-2.5 text-gray-800 lg:h-[52px] rounded-[15px] min-w-[300px] outline-none w-full mb-3 lg:mb-0"
               required
             />
             <button
               type="submit"
               disabled={isPending}
-              className="bg-[#FFFFFF] w-full text-blue-800 font-medium py-2 px-4 rounded-[15px] hover:bg-yellow-300 transition disabled:opacity-70"
+              className="bg-[#FFFFFF] w-full text-blue-800 font-medium lg:p-4 p-2.5 px-4 rounded-[15px] hover:bg-yellow-300 transition disabled:opacity-70"
             >
               {isPending ? "Subscribing..." : "Get Started"}
             </button>
