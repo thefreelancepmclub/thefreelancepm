@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const ExploreResourcesCard = () => {
@@ -9,6 +10,7 @@ const ExploreResourcesCard = () => {
         "Find high-quality freelance PM opportunities vetted by our team.",
       icon: "/explore.png",
       button: "Explore Jobs",
+      link: "/jobBoard",
     },
     {
       labale: "PM Templates",
@@ -16,6 +18,7 @@ const ExploreResourcesCard = () => {
         "Download ready-to-use templates for project documentation and reporting.",
       icon: "/explore1.png",
       button: "Browse Templates",
+      link: "/templates",
     },
     {
       labale: "PM Courses",
@@ -23,6 +26,7 @@ const ExploreResourcesCard = () => {
         "Enhance your skills with specialized courses taught by industry experts.",
       icon: "/explore2.png",
       button: "View Courses",
+      link: "/courses",
     },
     {
       labale: "Skill Quizzes",
@@ -30,6 +34,7 @@ const ExploreResourcesCard = () => {
         "Test your project management knowledge and identify areas for growth.",
       icon: "/explore3.png",
       button: "Take a Quiz",
+      link: "/quizzes",
     },
   ];
 
@@ -55,9 +60,11 @@ const ExploreResourcesCard = () => {
               <p className="font-normal text-[20px] text-[#004AAD] ">
                 {data.description}
               </p>
-              <button className="bg-[#004AAD] py-3 w-full rounded-lg text-white mt-16">
-                {data.button}
-              </button>
+              <Link href={data.link} className="w-full">
+                <button className="bg-[#004AAD] py-3 w-full rounded-lg text-white mt-16">
+                  {data.button}
+                </button>
+              </Link>
             </div>
           </div>
         ))}

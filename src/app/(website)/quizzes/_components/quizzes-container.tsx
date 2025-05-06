@@ -6,7 +6,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Link from "next/link";
-import QuizzesSearch from "./quizzes_Search";
+// import QuizzesSearch from "./quizzes_Search";
 
 const QuizzesContainer = () => {
   const quizzes = [
@@ -43,8 +43,8 @@ const QuizzesContainer = () => {
   ];
   return (
     <div>
-      <QuizzesSearch />
-      <div className="flex flex-col lg:flex-row gap-7">
+      {/* <QuizzesSearch /> */}
+      <div className="flex flex-col lg:flex-row gap-7 mt-[50px]">
         {/* Quiz Cards Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 flex-1 w-full">
           {quizzes.map((quiz, index) => (
