@@ -142,7 +142,7 @@ export default function Navbar({ isLoggedin }: Props) {
 
                 <DropdownMenuItem
                   onClick={async () => {
-                    await signOut({ redirectTo: "/" });
+                    await signOut({ redirectTo: "/", redirect: true });
                   }}
                   className="cursor-pointer w-full"
                 >
