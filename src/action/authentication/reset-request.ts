@@ -1,7 +1,9 @@
 "use server";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
+import { redirect } from "next/navigation";
 
 // Helper to generate a 6-digit OTP
 function generateOtp(): string {
@@ -148,4 +150,55 @@ export async function resetNow(id: string, password: string) {
     success: true,
     message: "Password reset successfully",
   };
+}
+
+export async function adminPasswordChangeAction(password: string) {
+  const cu = await auth();
+
+  if (!cu || !cu.user.id) {
+    redirect("/login");
+  }
+
+  if (cu.user.role !== "admin") {
+    return {
+      success: false,
+      message: "Unauthorized access.",
+    };
+  }
+
+  // Validate password strength (basic example)
+  if (password.length < 6) {
+    return {
+      success: false,
+      message: "Password must be at least 6 characters long.",
+    };
+  }
+
+  try {
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update user password in database
+    await prisma.user.update({
+      where: {
+        id: cu.user.id,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    return {
+      success: true,
+      message: "Password changed successfully.",
+    };
+
+    // Optional: redirect after success
+    // redirect("/admin/settings");
+  } catch {
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
+  }
 }
