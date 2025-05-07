@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { settingAction } from "@/action/site/settings";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -15,66 +14,45 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { generalFormSchema, GeneralFormType } from "@/schemas/site";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Setting } from "@prisma/client";
 import { X } from "lucide-react";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
-// Define Zod schema
-const formSchema = z.object({
-  siteName: z
-    .string()
-    .min(1, { message: "Site name is required." })
-    .max(100, { message: "Site name must not exceed 100 characters." }),
-  supportEmail: z
-    .string()
-    .email({ message: "Please enter a valid email address." })
-    .max(255, { message: "Email must not exceed 255 characters." }),
-  description: z
-    .string()
-    .min(1, { message: "Description is required." })
-    .max(500, { message: "Description must not exceed 500 characters." }),
-    keywords: z
-    .array(
-      z
-        .string()
-        .min(1, { message: "Keyword cannot be empty." })
-        .max(50, { message: "Keyword must not exceed 50 characters." })
-    )
-    .min(1, { message: "At least one keyword is required." })
-    .max(10, { message: "Maximum 10 keywords allowed." }),
-  language: z
-    .enum(["english", "spanish", "french", "german"], {
-      errorMap: () => ({ message: "Please select a valid language." }),
-    })
-    .optional(),
-});
+interface Props {
+  initialData?: Setting;
+}
 
-type FormValues = z.infer<typeof formSchema>;
+export default function GeneralForm({ initialData }: Props) {
+  const [isUpdateReady, setUpdateReady] = useState(false);
+  const [pending, startTransition] = useTransition();
 
-export default function GeneralForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<GeneralFormType>({
+    resolver: zodResolver(generalFormSchema),
     defaultValues: {
-      siteName: "",
-      supportEmail: "",
-      description: "",
-      keywords: [] as string[],
+      siteName: initialData?.siteName ?? "",
+      supportEmail: initialData?.supportEmail ?? "",
+      description: initialData?.description ?? "",
+      keywords: initialData?.keywords ?? ([] as string[]),
       language: undefined,
     },
   });
 
-  const onSubmit: any = async (values: FormValues) => {
-    setIsSubmitting(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("General form submitted:", values);
-    } catch (error) {
-      console.error("Error submitting general form:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const onSubmit: any = async (values: GeneralFormType) => {
+    startTransition(() => {
+      settingAction(values).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        toast.success(res.message);
+      });
+    });
   };
 
   const TagInput = ({
@@ -120,14 +98,17 @@ export default function GeneralForm() {
             </div>
           ))}
         </div>
-        <Input
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type a keyword and press Enter"
-          className="w-full p-2 border rounded-md bg-white"
-          aria-label="Add keyword"
-        />
+        {isUpdateReady && (
+          <Input
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Type a keyword and press Enter"
+            className="w-full p-2 border rounded-md bg-white"
+            aria-label="Add keyword"
+            disabled={!isUpdateReady}
+          />
+        )}
       </div>
     );
   };
@@ -156,8 +137,9 @@ export default function GeneralForm() {
                         <Input
                           {...field}
                           className="w-full p-2 border rounded-md bg-[#F5F7FA]"
-                          placeholder="######"
+                          placeholder="FreelancePM Club"
                           aria-label="Site name"
+                          disabled={!isUpdateReady}
                         />
                       </FormControl>
                       <FormMessage />
@@ -177,10 +159,11 @@ export default function GeneralForm() {
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="########"
+                          placeholder="support@freelancepm.com"
                           {...field}
                           className="w-full p-2 border rounded-md bg-[#F5F7FA]"
                           aria-label="Support email"
+                          disabled={!isUpdateReady}
                         />
                       </FormControl>
                       <FormMessage />
@@ -203,6 +186,7 @@ export default function GeneralForm() {
                           className="w-full p-2 border rounded-md bg-[#F5F7FA] min-h-[100px] resize-y"
                           placeholder="Description................."
                           aria-label="Site description"
+                          disabled={!isUpdateReady}
                         />
                       </FormControl>
                       <FormMessage />
@@ -266,18 +250,21 @@ export default function GeneralForm() {
               <div className="flex justify-end space-x-[30px] pt-[50px]">
                 <Button
                   type="button"
-                  className="px-4 py-2 bg-[#FFA400] text-white rounded-md"
-                  onClick={() => form.reset()}
+                  className="px-4 py-2 bg-[#FFA400] hover:bg-[#FFA400]/80 text-white rounded-md"
+                  onClick={() => setUpdateReady((p) => !p)}
                 >
-                  Cancel
+                  Update
                 </Button>
-                <Button
-                  type="submit"
-                  className="px-4 py-2 bg-[#004AAD] text-white rounded-md"
-                //   disabled={isSubmitting}
-                >
-                {isSubmitting ? "Saving..." : "Save"}
-                </Button>
+
+                {isUpdateReady && (
+                  <Button
+                    type="submit"
+                    className="px-4 py-2 bg-[#004AAD] text-white rounded-md"
+                    disabled={pending}
+                  >
+                    {pending ? "Saving..." : "Save"}
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
