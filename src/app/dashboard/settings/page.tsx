@@ -9,7 +9,7 @@ const Page = async () => {
     <div className="bg-[#F5F7FA]">
       <GeneralForm initialData={settings || undefined} />
       <SecurityForm />
-      <MaintenanceForm />
+      <MaintenanceForm initialData={settings || undefined} />
       {/* Add more forms as needed */}
     </div>
   );

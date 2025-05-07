@@ -31,3 +31,9 @@ export const generalFormSchema = z.object({
 });
 
 export type GeneralFormType = z.infer<typeof generalFormSchema>;
+
+export const maintenanceForm = z.object({
+  maintenanceMode: z.boolean(),
+});
+
+export type MaintenanceFormType = z.infer<typeof maintenanceForm>;

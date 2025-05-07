@@ -2,7 +2,11 @@
 
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { generalFormSchema, GeneralFormType } from "@/schemas/site";
+import {
+  generalFormSchema,
+  GeneralFormType,
+  MaintenanceFormType,
+} from "@/schemas/site";
 import { redirect } from "next/navigation";
 
 export async function settingAction(data: GeneralFormType) {
@@ -57,6 +61,51 @@ export async function settingAction(data: GeneralFormType) {
     return {
       success: false,
       message: "Something went wrong. Please try again.",
+    };
+  }
+}
+
+export async function ChangeMaintenance(data: MaintenanceFormType) {
+  const cu = await auth();
+
+  if (!cu) {
+    redirect("/login");
+  }
+
+  if (cu.user.role !== "admin") {
+    return {
+      success: false,
+      message: "Unauthorized access.",
+    };
+  }
+
+  try {
+    // Update maintenance mode in database
+    const updatedSetting = await prisma.setting.update({
+      where: {
+        adminId: cu.user.id,
+      },
+      data: {
+        isMaintenance: data.maintenanceMode,
+      },
+    });
+
+    return {
+      success: true,
+      message: data.maintenanceMode
+        ? "Maintenance mode activated."
+        : "Maintenance mode deactivated.",
+      data: updatedSetting,
+    };
+
+    // Optional: redirect after update
+    // redirect("/admin/settings");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.error("Error updating maintenance mode:", error);
+    return {
+      success: false,
+      message: "Failed to update maintenance mode. Please try again.",
     };
   }
 }
