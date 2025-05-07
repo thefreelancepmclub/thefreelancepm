@@ -625,14 +625,14 @@ export const quizData = [
       {
         question: "If you could work for any company, which would it be?",
         options: [
-          { value: "A", text: "Google, Microsoft, or Amazon (Tech)" },
-          { value: "B", text: "Mayo Clinic, WHO, or CDC (Healthcare)" },
-          { value: "C", text: "Goldman Sachs, JPMorgan, or PayPal (Finance)" },
+          { value: "A", text: "Google, Microsoft, or Amazon Tech" },
+          { value: "B", text: "Mayo Clinic, WHO, or CDC Healthcare" },
+          { value: "C", text: "Goldman Sachs, JPMorgan, or PayPal Finance" },
           {
             value: "D",
-            text: "Tesla, Bechtel, or Caterpillar (Engineering/Manufacturing)",
+            text: "Tesla, Bechtel, or Caterpillar Engineering/Manufacturing",
           },
-          { value: "E", text: "Nike, Disney, or Ogilvy (Marketing & Media)" },
+          { value: "E", text: "Nike, Disney, or Ogilvy Marketing & Media" },
         ],
       },
       {

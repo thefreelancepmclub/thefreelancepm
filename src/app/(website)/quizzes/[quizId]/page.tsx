@@ -137,9 +137,9 @@ export default function QuizPage({ params }: { params: { quizId: string } }) {
 
   return (
     <>
-      <Header subtitile="Discover Your Project Management Path">
-        Find Your Perfect{" "}
-        <span className="text-[#FFA400] underline">PM Certification</span>Path
+      <Header subtitile="Find the path that works for you!">
+        Discover Your Project{" "}
+        <span className="text-[#FFA400] underline"> Management</span> {"  "}Path
       </Header>
       <div className="container mx-auto px-4 py-8 ">
         <h1 className="text-2xl font-bold mb-2">{currentQuiz.title}</h1>
