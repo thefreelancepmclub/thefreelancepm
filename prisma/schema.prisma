@@ -62,6 +62,18 @@ model ResetReq {
   updatedAt DateTime @updatedAt
 }
 
+model Setting {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  siteName String
+  supportEmail String @unique
+  description String
+  keywords String[]
+  isMaintenance Boolean @default(false)
+
+   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum Role {
   admin
   user
