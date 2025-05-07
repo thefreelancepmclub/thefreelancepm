@@ -5,6 +5,7 @@ import { getGrantInfo } from "@/helper/calendar";
 import { nylas } from "@/lib/nylas";
 import { prisma } from "@/lib/prisma";
 import { parseISO, setHours, setMinutes } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 export async function approveCoaching(coachingId: string) {
   const cu = await auth();
@@ -108,6 +109,8 @@ export async function approveCoaching(coachingId: string) {
       meetingLink: meetLink,
     },
   });
+
+  revalidatePath("/dashboard/coaching");
 
   return {
     success: true,
