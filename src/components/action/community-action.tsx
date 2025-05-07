@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function CommunityAction() {
   return (
@@ -16,10 +17,10 @@ export default function CommunityAction() {
           variant="secondary"
           className="bg-white text-blue-600 hover:bg-gray-100"
         >
-          Get Started
+          <Link href="/subscription">Get Started</Link>
         </Button>
         <Button variant="outline" effect="gooeyLeft" className="bg-transparent">
-          Explore
+          <Link href="/jobBoard">Explore</Link>
         </Button>
       </div>
     </div>
