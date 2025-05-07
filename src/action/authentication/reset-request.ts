@@ -41,10 +41,13 @@ export async function sendOtp(email: string) {
     });
 
     // Send OTP via email
-    // await sendEmail({
-    //   to: email,
-    //   subject: "Password Reset OTP",
-    //   html: `<p>Your OTP for resetting your password is: <strong>${otp}</strong></p>`,
+    // await resend.emails.send({
+    //   from: "FreelanceClub PM <monir@monirhrabby.com>",
+    //   to: [newReq.email as string],
+    //   subject: `Your Password Reset OTP: [${newReq.otp}]`,
+    //   react: OtpEmail({
+    //     otpCode: newReq.otp.toString(),
+    //   }),
     // });
 
     return {
