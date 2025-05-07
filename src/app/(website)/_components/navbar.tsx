@@ -24,7 +24,7 @@ const navlinks = [
   },
   {
     id: 2,
-    label: "Subscription",
+    label: "Subscriptions",
     href: "/subscription",
   },
   {

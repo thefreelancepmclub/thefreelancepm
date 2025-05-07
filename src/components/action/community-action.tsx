@@ -5,7 +5,7 @@ export default function CommunityAction() {
   return (
     <div className="w-full bg-brand text-white rounded-lg p-8 text-center">
       <h2 className="text-2xl font-bold mb-4">
-        Ready to <span className="text-yellow-300">Transform</span> Your PM
+        Ready to <span className="text-[#ffa400]">Transform</span> Your PM
         Career?
       </h2>
       <p className="mb-6 max-w-2xl mx-auto">
