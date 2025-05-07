@@ -9,7 +9,7 @@ const CourseHeader = () => {
           </span>
         </h1>
         <p className="text-[14px] lg:text-lg mt-[15px]">
-          Follow top freelance & contract PM opportunities curated just for you.
+          Master the skills to excel in freelance project management
         </p>
       </div>
     </header>

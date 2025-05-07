@@ -24,7 +24,7 @@ const navlinks = [
   },
   {
     id: 2,
-    label: "Subscription",
+    label: "Subscriptions",
     href: "/subscription",
   },
   {
@@ -49,7 +49,7 @@ const navlinks = [
   },
   {
     id: 7,
-    label: "Testimonial",
+    label: "Testimonials",
     href: "/testmonial",
   },
   {
@@ -59,7 +59,7 @@ const navlinks = [
   },
   {
     id: 9,
-    label: "Faq",
+    label: "Faqs",
     href: "/faq",
   },
 ];

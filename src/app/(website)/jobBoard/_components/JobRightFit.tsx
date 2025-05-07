@@ -41,10 +41,11 @@ const JobRightFit = () => {
       <div>
         <div className="mb-[60px]">
           <h2 className="text-[32px] font-semibold mb-[15px] text-center">
-            Don&apos;t See The{" "}
+            Ready to{" "}
             <span className="text-[#ffa400] border-b-2 border-b-[#ffa400]">
-              Right Fit?
-            </span>
+              Transform
+            </span>{" "}
+            Your PM Career?
           </h2>
           <p className="mb-4 text-base text-center">
             We update our job board every week with fresh opportunities. Set up

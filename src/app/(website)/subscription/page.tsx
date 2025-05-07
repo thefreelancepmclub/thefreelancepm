@@ -5,7 +5,7 @@ const page = () => {
   return (
     <div className="">
       <Header subtitile="Empowering freelance project managers to thrive – choose your plan today!">
-        Pick the Plan That Fits Your Journey{" "}
+        Pick the Plan That Fits Your{" "}
         <span className="text-[#FFA400] underline">Journey</span>
       </Header>
 
