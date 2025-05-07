@@ -96,10 +96,22 @@ export async function approveCoaching(coachingId: string) {
   const conferencing: any = event.data.conferencing;
 
   const meetLink = conferencing.details.url;
+  const meetingCode = conferencing.details.meetingCode;
 
   // send email to user with meet link
+  // await resend.emails.send({
+  //   from: "FreelanceClub PM <monir@monirhrabby.com>",
+  //   to: [coaching.email as string],
+  //   subject: "Google Meet Invitation:  Discussion with Ashanti Johnson, PMP",
+  //   react: MeetingInvite({
+  //     meetingDate: moment(coaching.date).format("MMMM Do, YYYY"),
+  //     meetingTime: coaching.time,
+  //     meetingId: coaching.meetingCode || undefined,
+  //     meetingLink: coaching.meetingLink || undefined,
+  //   }),
+  // });
 
-  // save zoom link to coaching session
+  // save meet link to coaching session
 
   await prisma.coaching.update({
     where: {
@@ -107,6 +119,7 @@ export async function approveCoaching(coachingId: string) {
     },
     data: {
       meetingLink: meetLink,
+      meetingCode: meetingCode,
     },
   });
 

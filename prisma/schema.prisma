@@ -366,6 +366,7 @@ model Coaching {
 
   status      CoachingStatus @default(opened)
   meetingLink String?
+  meetingCode String?
 
   // Relation to User
   userId String @db.ObjectId
