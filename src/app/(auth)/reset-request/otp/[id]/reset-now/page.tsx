@@ -1,7 +1,26 @@
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 import ResetNowForm from "./_components/reset-now-form";
 
-export default function LoginPage() {
+export default async function ResetNowPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const otpId = params.id;
+  const exist = await prisma.resetReq.findFirst({
+    where: {
+      id: otpId,
+    },
+  });
+
+  if (!exist) {
+    toast.warning("OTP Doesn't exist");
+    redirect("/reset-request");
+  }
+
   return (
     <div className="flex min-h-screen">
       {/* Left side - Image */}
@@ -36,7 +55,7 @@ export default function LoginPage() {
           </div>
 
           {/*  form component */}
-          <ResetNowForm />
+          <ResetNowForm otpId={otpId} />
         </div>
       </div>
     </div>

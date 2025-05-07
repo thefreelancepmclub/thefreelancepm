@@ -1,5 +1,6 @@
 "use client";
 
+import { resetNow } from "@/action/authentication/reset-request";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,8 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 // Validation schema with zod
@@ -29,11 +32,16 @@ const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
-const ResetNowForm = () => {
-  const [loading, setLoading] = useState(false); // Loading state
+interface Props {
+  otpId: string;
+}
+const ResetNowForm = ({ otpId }: Props) => {
+  const [pending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false); // Show/hide password state
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   // Form configuration
+
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -43,19 +51,18 @@ const ResetNowForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof resetPasswordSchema>) => {
-    // if (!email) {
-    //   toast.warning(
-    //     "Unable to retrieve your email from the provided parameters. Please verify and try again.",
-    //     {
-    //       position: "bottom-right",
-    //       richColors: true,
-    //     }
-    //   );
-    //   return;
-    // }
-    setLoading(true);
+    startTransition(() => {
+      resetNow(otpId, values.password).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
 
-    console.log({ values });
+        // handle success
+        toast.success(res.message);
+        router.push("/login");
+      });
+    });
   };
 
   return (
@@ -145,10 +152,10 @@ const ResetNowForm = () => {
           <Button
             type="submit"
             className="w-full mt-[24px] min-h-[45px]"
-            disabled={loading}
+            disabled={pending}
             effect="gooeyLeft"
           >
-            Update Password
+            {pending ? "Please wait..." : "Update Password"}
           </Button>
         </form>
       </Form>

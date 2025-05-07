@@ -1,8 +1,12 @@
 "use client";
+import { verifyOTP } from "@/action/authentication/reset-request";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const otpSchema = z.object({
@@ -10,21 +14,35 @@ const otpSchema = z.object({
     .string()
     .length(6, "OTP must be 6 digits")
     .regex(/^[0-9]+$/, "OTP must contain only numbers"),
-  email: z.string().email("Please enter a valid email address"),
 });
 
 type OTPSchemaType = z.infer<typeof otpSchema>;
-const OTPForm = () => {
+
+interface Props {
+  otpId: string;
+}
+const OTPForm = ({ otpId }: Props) => {
+  const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const form = useForm<OTPSchemaType>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
       otp: "",
-      email: "",
     },
   });
 
   const handleSubmit = (values: OTPSchemaType) => {
-    console.log({ values });
+    startTransition(() => {
+      verifyOTP(otpId, Number(values.otp)).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        router.push(`/reset-request/otp/${otpId}/reset-now`);
+      });
+    });
   };
 
   return (
@@ -92,7 +110,7 @@ const OTPForm = () => {
             />
           ))}
         </div>
-        <div className="flex items-center justify-between mt-4">
+        {/* <div className="flex items-center justify-between mt-4">
           <span className="text-base text-[#444444] font-normal leading-[19.2px]">
             Didn’t receive OTP?
           </span>
@@ -106,13 +124,14 @@ const OTPForm = () => {
           >
             {true ? `Resend in ${15}s` : "Resend"}
           </Button>
-        </div>
+        </div> */}
         <Button
           type="submit"
           className="w-full min-h-[45px]"
           effect="gooeyLeft"
+          disabled={pending}
         >
-          {false ? "Wait a second..." : "Verify"}
+          {pending ? "Wait a second..." : "Verify"}
         </Button>
       </form>
     </div>

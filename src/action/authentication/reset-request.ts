@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 // Helper to generate a 6-digit OTP
 function generateOtp(): string {
@@ -56,4 +57,95 @@ export async function sendOtp(email: string) {
       message: "Something went wrong. Please try again later.",
     };
   }
+}
+
+export async function verifyOTP(id: string, otp: number) {
+  const exist = await prisma.resetReq.findFirst({
+    where: {
+      id,
+      otp,
+    },
+  });
+
+  if (!exist) {
+    return {
+      success: false,
+      message: "Invalid OTP or ID",
+    };
+  }
+
+  // Check if the OTP has expired
+  if (exist.expiresAt && new Date() > exist.expiresAt) {
+    // Optional: Delete the expired OTP
+    await prisma.resetReq.delete({
+      where: { id: exist.id },
+    });
+
+    return {
+      success: false,
+      message: "OTP has expired",
+    };
+  }
+
+  await prisma.resetReq.update({
+    where: {
+      id,
+    },
+    data: {
+      isOtpVerified: true,
+    },
+  });
+
+  return {
+    success: true,
+    message: "OTP verified successfully",
+    data: exist,
+  };
+}
+
+export async function resetNow(id: string, password: string) {
+  const req = await prisma.resetReq.findFirst({
+    where: {
+      id,
+    },
+  });
+
+  if (!req) {
+    return {
+      success: false,
+      message: "Invalid request or ID not found",
+    };
+  }
+
+  if (!req.isOtpVerified) {
+    return {
+      success: false,
+      message: "OTP has not been verified yet",
+    };
+  }
+
+  // Hash the new password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Update user's password using the email stored in the reset request
+  await prisma.user.update({
+    where: {
+      email: req.email,
+    },
+    data: {
+      password: hashedPassword,
+    },
+  });
+
+  // Optionally delete the reset request after successful password reset
+  await prisma.resetReq.delete({
+    where: {
+      id: req.id,
+    },
+  });
+
+  return {
+    success: true,
+    message: "Password reset successfully",
+  };
 }

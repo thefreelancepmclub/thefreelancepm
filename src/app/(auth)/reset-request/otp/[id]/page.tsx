@@ -1,8 +1,22 @@
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { toast } from "sonner";
 import OTPForm from "./_components/otp-form";
 
-export default function LoginPage() {
+export default async function OTPPage({ params }: { params: { id: string } }) {
+  const otpId = params.id;
+  const exist = await prisma.resetReq.findFirst({
+    where: {
+      id: otpId,
+    },
+  });
+
+  if (!exist) {
+    toast.warning("OTP Doesn't exist");
+    redirect("/reset-request");
+  }
   return (
     <div className="flex min-h-screen">
       {/* Left side - Image */}
@@ -38,7 +52,7 @@ export default function LoginPage() {
 
           {/*  form component */}
           <Suspense>
-            <OTPForm />
+            <OTPForm otpId={otpId} />
           </Suspense>
         </div>
       </div>
