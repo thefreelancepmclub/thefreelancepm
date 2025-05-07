@@ -1,8 +1,26 @@
+import { prisma } from "@/lib/prisma";
 import Image from "next/image";
-import { Suspense } from "react";
-import OTPForm from "./_components/otp-form";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
+import ResetNowForm from "./_components/reset-now-form";
 
-export default function LoginPage() {
+export default async function ResetNowPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const otpId = params.id;
+  const exist = await prisma.resetReq.findFirst({
+    where: {
+      id: otpId,
+    },
+  });
+
+  if (!exist) {
+    toast.warning("OTP Doesn't exist");
+    redirect("/reset-request");
+  }
+
   return (
     <div className="flex min-h-screen">
       {/* Left side - Image */}
@@ -29,17 +47,15 @@ export default function LoginPage() {
 
           <div className="text-center">
             <h1 className="text-[32px] leading-[120%]  font-semibold text-gray-900">
-              Enter <span className="text-orange-500 underline">OTP</span>
+              Reset <span className="text-orange-500 underline">password</span>
             </h1>
             <p className="mt-2 text-sm text-gray-600">
-              Enter your OTP to change password
+              Enter your new password
             </p>
           </div>
 
           {/*  form component */}
-          <Suspense>
-            <OTPForm />
-          </Suspense>
+          <ResetNowForm otpId={otpId} />
         </div>
       </div>
     </div>

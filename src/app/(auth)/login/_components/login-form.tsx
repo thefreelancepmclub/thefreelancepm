@@ -152,7 +152,7 @@ export function LoginForm() {
             )}
           />
           <Link
-            href="/forget-password"
+            href="/reset-request"
             className="text-sm font-medium text-orange-500 hover:text-orange-600"
           >
             Forgot password?
