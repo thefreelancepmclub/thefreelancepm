@@ -1,10 +1,19 @@
 import { auth } from "@/auth";
 import Footer from "@/components/footer";
+import MaintenancePage from "@/components/shared/maintanence";
+import { prisma } from "@/lib/prisma";
 import { ReactNode } from "react";
 import Navbar from "./_components/navbar";
 
 const WebsiteLayoout = async ({ children }: { children: ReactNode }) => {
   const cu = await auth();
+
+  const settings = await prisma.setting.findFirst();
+  const isMaintanence = settings?.isMaintenance ?? false;
+
+  if (isMaintanence) {
+    return <MaintenancePage />;
+  }
   return (
     <div className="min-h-screen flex flex-col ">
       <Navbar isLoggedin={!!cu} />

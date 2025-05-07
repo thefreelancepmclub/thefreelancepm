@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useState } from "react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { ChangeMaintenance } from "@/action/site/settings";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -13,36 +12,43 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { maintenanceForm, MaintenanceFormType } from "@/schemas/site";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Setting } from "@prisma/client";
+import { useState, useTransition } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 // Define Zod schema
-const formSchema = z.object({
-  maintenanceMode: z.boolean(),
-});
 
-type FormValues = z.infer<typeof formSchema>;
+interface Props {
+  initialData?: Setting;
+}
 
-export default function MaintenanceForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function MaintenanceForm({ initialData }: Props) {
+  const [isReady, setReady] = useState(false);
+  const [pending, startTransition] = useTransition();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<MaintenanceFormType>({
+    resolver: zodResolver(maintenanceForm),
     defaultValues: {
-      maintenanceMode: false,
+      maintenanceMode: initialData?.isMaintenance ?? false,
     },
   });
 
-  const onSubmit: any = async (values: FormValues) => {
-    setIsSubmitting(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Maintenance form submitted:", values);
-    } catch (error) {
-      console.error("Error submitting maintenance form:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const onSubmit: any = async (values: MaintenanceFormType) => {
+    startTransition(() => {
+      ChangeMaintenance(values).then((res) => {
+        if (!res.success) {
+          toast.error(res.message);
+          return;
+        }
+
+        // handle success
+        toast.success(res.message);
+        setReady(false);
+      });
+    });
   };
 
   return (
@@ -71,6 +77,7 @@ export default function MaintenanceForm() {
                           onCheckedChange={field.onChange}
                           className="data-[state=checked]:bg-[#FFA400]"
                           aria-label="Toggle maintenance mode"
+                          disabled={pending || !isReady}
                         />
                       </FormControl>
                     </FormItem>
@@ -81,17 +88,20 @@ export default function MaintenanceForm() {
                 <Button
                   type="button"
                   className="px-4 py-2 bg-[#FFA400] text-white rounded-md"
-                  onClick={() => form.reset()}
+                  onClick={() => setReady((p) => !p)}
+                  disabled={pending}
                 >
-                  Cancel
+                  {isReady ? "Cancel" : "Update"}
                 </Button>
-                <Button
-                  type="submit"
-                  className="px-4 py-2 bg-[#004AAD] text-white rounded-md"
-                //   disabled={isSubmitting}
-                >
-                    {isSubmitting ? "Saving..." : "Save"}
-                </Button>
+                {isReady && (
+                  <Button
+                    type="submit"
+                    className="px-4 py-2 bg-[#004AAD] text-white rounded-md"
+                    disabled={pending}
+                  >
+                    {pending ? "Saving..." : "Save"}
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>

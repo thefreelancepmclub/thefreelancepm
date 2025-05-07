@@ -2,8 +2,10 @@
 
 import { auth } from "@/auth";
 import { getGrantInfo } from "@/helper/calendar";
+import { nylas } from "@/lib/nylas";
 import { prisma } from "@/lib/prisma";
 import { parseISO, setHours, setMinutes } from "date-fns";
+import { revalidatePath } from "next/cache";
 
 export async function approveCoaching(coachingId: string) {
   const cu = await auth();
@@ -54,44 +56,35 @@ export async function approveCoaching(coachingId: string) {
   const startTime = Math.floor(startDateTime.getTime() / 1000);
   const endTime = Math.floor(endDateTime.getTime() / 1000);
 
-  console.log(
-    { startTime, endTime, firstName, lastName, email },
-    "startTime and endTime",
-  );
+  const event = await nylas.events.create({
+    identifier: grantId,
+    requestBody: {
+      title: `1:1 Session with Ashanti Johnson`,
+      description: `This is a 30-minute  session between ${firstName} and Ashanti Johnson.
+    Feel free to prepare any questions or topics in advance. Looking forward to meeting you!`,
 
-  // const event = await nylas.events.create({
-  //   identifier: grantId,
-  //   requestBody: {
-  //     title: `1:1 Session with Ashanti Johnson`,
-  //     description: `This is a 30-minute  session between ${firstName} and Ashanti Johnson.
-  //   Feel free to prepare any questions or topics in advance. Looking forward to meeting you!`,
+      when: {
+        startTime: startTime, // ✅ Correct key
+        endTime: endTime, // ✅ Correct key
+      },
+      conferencing: {
+        autocreate: { enabled: true },
+        provider: "Google Meet",
+      },
+      participants: [
+        {
+          name: `${firstName} ${lastName}`,
+          email: email,
+          status: "yes",
+        },
+      ],
+    },
 
-  //     when: {
-  //       startTime: startTime, // ✅ Correct key
-  //       endTime: endTime, // ✅ Correct key
-  //     },
-  //     conferencing: {
-  //       autocreate:true,
-  //       provider: "Zoom Meeting",
-  //     },
-  //     participants: [
-  //       {
-  //         name: `${firstName} ${lastName}`,
-  //         email: email,
-  //         status: "yes",
-  //       },
-  //     ],
-  //     calendarId: "primary",
-  //     visibility: "private",
-  //   },
-
-  //   queryParams: {
-  //     calendarId: grantEmail as string,
-  //     notifyParticipants: true,
-  //   },
-  // });
-
-  console.log(event, "event");
+    queryParams: {
+      calendarId: grantEmail as string,
+      notifyParticipants: true,
+    },
+  });
 
   if (!event) {
     return {
@@ -99,10 +92,38 @@ export async function approveCoaching(coachingId: string) {
       message: "Failed to generate zoom link",
     };
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const conferencing: any = event.data.conferencing;
 
-  // send email to user with zoom link
+  const meetLink = conferencing.details.url;
+  const meetingCode = conferencing.details.meetingCode;
 
-  // save zoom link to coaching session
+  // send email to user with meet link
+  // await resend.emails.send({
+  //   from: "FreelanceClub PM <monir@monirhrabby.com>",
+  //   to: [coaching.email as string],
+  //   subject: "Google Meet Invitation:  Discussion with Ashanti Johnson, PMP",
+  //   react: MeetingInvite({
+  //     meetingDate: moment(coaching.date).format("MMMM Do, YYYY"),
+  //     meetingTime: coaching.time,
+  //     meetingId: coaching.meetingCode || undefined,
+  //     meetingLink: coaching.meetingLink || undefined,
+  //   }),
+  // });
+
+  // save meet link to coaching session
+
+  await prisma.coaching.update({
+    where: {
+      id: coachingId as string,
+    },
+    data: {
+      meetingLink: meetLink,
+      meetingCode: meetingCode,
+    },
+  });
+
+  revalidatePath("/dashboard/coaching");
 
   return {
     success: true,

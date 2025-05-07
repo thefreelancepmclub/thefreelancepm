@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { FaFacebookF, FaGoogle, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -21,16 +21,25 @@ const Footer = () => {
             Your complete resource hub for freelance project management success.
           </p>
           <div className="flex gap-3 mt-2">
-            <a href="#" className="text-blue-800">
-              <FaGoogle />
-            </a>
-            <a href="#" className="text-blue-800">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              className="text-blue-800"
+            >
               <FaFacebookF />
             </a>
-            <a href="#" className="text-blue-800">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              className="text-blue-800"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="text-blue-800">
+            <a
+              href="https://www.youtube.com"
+              target="_blank"
+              className="text-blue-800"
+            >
               <FaYoutube />
             </a>
           </div>

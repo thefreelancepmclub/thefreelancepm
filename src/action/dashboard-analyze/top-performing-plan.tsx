@@ -1,14 +1,9 @@
 // server-actions/planPerformance.ts
 "use server";
 
+import { tierModel } from "@/helper/subscription";
 import { prisma } from "@/lib/prisma";
 import { format, startOfMonth, subMonths } from "date-fns";
-
-const tierModel = {
-  "68183cb81ba9897a815d627d": "free",
-  "68183ce51ba9897a815d627e": "pro",
-  "68183d161ba9897a815d627f": "elite",
-};
 
 export async function getTopPerformingPlan() {
   const twelveMonthsAgo = subMonths(new Date(), 11); // Get date 11 months ago (to include current)
