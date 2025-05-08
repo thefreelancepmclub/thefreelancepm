@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import { getGrantInfo } from "@/helper/calendar";
-import { nylas } from "@/lib/nylas";
+import { generateZoomMeeting } from "@/helper/zoom";
 import { prisma } from "@/lib/prisma";
 import { parseISO, setHours, setMinutes } from "date-fns";
 import { revalidatePath } from "next/cache";
@@ -51,52 +51,24 @@ export async function approveCoaching(coachingId: string) {
     setHours(coachingDate, parseInt(hourStr)),
     parseInt(minuteStr),
   );
-  const endDateTime = new Date(startDateTime.getTime() + 30 * 60 * 1000); // Add 30 minutes
 
-  const startTime = Math.floor(startDateTime.getTime() / 1000);
-  const endTime = Math.floor(endDateTime.getTime() / 1000);
-
-  const event = await nylas.events.create({
-    identifier: grantId,
-    requestBody: {
-      title: `1:1 Session with Ashanti Johnson`,
-      description: `This is a 30-minute  session between ${firstName} and Ashanti Johnson.
+  const zoom = await generateZoomMeeting({
+    topic: `1:1 Session between ${firstName} & Ashanti Johnson`,
+    agenda: `This is a 30-minute  session between ${firstName} ${lastName} and Ashanti Johnson.
     Feel free to prepare any questions or topics in advance. Looking forward to meeting you!`,
-
-      when: {
-        startTime: startTime, // ✅ Correct key
-        endTime: endTime, // ✅ Correct key
-      },
-      conferencing: {
-        autocreate: { enabled: true },
-        provider: "Google Meet",
-      },
-      participants: [
-        {
-          name: `${firstName} ${lastName}`,
-          email: email,
-          status: "yes",
-        },
-      ],
-    },
-
-    queryParams: {
-      calendarId: grantEmail as string,
-      notifyParticipants: true,
-    },
+    duration: 30,
+    customerEmail: email,
+    startTime: startDateTime,
   });
 
-  if (!event) {
+  if (!zoom) {
     return {
       success: false,
       message: "Failed to generate zoom link",
     };
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const conferencing: any = event.data.conferencing;
 
-  const meetLink = conferencing.details.url;
-  const meetingCode = conferencing.details.meetingCode;
+  const { startUrl, joinUrl, passcode } = zoom;
 
   // send email to user with meet link
   // await resend.emails.send({
@@ -118,8 +90,9 @@ export async function approveCoaching(coachingId: string) {
       id: coachingId as string,
     },
     data: {
-      meetingLink: meetLink,
-      meetingCode: meetingCode,
+      start_url: startUrl,
+      join_url: joinUrl,
+      pass_code: passcode,
     },
   });
 

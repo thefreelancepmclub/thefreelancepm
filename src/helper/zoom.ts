@@ -32,38 +32,72 @@ export const generateZoomAccessToken = async () => {
   }
 };
 
-export const generateZoomMeeting = async () => {
-  const now = new Date();
-  const fiveMinutesLater = new Date(now.getTime() + 5 * 60 * 1000);
-  const access_token = await generateZoomAccessToken();
+interface Props {
+  customerEmail: string;
+  agenda: string;
+  topic: string;
+  duration: number;
+  startTime: Date;
+}
 
-  console.log("ACCESS_TOKEN_RESPONSE", access_token);
+interface ZoomMeetingResponse {
+  joinUrl: string;
+  startUrl: string;
+  passcode: string;
+}
 
-  const response = await fetch(`https://api.zoom.us/v2/users/me/meetings`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${access_token}`,
-    },
-    body: JSON.stringify({
-      agenda: "Testing Zoom",
-      duration: 60,
+export const generateZoomMeeting = async ({
+  customerEmail,
+  agenda,
+  duration,
+  startTime,
+  topic,
+}: Props): Promise<ZoomMeetingResponse | null> => {
+  try {
+    const access_token = await generateZoomAccessToken();
+
+    const payload = {
+      agenda,
+      duration,
       schedule_for: "monir.bdcalling@gmail.com",
       calendar_type: 2,
       join_before_host: false,
       meeting_invitees: [
         {
-          email: "monirhrabby.personal@gmail.com",
+          email: customerEmail,
         },
       ],
       registrants_confirmation_email: true,
       registrants_email_notification: true,
       registration_type: 2,
-      start_time: fiveMinutesLater.toDateString(),
-      topic: "Explore thhe freelancePM Intregation",
+      start_time: startTime.toISOString(), // Ensure ISO format
+      topic,
       type: 2,
-    }),
-  }).then((res) => res.json());
+    };
 
-  console.log("meeting", response);
+    const response = await fetch(`https://api.zoom.us/v2/users/me/meetings`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      console.error("Zoom API error:", await response.text());
+      return null;
+    }
+
+    const data = await response.json();
+
+    return {
+      joinUrl: data.join_url ?? "",
+      startUrl: data.start_url ?? "",
+      passcode: data.password ?? "",
+    };
+  } catch (error) {
+    console.error("generateZoomMeeting error:", error);
+    return null;
+  }
 };

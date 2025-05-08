@@ -364,9 +364,12 @@ model Coaching {
   amount    Int
   notes     String
 
-  status      CoachingStatus @default(opened)
-  meetingLink String?
-  meetingCode String?
+  status CoachingStatus @default(opened)
+
+  // meeting link
+  join_url  String?
+  start_url String?
+  pass_code String?
 
   // Relation to User
   userId String @db.ObjectId

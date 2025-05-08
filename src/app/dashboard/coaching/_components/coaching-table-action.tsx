@@ -25,15 +25,15 @@ const CoachingTableAction = ({ data }: Props) => {
     });
   };
 
-  if (data.meetingLink) {
+  if (data.start_url) {
     return (
       <a
-        href={data.meetingLink}
+        href={data.start_url}
         target="_blank"
         rel="noopener noreferrer"
         className="text-blue-500 hover:underline"
       >
-        Join Meeting
+        Start Meeting
       </a>
     );
   }
