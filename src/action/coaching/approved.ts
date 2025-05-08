@@ -93,6 +93,7 @@ export async function approveCoaching(coachingId: string) {
       start_url: startUrl,
       join_url: joinUrl,
       pass_code: passcode,
+      status: "scheduled",
     },
   });
 
