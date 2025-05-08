@@ -49,7 +49,7 @@ export function CoachingTableContainer() {
 
   const { isLoading, data, isError, error, refetch, isRefetching } =
     useQuery<ApiRes>({
-      queryKey: ["Users", currentPage, item_per_page],
+      queryKey: ["Coaching", currentPage, item_per_page],
       queryFn: () =>
         fetch(
           `/api/dashboard/coaching?status=${status}&query=${searchQuery}&page=${currentPage}&limit=${item_per_page}`,
