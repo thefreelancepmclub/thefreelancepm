@@ -1,4 +1,3 @@
-import logo2 from "@/../public/vector-icon-2.png";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import {
@@ -22,7 +21,7 @@ const TopPerformingPlan = ({ data }: Props) => {
         <div className="flex items-center gap-2">
           {/* <TrendingUp className="h-5 w-5 text-blue-600" /> */}
           <Image
-            src={logo2}
+            src="/vector-icon-2.png"
             width={100}
             height={100}
             alt="logo"

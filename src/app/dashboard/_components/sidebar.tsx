@@ -118,7 +118,7 @@ const Sidebar = () => {
             variant="destructive"
             className="w-full justify-start gap-3"
             onClick={async () => {
-              await signOut({ redirectTo: "/" });
+              await signOut({ redirectTo: "/", redirect: true });
             }}
           >
             <LogOut className="h-5 w-5" />
