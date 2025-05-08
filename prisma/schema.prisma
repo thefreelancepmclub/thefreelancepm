@@ -20,19 +20,18 @@ enum FeatureName {
 }
 
 model User {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?         @unique
-  emailVerified DateTime?       @default(now())
+  email         String?   @unique
+  emailVerified DateTime? @default(now())
   image         String?
   phone         String?
-  role          Role            @default(user)
+  role          Role      @default(user)
   password      String
   accounts      Account[]
   sessions      Session[]
-  isActive      Boolean         @default(false)
-  grantId       String?
-  grantEmail    String?
+  isActive      Boolean   @default(false)
+
   conf_grant_id String?
   calendarLink  String?
   // Optional for WebAuthn support
