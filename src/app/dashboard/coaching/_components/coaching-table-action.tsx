@@ -1,6 +1,7 @@
 import { approveCoaching } from "@/action/coaching/approved";
 import { Button } from "@/components/ui/button";
 import { Coaching } from "@prisma/client";
+import { useQueryClient } from "@tanstack/react-query";
 import { Check, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
@@ -10,6 +11,7 @@ interface Props {
 }
 const CoachingTableAction = ({ data }: Props) => {
   const [pending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
 
   const handleApprove = async () => {
     startTransition(() => {
@@ -21,6 +23,7 @@ const CoachingTableAction = ({ data }: Props) => {
 
         // handle success
         toast.success(res.message);
+        queryClient.invalidateQueries({ queryKey: ["Coaching"] });
       });
     });
   };
@@ -33,7 +36,7 @@ const CoachingTableAction = ({ data }: Props) => {
         rel="noopener noreferrer"
         className="text-blue-500 hover:underline"
       >
-        Join Meeting
+        Start Meeting
       </a>
     );
   }
