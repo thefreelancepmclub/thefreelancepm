@@ -3,7 +3,6 @@ import {
   Container,
   Head,
   Html,
-  Img,
   Preview,
   Section,
   Tailwind,
@@ -16,8 +15,8 @@ interface OtpEmailProps {
 
 const validityMinutes = 15;
 const supportEmail = "support@thefreelancepmclub.com";
-const companyLogo =
-  "https://files.edgestore.dev/1zj9v0wokztdui8j/Assets/_public/Logo.png";
+// const companyLogo =
+//   "https://files.edgestore.dev/1zj9v0wokztdui8j/Assets/_public/Logo.png";
 const companyName = "FreelancePM";
 
 export const OtpEmail = ({ otpCode = "123456" }: OtpEmailProps) => {
@@ -29,7 +28,7 @@ export const OtpEmail = ({ otpCode = "123456" }: OtpEmailProps) => {
         <Body className="bg-gray-100 my-auto mx-auto font-sans">
           <Container className="border border-solid border-gray-200 rounded my-10 mx-auto p-5 max-w-md bg-white">
             {/* Header with Logo */}
-            <Section className="mt-4 text-center">
+            {/* <Section className="mt-4 text-center">
               <Img
                 src={companyLogo}
                 width="80"
@@ -37,7 +36,7 @@ export const OtpEmail = ({ otpCode = "123456" }: OtpEmailProps) => {
                 alt={`${companyName} Logo`}
                 className="mx-auto"
               />
-            </Section>
+            </Section> */}
 
             {/* Title */}
             <Section className="mt-6">
