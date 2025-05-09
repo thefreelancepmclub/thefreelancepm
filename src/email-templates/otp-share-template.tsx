@@ -15,9 +15,9 @@ interface OtpEmailProps {
 }
 
 const validityMinutes = 15;
-const supportEmail = "support@company.com";
+const supportEmail = "support@thefreelancepmclub.com";
 const companyLogo =
-  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Online%20Meeting%20Invite%202-27z0nF2ccz5PTXfrWh87vECOKCQl7w.png";
+  "https://files.edgestore.dev/1zj9v0wokztdui8j/Assets/_public/Logo.png";
 const companyName = "FreelancePM";
 
 export const OtpEmail = ({ otpCode = "123456" }: OtpEmailProps) => {
@@ -32,7 +32,7 @@ export const OtpEmail = ({ otpCode = "123456" }: OtpEmailProps) => {
             <Section className="mt-4 text-center">
               <Img
                 src={companyLogo}
-                width="120"
+                width="80"
                 height="40"
                 alt={`${companyName} Logo`}
                 className="mx-auto"

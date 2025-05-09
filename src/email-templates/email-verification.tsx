@@ -5,7 +5,6 @@ import {
   Head,
   Html,
   Img,
-  Link,
   Preview,
   Section,
   Tailwind,
@@ -54,7 +53,7 @@ export const EmailVerification = ({
             Verify your email address
           </Text>
           <Text className="text-center text-[16px] font-semibold">
-            Welcome to thefreelance Club PM
+            Welcome to thefreelance PM Club
           </Text>
 
           <Section style={section}>
@@ -74,18 +73,10 @@ export const EmailVerification = ({
               Verify Email Address
             </Button>
           </Section>
-          <Text style={links}>
-            <Link href={`${baseUrl}/support`} style={link}>
-              Contact support
-            </Link>
-          </Text>
 
           <Text style={footer}>
             If you did not sign up for this account, you can safely ignore this
             email.
-          </Text>
-          <Text style={footer}>
-            Schaefer Tutor ・123 Example Street ・City, State 12345
           </Text>
         </Container>
       </Body>
@@ -135,14 +126,14 @@ const button = {
   padding: "12px 24px",
 };
 
-const links = {
-  textAlign: "center" as const,
-};
+// const links = {
+//   textAlign: "center" as const,
+// };
 
-const link = {
-  color: "#0366d6",
-  fontSize: "12px",
-};
+// const link = {
+//   color: "#0366d6",
+//   fontSize: "12px",
+// };
 
 const footer = {
   color: "#6a737d",
