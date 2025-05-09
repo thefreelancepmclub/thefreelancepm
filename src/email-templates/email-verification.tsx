@@ -4,7 +4,6 @@ import {
   Container,
   Head,
   Html,
-  Img,
   Preview,
   Section,
   Tailwind,
@@ -40,15 +39,6 @@ export const EmailVerification = ({
           Verify your email address to complete your registration
         </Preview>
         <Container style={container}>
-          <Container className="w-full flex justify-center">
-            <Img
-              src={`https://res.cloudinary.com/dgnustmny/image/upload/v1745722360/Email_Icon_lk31sc.png`}
-              width="62"
-              height="52"
-              alt="Email Verification"
-            />
-          </Container>
-
           <Text className="text-center text-[28px] font-semibold">
             Verify your email address
           </Text>
