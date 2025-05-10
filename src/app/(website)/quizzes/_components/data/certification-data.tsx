@@ -7,6 +7,7 @@ export type Certification = {
   idealFor: string;
   prerequisites: string[];
   industries: string[];
+  url?: string;
 };
 
 export const certificationData: Record<
@@ -37,6 +38,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
       },
       {
         id: "agilepm",
@@ -53,6 +55,81 @@ export const certificationData: Record<
           "Technology (IT & Software Development)",
           "Telecommunications",
         ],
+        url: "https://apmg-international.com/product/agile-project-management-agilepmr-certification",
+      },
+      {
+        id: "csm",
+        name: "Certified ScrumMaster (CSM)",
+        description:
+          "The CSM certification focuses on Scrum methodology, which is used in Agile project management. This certification is ideal for those looking to become Scrum Masters or work within Agile project teams, ensuring effective Scrum practices for project delivery.",
+        idealFor:
+          "Those interested in working in Agile environments or teams using Scrum.",
+        prerequisites: [
+          "No formal prerequisites",
+          "Must attend a two-day (16-hour) CSM training from a Scrum Alliance-certified trainer",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Telecommunications",
+        ],
+        url: "https://www.scrumalliance.org/get-certified/scrum-master-track/certified-scrummaster",
+      },
+      {
+        id: "psm",
+        name: "Professional Scrum Master (PSM I, II, III)",
+        description:
+          "PSM certification is a series of progressive levels (I, II, III) for Scrum Masters, starting with the basics of Scrum to advanced understanding of Scrum principles, practices, and leadership. It is ideal for those who want to grow as Agile leaders and ensure Scrum practices are effectively implemented in their teams.",
+        idealFor:
+          "Scrum professionals looking to deepen their knowledge and expertise in Agile project management.",
+        prerequisites: [
+          "No formal prerequisites",
+          "Self-study or training recommended",
+          "PSM II requires passing PSM I",
+          "PSM III requires passing PSM II",
+          "Higher levels require deeper Scrum mastery",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Telecommunications",
+        ],
+        url: "https://www.scrum.org/professional-scrum-certifications/professional-scrum-master-assessments",
+      },
+      {
+        id: "itil4",
+        name: "ITIL 4 Foundation Certification",
+        description:
+          "ITIL 4 Foundation certification provides an understanding of the ITIL framework, which focuses on aligning IT services with business needs. Ideal for IT professionals who want to manage and improve service delivery processes in a structured and strategic way.",
+        idealFor:
+          "IT professionals involved in service management, IT teams, and those in IT project management roles.",
+        prerequisites: [
+          "No prerequisites",
+          "Suitable for IT professionals, project managers, and service managers",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Telecommunications",
+        ],
+        url: "https://www.axelos.com/certifications/itil-service-management/itil-4-foundation",
+      },
+      {
+        id: "cpm",
+        name: "Certified Project Manager (CPM)",
+        description:
+          "The CPM certification from IAPM is designed to establish competence in core project management principles. It is suitable for those entering project management roles or looking to formalize their project management knowledge.",
+        idealFor:
+          "Professionals with or without prior project management experience who want to enhance their credentials.",
+        prerequisites: [
+          "No formal prerequisites",
+          "Training recommended but not required",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Healthcare",
+          "Marketing & Advertising",
+        ],
+        url: "https://www.iapm.net/en/certification/levels-of-certification/certified-project-manager-iapm/",
       },
     ],
     healthcare: [
@@ -82,6 +159,7 @@ export const certificationData: Record<
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
       {
         id: "ccpm",
@@ -95,6 +173,7 @@ export const certificationData: Record<
           "Clinical research or project management experience recommended",
         ],
         industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
       },
     ],
     finance: [
@@ -124,7 +203,9 @@ export const certificationData: Record<
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
+
       {
         id: "prince2",
         name: "PRINCE2 Foundation",
@@ -145,6 +226,7 @@ export const certificationData: Record<
           "Nonprofit & Social Impact",
           "Hospitality & Tourism",
         ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
       },
     ],
     construction: [
@@ -174,6 +256,7 @@ export const certificationData: Record<
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
       {
         id: "ccm",
@@ -186,6 +269,7 @@ export const certificationData: Record<
           "Eight years of experience with no degree",
         ],
         industries: ["Construction & Engineering"],
+        url: "https://www.cmaanet.org/certification/ccm",
       },
     ],
     marketing: [
@@ -211,6 +295,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
       },
       {
         id: "prince2",
@@ -232,6 +317,7 @@ export const certificationData: Record<
           "Nonprofit & Social Impact",
           "Hospitality & Tourism",
         ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
       },
     ],
     ecommerce: [
@@ -257,6 +343,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
       },
       {
         id: "capm",
@@ -284,6 +371,7 @@ export const certificationData: Record<
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
     ],
     telecommunications: [
@@ -309,6 +397,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
       },
       {
         id: "agilepm",
@@ -325,6 +414,7 @@ export const certificationData: Record<
           "Technology (IT & Software Development)",
           "Telecommunications",
         ],
+        url: "https://apmg-international.com/product/agile-project-management-agilepmr-certification",
       },
     ],
     manufacturing: [
@@ -354,6 +444,7 @@ export const certificationData: Record<
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
       {
         id: "lssgb",
@@ -375,6 +466,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://iassc.org/six-sigma-certification/green-belt-certification/",
       },
     ],
     // Add more industries and their certifications as needed
@@ -413,6 +505,7 @@ export const certificationData: Record<
           "Hospitality & Tourism",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
       },
       {
         id: "pmi-acp",
@@ -434,9 +527,72 @@ export const certificationData: Record<
           "Nonprofit & Social Impact",
           "Entertainment & Media",
         ],
+        url: "https://www.pmi.org/certifications/agile-certifications",
       },
     ],
-    // Add more industries and their certifications for mid-level
+    manufacturing: [
+      {
+        id: "lssbb",
+        name: "Lean Six Sigma Black Belt",
+        description:
+          "Lean Six Sigma Black Belt certification demonstrates advanced knowledge of Six Sigma methodologies and tools for leading process improvement projects. Black Belts typically lead project teams and serve as experts in data-driven decision-making, process optimization, and organizational efficiency.",
+        idealFor:
+          "Experienced professionals leading process improvement projects and managing teams in quality-focused roles.",
+        prerequisites: [
+          "Typically requires completion of Lean Six Sigma Green Belt certification",
+          "Experience leading or supporting Six Sigma projects is recommended",
+          "Training or coursework in Six Sigma principles usually required",
+        ],
+        industries: [
+          "Manufacturing",
+          "Healthcare",
+          "Technology (IT & Software Development)",
+          "Finance & Banking",
+          "Supply Chain & Logistics",
+        ],
+        url: "https://iassc.org/six-sigma-certification/black-belt-certification",
+      },
+    ],
+    cybersecurity: [
+      {
+        id: "cspm",
+        name: "Certified Security Project Manager (CSPM)",
+        description:
+          "The CSPM certification is designed for professionals managing security projects, particularly those involving physical and electronic security systems. It demonstrates expertise in managing scope, budgets, timelines, and stakeholders within security-focused environments.",
+        idealFor:
+          "Security professionals and project managers overseeing physical or electronic security projects.",
+        prerequisites: [
+          "Minimum 6,000 hours of hands-on security project management experience within the last 10 years",
+          "Security Industry Association (SIA) approval to sit for the exam",
+        ],
+        industries: [
+          "Cybersecurity",
+          "Construction & Engineering",
+          "Government & Public Sector",
+        ],
+        url: "https://www.securityindustry.org/professional-development/cspm-certification",
+      },
+    ],
+    finance: [
+      {
+        id: "pmi-rmp",
+        name: "Risk Management Professional (PMI-RMP)®",
+        description:
+          "The PMI-RMP certification is for project managers who specialize in risk management. It demonstrates the ability to identify, assess, and manage risks in projects, making it ideal for professionals who work in high-risk industries or complex projects.",
+        idealFor:
+          "Project managers focused on identifying and managing project risks.",
+        prerequisites: [
+          "Bachelor’s degree + 24 months risk management experience + 30 hours risk management education OR",
+          "High school diploma + 36 months risk management experience + 40 hours risk management education",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Cybersecurity",
+          "Energy & Utilities",
+        ],
+        url: "https://www.pmi.org/certifications/risk-management-rmp",
+      },
+    ],
   },
   senior: {
     technology: [
@@ -465,6 +621,7 @@ export const certificationData: Record<
           "Entertainment & Media",
           "Agriculture & Food Industry",
         ],
+        url: "https://www.pmi.org/certifications/portfolio-management-pfmp",
       },
       {
         id: "safe",
@@ -482,6 +639,126 @@ export const certificationData: Record<
           "Technology (IT & Software Development)",
           "Telecommunications",
         ],
+        url: "https://scaledagile.com/training/leading-safe",
+      },
+    ],
+    marketing: [
+      {
+        id: "cpd",
+        name: "Certified Project Director (CPD)",
+        description:
+          "The CPD certification is for experienced project managers who have advanced project management skills. It validates the ability to oversee and direct large, complex projects and programs across various industries, focusing on leadership and strategic alignment.",
+        idealFor:
+          "Senior-level project managers with leadership and strategic oversight responsibilities.",
+        prerequisites: [
+          "Must have PMP, PRINCE2, or equivalent",
+          "5+ years of project management experience",
+        ],
+        industries: [
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://gaqm.org/certifications/project_management/cpd",
+      },
+      {
+        id: "pgmp",
+        name: "Program Management Professional (PgMP)®",
+        description:
+          "The PgMP certification demonstrates expertise in managing complex programs. It is ideal for professionals who oversee and coordinate multiple projects that align with strategic business objectives.",
+        idealFor:
+          "Experienced program managers overseeing multiple related projects.",
+        prerequisites: [
+          "Bachelor’s degree + 48 months project management experience + 48 months program management experience OR",
+          "High school diploma + 48 months project management experience + 84 months program management experience",
+        ],
+        industries: [
+          "Healthcare",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "Telecommunications",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/program-management-pgmp",
+      },
+    ],
+    healthcare: [
+      {
+        id: "pgmp",
+        name: "Program Management Professional (PgMP)®",
+        description:
+          "The PgMP certification demonstrates expertise in managing complex programs. It is ideal for professionals who oversee and coordinate multiple projects that align with strategic business objectives.",
+        idealFor:
+          "Experienced program managers overseeing multiple related projects.",
+        prerequisites: [
+          "Bachelor’s degree + 48 months project management experience + 48 months program management experience OR",
+          "High school diploma + 48 months project management experience + 84 months program management experience",
+        ],
+        industries: [
+          "Healthcare",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "Telecommunications",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/program-management-pgmp",
+      },
+    ],
+    finance: [
+      {
+        id: "pmi-rmp",
+        name: "Risk Management Professional (PMI-RMP)®",
+        description:
+          "The PMI-RMP certification is for project managers who specialize in risk management. It demonstrates the ability to identify, assess, and manage risks in projects, making it ideal for professionals who work in high-risk industries or complex projects.",
+        idealFor:
+          "Project managers focused on identifying and managing project risks.",
+        prerequisites: [
+          "Bachelor’s degree + 24 months risk management experience + 30 hours risk management education OR",
+          "High school diploma + 36 months risk management experience + 40 hours risk management education",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Cybersecurity",
+          "Energy & Utilities",
+        ],
+        url: "https://www.pmi.org/certifications/risk-management-rmp",
+      },
+    ],
+    cybersecurity: [
+      {
+        id: "pmi-rmp",
+        name: "Risk Management Professional (PMI-RMP)®",
+        description:
+          "The PMI-RMP certification is for project managers who specialize in risk management. It demonstrates the ability to identify, assess, and manage risks in projects, making it ideal for professionals who work in high-risk industries or complex projects.",
+        idealFor:
+          "Project managers focused on identifying and managing project risks.",
+        prerequisites: [
+          "Bachelor’s degree + 24 months risk management experience + 30 hours risk management education OR",
+          "High school diploma + 36 months risk management experience + 40 hours risk management education",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Cybersecurity",
+          "Energy & Utilities",
+        ],
+        url: "https://www.pmi.org/certifications/risk-management-rmp",
       },
     ],
     // Add more industries and their certifications for senior-level
@@ -552,3 +829,5 @@ export function getRecommendedCertifications(
 
   return filteredRecommendations;
 }
+
+// https://chatgpt.com/share/681edf1f-da88-8012-840c-7db83dddb7a2
