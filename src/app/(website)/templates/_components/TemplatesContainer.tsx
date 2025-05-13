@@ -92,7 +92,7 @@ export default function TemplatesContainer() {
             <div className="relative mb-[30px] shadow-[0px_4px_12px_0px_#0000001A] rounded-[15px]">
               <input
                 type="text"
-                placeholder="Search job titles, companies, or keywords..."
+                placeholder="Search Templates..."
                 className="w-full p-2 pl-3 pr-10 h-[52px] rounded-[15px] outline-[#004AAD] border-[1.5px] border-gray-500"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
