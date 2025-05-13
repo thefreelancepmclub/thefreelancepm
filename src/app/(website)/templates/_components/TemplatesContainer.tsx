@@ -22,7 +22,7 @@ export default function TemplatesContainer() {
   const { query, setQuery, category, setCategory, sortBy, setSortBy } =
     useTemplateStore();
 
-  const searchQuery = useDebounce(query, 500); // Debounce the search query
+  const searchQuery = useDebounce(query, 500);
 
   const {
     data,
@@ -33,19 +33,33 @@ export default function TemplatesContainer() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    queryKey: ["jobs"],
-    queryFn: ({ pageParam = 1 }) =>
-      fetch(
-        `/api/dashboard/templates?page=${pageParam}&limit=3&category=${category}&searchQuery=${searchQuery}&sortBy=${sortBy}`,
-      )
+    queryKey: ["jobs", searchQuery, category, sortBy], // <-- use debounced value
+    queryFn: ({ pageParam = 1 }) => {
+      const params = new URLSearchParams();
+      params.append("page", pageParam.toString());
+      params.append("limit", "3");
+
+      if (category && category.trim() !== "") {
+        params.append("category", category.trim());
+      }
+
+      if (searchQuery && searchQuery.trim() !== "") {
+        params.append("searchQuery", searchQuery.trim());
+      }
+
+      if (sortBy && sortBy.trim() !== "") {
+        params.append("sortBy", sortBy.trim());
+      }
+
+      return fetch(`/api/dashboard/templates?${params.toString()}`)
         .then((res) => res.json())
         .catch((err) => {
           throw err;
-        }),
+        });
+    },
     getNextPageParam: (lastPage) => {
       const currentPage = lastPage?.meta?.currentPage ?? 1;
       const totalPages = lastPage?.meta?.totalPages ?? 1;
-
       return currentPage < totalPages ? currentPage + 1 : undefined;
     },
     initialPageParam: 1,
@@ -67,7 +81,7 @@ export default function TemplatesContainer() {
   } else if (!data || data.pages[0]?.data?.length === 0) {
     content = (
       <div className="min-h-[400px] flex justify-center items-center">
-        No template found
+        No templates found
       </div>
     );
   } else {
