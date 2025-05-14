@@ -85,7 +85,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold mb-2">Company</h4>
+            <h4 className="font-semibold mb-2">Contact</h4>
             <ul className="space-y-1">
               <li>
                 <a
