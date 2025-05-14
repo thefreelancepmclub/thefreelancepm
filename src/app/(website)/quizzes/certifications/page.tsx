@@ -27,6 +27,7 @@ export default function CertificationsPage() {
       pmExperience,
       currentCertifications,
     );
+
     setRecommendations(recommendedCerts);
     setLoading(false);
   }, [searchParams, pmExperience, industry]);
@@ -77,8 +78,8 @@ export default function CertificationsPage() {
       </Header>
 
       <div className="container mx-auto  px-4 py-8 h-auto mt-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[60px] items-start">
-          {recommendations.slice(0, 2).map((cert) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[60px] items-start grid-flow-row-dense">
+          {recommendations.map((cert) => (
             <div
               key={cert.id}
               className="bg-white h-auto rounded-lg shadow-md border border-[#D5D5D5] overflow-hidden"
@@ -92,7 +93,7 @@ export default function CertificationsPage() {
                   {cert.industries.map((ind) => (
                     <span
                       key={ind}
-                      className="bg-[#004AAD] mb-[15px] mr-[15px] text-[12px] font-normal text-white text-xs p-[10px] rounded-full"
+                      className="bg-[#004AAD] mb-[15px] mr-[15px] text-[10px] font-normal text-white text-xs p-1 px-2 rounded-full"
                     >
                       {ind}
                     </span>
