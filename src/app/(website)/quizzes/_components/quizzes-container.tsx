@@ -66,10 +66,7 @@ const QuizzesContainer = () => {
                 </p>
               </CardContent>
               <CardFooter className="p-[15px]">
-                <Button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white "
-                  asChild
-                >
+                <Button className="w-full  text-white " asChild>
                   <Link href={`/quizzes/${quiz.id}`}>Take Quiz</Link>
                 </Button>
               </CardFooter>
