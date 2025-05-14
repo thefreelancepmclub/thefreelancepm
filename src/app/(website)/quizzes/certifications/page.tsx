@@ -59,7 +59,7 @@ export default function CertificationsPage() {
 
           <div className="mt-8">
             <Link href="/">
-              <Button className="bg-blue-600 hover:bg-blue-700">
+              <Button className="bg-[#004AAD] hover:bg-blue-700">
                 Take Another Quiz
               </Button>
             </Link>
@@ -135,16 +135,11 @@ export default function CertificationsPage() {
           ))}
         </div>
 
-        {/* <div className="mt-8 text-center">
-          <Link href="/">
-            <Button variant="outline" className="mr-4">
-              Take Another Quiz
-            </Button>
+        <div className="mt-8 text-center">
+          <Link href="/quizzes">
+            <Button>Take Another Quiz</Button>
           </Link>
-          <Link href="/quiz/certification-match">
-            <Button variant="outline">Retake Quiz</Button>
-          </Link>
-        </div> */}
+        </div>
       </div>
     </>
   );
