@@ -133,7 +133,7 @@ export const certificationData: Record<
       },
       {
         id: "cpmai",
-        name: "Cognitive Project Management for AI (CPMAI)",
+        name: "Cognitive Project Management in AI (CPMAI)",
         description:
           "The CPMAI certification focuses on managing AI and ML projects. It’s ideal for professionals in industries where artificial intelligence plays a key role, helping them understand the unique challenges of managing AI-based initiatives.",
         idealFor:
@@ -625,6 +625,28 @@ export const certificationData: Record<
         ],
         url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
       },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
     ],
     entertainment: [
       {
@@ -704,6 +726,28 @@ export const certificationData: Record<
           "Agriculture & Food Industry",
         ],
         url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
       },
     ],
     agriculture: [
@@ -789,6 +833,20 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
+      {
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
+        description:
+          "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+        idealFor:
+          "Project managers in the healthcare or clinical research sectors.",
+        prerequisites: [
+          "Bachelor's degree in life sciences, healthcare, or related field",
+          "Clinical research or project management experience recommended",
+        ],
+        industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
+      },
     ],
     cybersecurity: [
       {
@@ -849,6 +907,28 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
     ],
     energy: [
       {
@@ -878,6 +958,28 @@ export const certificationData: Record<
           "Agriculture & Food Industry",
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
       },
     ],
     automotive: [
@@ -909,6 +1011,28 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
     ],
     government: [
       {
@@ -939,6 +1063,28 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
     ],
     // Add more industries and their certifications as needed
   },
@@ -964,8 +1110,9 @@ export const certificationData: Record<
           "E-commerce & Retail",
           "Telecommunications",
           "Manufacturing",
-          "Education & E-learning",
           "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
           "Government & Public Sector",
           "Real Estate & Property Management",
           "Transportation & Logistics",
@@ -1002,7 +1149,7 @@ export const certificationData: Record<
       },
       {
         id: "cpmai",
-        name: "Cognitive Project Management for AI (CPMAI)",
+        name: "Cognitive Project Management in AI (CPMAI)",
         description:
           "The CPMAI certification focuses on managing AI and ML projects. It’s ideal for professionals in industries where artificial intelligence plays a key role, helping them understand the unique challenges of managing AI-based initiatives.",
         idealFor:
@@ -1044,6 +1191,41 @@ export const certificationData: Record<
         ],
         url: "https://iassc.org/six-sigma-certification/black-belt-certification",
       },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
     ],
     cybersecurity: [
       {
@@ -1064,6 +1246,41 @@ export const certificationData: Record<
         ],
         url: "https://www.securityindustry.org/professional-development/cspm-certification",
       },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
     ],
     finance: [
       {
@@ -1083,6 +1300,837 @@ export const certificationData: Record<
           "Energy & Utilities",
         ],
         url: "https://www.pmi.org/certifications/risk-management-rmp",
+      },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    marketing: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    government: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    education: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    energy: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    automotive: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    nonprofit: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    hospitality: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    healthcare: [
+      {
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
+        description:
+          "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+        idealFor:
+          "Project managers in the healthcare or clinical research sectors.",
+        prerequisites: [
+          "Bachelor's degree in life sciences, healthcare, or related field",
+          "Clinical research or project management experience recommended",
+        ],
+        industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    pharmaceuticals: [
+      {
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
+        description:
+          "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+        idealFor:
+          "Project managers in the healthcare or clinical research sectors.",
+        prerequisites: [
+          "Bachelor's degree in life sciences, healthcare, or related field",
+          "Clinical research or project management experience recommended",
+        ],
+        industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
+      },
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    construction: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    ecommerce: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    telecommunications: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    realestate: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    transportation: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    entertainment: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
+      },
+    ],
+    agriculture: [
+      {
+        id: "pmp",
+        name: "Project Management Professional (PMP)®",
+        description:
+          "The PMP certification is one of the most respected in the project management industry. It demonstrates advanced project management experience and knowledge of methodologies. It is ideal for experienced project managers who want to take their careers to the next level.",
+        idealFor:
+          "Experienced project managers seeking to validate their skills and knowledge.",
+        prerequisites: [
+          "Four-year degree + 36 months project experience + 35 hours project management training OR",
+          "High school diploma/associate degree + 60 months project experience + 35 hours project management training",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Education & E-learning",
+          "Cybersecurity",
+          "Government & Public Sector",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/project-management-pmp",
       },
     ],
   },
@@ -1206,6 +2254,28 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/program-management-pgmp",
       },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
     ],
     healthcare: [
       {
@@ -1233,6 +2303,20 @@ export const certificationData: Record<
         ],
         url: "https://www.pmi.org/certifications/program-management-pgmp",
       },
+      {
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
+        description:
+          "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+        idealFor:
+          "Project managers in the healthcare or clinical research sectors.",
+        prerequisites: [
+          "Bachelor's degree in life sciences, healthcare, or related field",
+          "Clinical research or project management experience recommended",
+        ],
+        industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
+      },
     ],
     finance: [
       {
@@ -1252,6 +2336,28 @@ export const certificationData: Record<
           "Energy & Utilities",
         ],
         url: "https://www.pmi.org/certifications/risk-management-rmp",
+      },
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
       },
     ],
     cybersecurity: [
@@ -1292,6 +2398,181 @@ export const certificationData: Record<
           "Finance & Banking",
         ],
         url: "https://www.pmi.org/shop/p-/digital-product/cognitive-project-management-in-ai-(cpmai)-v7---training-,-a-,-certification/cpmai-b-01",
+      },
+    ],
+    government: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    education: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    energy: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    automotive: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    nonprofit: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    hospitality: [
+      {
+        id: "prince2",
+        name: "PRINCE2 Foundation",
+        description:
+          "PRINCE2 is a widely recognized project management methodology. The Foundation level covers the fundamental principles of PRINCE2, including its processes, themes, and roles. Ideal for professionals who want to gain a structured and internationally recognized approach to project management.",
+        idealFor:
+          "Individuals working in or aspiring to work in structured project management environments, especially in Europe.",
+        prerequisites: [
+          "No prerequisites; open to anyone interested in project management",
+        ],
+        industries: [
+          "Finance & Banking",
+          "Marketing & Advertising",
+          "Government & Public Sector",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Nonprofit & Social Impact",
+          "Hospitality & Tourism",
+        ],
+        url: "https://www.prince2.com/usa/prince2/foundation",
+      },
+    ],
+    pharmaceuticals: [
+      {
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
+        description:
+          "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+        idealFor:
+          "Project managers in the healthcare or clinical research sectors.",
+        prerequisites: [
+          "Bachelor's degree in life sciences, healthcare, or related field",
+          "Clinical research or project management experience recommended",
+        ],
+        industries: ["Healthcare", "Pharmaceuticals & Biotechnology"],
+        url: "https://charteredcertifications.com/learning/courses/ccrp",
+      },
+    ],
+    construction: [
+      {
+        id: "ccm",
+        name: "Certified Construction Manager (CCM)",
+        description:
+          "The CCM certification is ideal for individuals working in or pursuing careers in construction project management. It validates the knowledge and expertise required to manage the planning, design, construction, and completion of projects in the construction industry.",
+        idealFor: "Professionals working in construction project management.",
+        prerequisites: [
+          "Four-year degree in construction-related field + 4 years construction management experience OR",
+          "Eight years of experience with no degree",
+        ],
+        industries: ["Construction & Engineering"],
+        url: "https://www.cmaanet.org/certification/ccm",
       },
     ],
     // Add more industries and their certifications for senior-level
@@ -1359,8 +2640,6 @@ export function getRecommendedCertifications(
       return [];
     }
   }
-
-  console.log(filteredRecommendations);
 
   return filteredRecommendations;
 }
