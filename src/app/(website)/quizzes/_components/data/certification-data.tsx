@@ -188,7 +188,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
@@ -824,7 +824,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
@@ -1823,7 +1823,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
@@ -1874,7 +1874,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
@@ -2390,7 +2390,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
@@ -2944,7 +2944,7 @@ export const certificationData: Record<
         id: "ccrp",
         name: "Certified Clinical Research Project Manager (CCRP)",
         description:
-          "The CCRM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
+          "The CCRP certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
           "Project managers in the healthcare or clinical research sectors.",
         prerequisites: [
