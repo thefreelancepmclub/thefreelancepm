@@ -840,7 +840,7 @@ export const quizData = [
           { value: "pharmaceuticals", text: "Pharmaceuticals & Biotechnology" },
           { value: "government", text: "Government & Public Sector" },
           { value: "energy", text: "Energy & Utilities" },
-          { value: "automotive", text: "Automotive & Aerospace" },
+          { value: "automotive", text: "Automotive & Aerospace" }, // nai
           { value: "nonprofit", text: "Nonprofit & Social Impact" },
           { value: "entertainment", text: "Entertainment & Media" },
           { value: "cybersecurity", text: "Cybersecurity" },

@@ -179,12 +179,14 @@ export const certificationData: Record<
           "Energy & Utilities",
           "Automotive & Aerospace",
           "Agriculture & Food Industry",
+          "Government & Public Sector",
+          "Entertainment & Media",
         ],
         url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
       {
-        id: "ccpm",
-        name: "Certified Clinical Project Manager (CCPM)",
+        id: "ccrp",
+        name: "Certified Clinical Research Project Manager (CCRP)",
         description:
           "The CCPM certification is for professionals working in clinical project management, particularly in pharmaceutical and healthcare industries. It covers managing clinical trials, research, regulatory requirements, and compliance in project management within healthcare.",
         idealFor:
@@ -488,6 +490,454 @@ export const certificationData: Record<
           "Agriculture & Food Industry",
         ],
         url: "https://iassc.org/six-sigma-certification/green-belt-certification/",
+      },
+    ],
+    realestate: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    transportation: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    nonprofit: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+    ],
+    entertainment: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    hospitality: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+    ],
+    agriculture: [
+      {
+        id: "google",
+        name: "Google Project Management Certification",
+        description:
+          "This entry-level certification provides foundational knowledge of project management. It covers essential concepts such as initiating projects, managing schedules, budgets, and teams, and applying best practices for project success. Ideal for those looking to break into project management or transition into the field.",
+        idealFor: "Beginners or those new to project management.",
+        prerequisites: [
+          "No prerequisites; ideal for beginners.",
+          "Offered via Coursera.",
+        ],
+        industries: [
+          "Technology (IT & Software Development)",
+          "Marketing & Advertising",
+          "E-commerce & Retail",
+          "Telecommunications",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Nonprofit & Social Impact",
+          "Entertainment & Media",
+          "Hospitality & Tourism",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.coursera.org/professional-certificates/google-project-management?utm_medium=sem&utm_source=gg&utm_campaign=b2c_namer_google-project-management_google_ftcof_professional-certificates_px_dr_bau_gg_sem_pr-bd_us_en_m_hyb_24-05_x&campaignid=12507120706&adgroupid=138976596210&device=c&keyword=&matchtype=&network=g&devicemodel=&creativeid=636584713408&assetgroupid=&targetid=aud-303020828629:dsa-1903279393350&extensionid=&placement=&gad_source=1&gbraid=0AAAAADdKX6ZU3gRBZB9xTQ8kCrXJveK_-&gclid=CjwKCAjwq7fABhB2EiwAwk-YbK0DezRVKRYr-ynlDYRcM5og6GBjjgZGxyAFH7sG7wYNEp-lFJ-8-RoC6fEQAvD_BwE",
+      },
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    pharmaceuticals: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    cybersecurity: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    education: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    energy: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    automotive: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
+      },
+    ],
+    government: [
+      {
+        id: "capm",
+        name: "Certified Associate in Project Management (CAPM)®",
+        description:
+          "The CAPM certification is designed for those starting their project management career. It provides a solid foundation in project management terminology, processes, and best practices. A great starting point for individuals looking to advance their careers in project management.",
+        idealFor:
+          "Aspiring project managers or those with limited project management experience.",
+        prerequisites: [
+          "High school diploma, associate's degree, or equivalent",
+          "23 hours of project management education or CAPM course completion",
+        ],
+        industries: [
+          "Healthcare",
+          "Finance & Banking",
+          "Construction & Engineering",
+          "E-commerce & Retail",
+          "Manufacturing",
+          "Pharmaceuticals & Biotechnology",
+          "Cybersecurity",
+          "Real Estate & Property Management",
+          "Transportation & Logistics",
+          "Education & E-learning",
+          "Energy & Utilities",
+          "Automotive & Aerospace",
+          "Agriculture & Food Industry",
+        ],
+        url: "https://www.pmi.org/certifications/certified-associate-capm",
       },
     ],
     // Add more industries and their certifications as needed
@@ -909,6 +1359,8 @@ export function getRecommendedCertifications(
       return [];
     }
   }
+
+  console.log(filteredRecommendations);
 
   return filteredRecommendations;
 }
