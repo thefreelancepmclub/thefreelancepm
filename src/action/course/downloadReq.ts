@@ -59,6 +59,11 @@ export async function courseDownload(courseId: string) {
   const isFreeCourse = course.category === "free";
   const isFreeUser = currentSubscription.tier === "free";
 
+  const isProUser = currentSubscription.tier === "pro";
+  const isProCourse = course.category === "pro";
+
+  const isEliteUser = currentSubscription.tier === "elite";
+
   const feature = currentSubscription.getFeature("courses");
 
   if (!feature) {
@@ -73,26 +78,39 @@ export async function courseDownload(courseId: string) {
       success: false,
       message: "You have reached the limit of courses you can download",
     };
-  }
-
-  if (isFreeCourse && isFreeUser) {
-    await prisma.course.update({
-      where: {
-        id: course.id,
-      },
-      data: {
-        enrolled: {
-          increment: 1,
-        },
-      },
-    });
+  } else if (
+    isProCourse &&
+    (isProUser || isEliteUser) &&
+    feature.remaining !== null &&
+    feature.remaining > 0 &&
+    feature.value !== null &&
+    feature.value > 0
+  ) {
     await decrementCourseRemaining(feature.id, course.price ?? 0);
     return {
       success: true,
       message: "File download Link",
-      file: course.file, // Assuming this is a URL or path to the file
+      file: course.file,
     };
-  }
+  } else if (isProCourse)
+    if (isFreeCourse && isFreeUser) {
+      await prisma.course.update({
+        where: {
+          id: course.id,
+        },
+        data: {
+          enrolled: {
+            increment: 1,
+          },
+        },
+      });
+      await decrementCourseRemaining(feature.id, course.price ?? 0);
+      return {
+        success: true,
+        message: "File download Link",
+        file: course.file, // Assuming this is a URL or path to the file
+      };
+    }
 
   const purchaseData = await prisma.userPurchasedCourse.create({
     data: {
