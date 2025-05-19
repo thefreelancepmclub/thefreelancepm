@@ -84,7 +84,7 @@ export async function courseDownload(courseId: string) {
       message: "You have reached the limit of courses you can download",
     };
   } else if (
-    isProCourse &&
+    (isProCourse || isFreeCourse) &&
     (isProUser || isEliteUser) &&
     feature.remaining !== null &&
     feature.remaining > 0 &&
