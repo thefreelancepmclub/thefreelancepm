@@ -60,6 +60,9 @@ export async function templateDownload(templateId: string) {
 
   const isFreeTemplate = template.category === "free";
   const isFreeUser = currentSubscription.tier === "free";
+  const isProTemplate = template.category === "pro";
+  const isProUser = currentSubscription.tier === "pro";
+  const isEliteuser = currentSubscription.tier === "elite";
 
   const feature = currentSubscription.getFeature("templates");
 
@@ -70,14 +73,33 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  if (feature.remaining !== null && feature.remaining === 0) {
+  if (
+    (feature.remaining !== null && feature.remaining === 0) ||
+    (feature.value !== null && feature.value < 0)
+  ) {
     return {
       success: false,
       message: "You have reached the limit of templates you can download",
     };
-  }
+  } else if (
+    (isProTemplate || isFreeTemplate) &&
+    (isEliteuser || isProUser) &&
+    feature.remaining !== null &&
+    feature.remaining > 0 &&
+    feature.value !== null &&
+    feature.value > 0
+  ) {
+    await incrementDownloads(template.id);
 
-  if (isFreeTemplate && isFreeUser) {
+    await decrementTemplateRemaining(feature.id, template.price ?? 0);
+
+    // Return file download link or stream file
+    return {
+      success: true,
+      message: "File download Link",
+      file: template.file, // Assuming this is a URL or path to the file
+    };
+  } else if (isFreeTemplate && isFreeUser) {
     await prisma.userPurchasedTemplate.create({
       data: {
         userId: cu.user.id as string,
