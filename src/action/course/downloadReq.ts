@@ -66,6 +66,11 @@ export async function courseDownload(courseId: string) {
 
   const feature = currentSubscription.getFeature("courses");
 
+  console.log({
+    isFreeCourse,
+    isFreeUser,
+  });
+
   if (!feature) {
     return {
       success: false,
@@ -92,7 +97,7 @@ export async function courseDownload(courseId: string) {
       message: "File download Link",
       file: course.file,
     };
-  } else if (isProCourse)
+  } else if (isFreeCourse)
     if (isFreeCourse && isFreeUser) {
       await prisma.course.update({
         where: {
