@@ -16,8 +16,7 @@ export default function TestimonialCard({ data }: Props) {
   return (
     <div className="">
       <Swiper
-        slidesPerView={3}
-        spaceBetween={30}
+        spaceBetween={40}
         pagination={{
           clickable: true,
         }}
@@ -25,11 +24,29 @@ export default function TestimonialCard({ data }: Props) {
           delay: 2500,
           disableOnInteraction: false,
         }}
+        breakpoints={{
+          0: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 25,
+          },
+          1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+          },
+        }}
         modules={[Pagination, Autoplay]}
         className="mySwiper pb-[100px]"
       >
         {data.map((test) => (
-          <SwiperSlide key={test.id} className="mb-10">
+          <SwiperSlide key={test.id} className="mb-10 px-2">
             <SuccessStoriesCard data={test} />
           </SwiperSlide>
         ))}
