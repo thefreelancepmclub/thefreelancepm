@@ -73,7 +73,25 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  if (
+  if (isFreeTemplate && isFreeUser) {
+    await prisma.userPurchasedTemplate.create({
+      data: {
+        userId: cu.user.id as string,
+        templateId: template.id,
+        isPaid: true,
+      },
+    });
+    await incrementDownloads(template.id);
+
+    await decrementTemplateRemaining(feature.id, template.price ?? 0);
+
+    // Return file download link or stream file
+    return {
+      success: true,
+      message: "File download Link",
+      file: template.file, // Assuming this is a URL or path to the file
+    };
+  } else if (
     (feature.remaining !== null && feature.remaining === 0) ||
     (feature.value !== null && feature.value < 0)
   ) {
@@ -89,24 +107,6 @@ export async function templateDownload(templateId: string) {
     feature.value !== null &&
     feature.value > 0
   ) {
-    await incrementDownloads(template.id);
-
-    await decrementTemplateRemaining(feature.id, template.price ?? 0);
-
-    // Return file download link or stream file
-    return {
-      success: true,
-      message: "File download Link",
-      file: template.file, // Assuming this is a URL or path to the file
-    };
-  } else if (isFreeTemplate && isFreeUser) {
-    await prisma.userPurchasedTemplate.create({
-      data: {
-        userId: cu.user.id as string,
-        templateId: template.id,
-        isPaid: true,
-      },
-    });
     await incrementDownloads(template.id);
 
     await decrementTemplateRemaining(feature.id, template.price ?? 0);
