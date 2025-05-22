@@ -34,7 +34,7 @@ export async function createJob(data: z.infer<typeof jobFormSchema>) {
         company: validatedData.company,
         type: validatedData.type as JobType,
         location: validatedData.location,
-        salary: validatedData.salary,
+        salary: validatedData?.salary ?? 0,
         description: validatedData.description,
         url: validatedData.url,
         expiration: validatedData.expiration,
