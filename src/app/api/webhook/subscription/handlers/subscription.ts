@@ -56,7 +56,7 @@ export async function handleSubscriptionCheckout(
           value: 1000,
           enabled: null,
         },
-        { name: "courses", total: 5, remaining: 5, value: 5000, enabled: null },
+        { name: "courses", total: 5, remaining: 5, value: 1160, enabled: null },
         {
           name: "job_board",
           total: null,
@@ -96,7 +96,13 @@ export async function handleSubscriptionCheckout(
           value: 1160,
           enabled: null,
         },
-        { name: "courses", total: 5, remaining: 5, value: 5000, enabled: null },
+        {
+          name: "courses",
+          total: 200,
+          remaining: 200,
+          value: 1160,
+          enabled: null,
+        },
         { name: "coaching", total: 1, remaining: 1, value: 50, enabled: null },
         {
           name: "vip_slack_access",
