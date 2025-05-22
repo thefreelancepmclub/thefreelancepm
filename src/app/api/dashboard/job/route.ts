@@ -56,14 +56,9 @@ export async function GET(request: NextRequest) {
       where.type = type;
     }
 
-    if (experiences !== "all") {
+    if (experiences && experiences !== "all") {
       where.experienc = experiences;
     }
-
-    // Determine orderBy condition
-    const orderBy: { expiration: "asc" | "desc" } = {
-      expiration: sortBy === "asc" ? "asc" : "desc",
-    };
 
     // You can add more sort options here if needed (e.g., sortBy=title, sortBy=company)
 
@@ -88,7 +83,10 @@ export async function GET(request: NextRequest) {
       where,
       skip,
       take: limit,
-      orderBy: orderBy,
+      orderBy: [
+        { expiration: sortBy === "asc" ? "asc" : "desc" },
+        { createdAt: "desc" }, // secondary stable sort
+      ],
     });
 
     return NextResponse.json({
