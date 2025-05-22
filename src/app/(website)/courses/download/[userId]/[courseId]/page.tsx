@@ -72,7 +72,8 @@ const Page = async ({
 
             <div className="text-center text-gray-600 text-sm">
               <p className="mt-2">
-                If you have any questions, please contact our support team.
+                If you have any questions, please contact
+                support@thefreelancepmclub.com
               </p>
             </div>
           </CardContent>

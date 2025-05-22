@@ -10,9 +10,7 @@ export const jobFormSchema = z.object({
   company: z.string().min(2, { message: "Company name is required" }),
   type: z.enum(jobTypeEnumValues as [string, ...string[]]),
   location: z.string().min(2, { message: "Location is required" }),
-  salary: z.coerce
-    .number()
-    .positive({ message: "Salary must be a positive number" }),
+  salary: z.coerce.number().optional(),
   description: z
     .string()
     .min(10, { message: "Description must be at least 10 characters" }),
