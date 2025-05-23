@@ -68,7 +68,11 @@ export default function PricingCard({
         plan.id,
       ).then((res) => {
         if (!res.success) {
-          toast.error(res.message);
+          if (res.loggedinRequired) {
+            router.push("/login?callback=/subscriptions");
+            return;
+          }
+          toast.error(res?.message);
           return;
         }
 

@@ -29,6 +29,17 @@ const Page = async ({
     },
   });
 
+  await prisma.course.update({
+    where: {
+      id: courseId,
+    },
+    data: {
+      enrolled: {
+        increment: 1,
+      },
+    },
+  });
+
   if (!data) notFound();
 
   return (

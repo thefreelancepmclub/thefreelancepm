@@ -73,17 +73,15 @@ export async function templateDownload(templateId: string) {
     };
   }
 
-  if (isFreeTemplate && isFreeUser) {
-    await prisma.userPurchasedTemplate.create({
-      data: {
-        userId: cu.user.id as string,
-        templateId: template.id,
-        isPaid: true,
-      },
-    });
+  if (isFreeTemplate && (isFreeUser || isProUser || isEliteuser)) {
+    // await prisma.userPurchasedTemplate.create({
+    //   data: {
+    //     userId: cu.user.id as string,
+    //     templateId: template.id,
+    //     isPaid: true,
+    //   },
+    // });
     await incrementDownloads(template.id);
-
-    await decrementTemplateRemaining(feature.id, template.price ?? 0);
 
     // Return file download link or stream file
     return {
@@ -92,20 +90,12 @@ export async function templateDownload(templateId: string) {
       file: template.file, // Assuming this is a URL or path to the file
     };
   } else if (
-    (feature.remaining !== null && feature.remaining === 0) ||
-    (feature.value !== null && feature.value < 0)
-  ) {
-    return {
-      success: false,
-      message: "You have reached the limit of templates you can download",
-    };
-  } else if (
-    (isProTemplate || isFreeTemplate) &&
+    isProTemplate &&
     (isEliteuser || isProUser) &&
     feature.remaining !== null &&
     feature.remaining > 0 &&
     feature.value !== null &&
-    feature.value > 0
+    feature.value - (template.price ?? 0) > 0
   ) {
     await incrementDownloads(template.id);
 

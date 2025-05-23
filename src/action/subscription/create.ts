@@ -8,7 +8,6 @@ import {
   subscriptionSchema,
 } from "@/schemas/subscription";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { webhookFor } from "../coaching/create-coaching";
 
 export async function createSubscription(values: SubscriptionCreateFormValues) {
@@ -109,7 +108,11 @@ export async function createCheckoutLink(
   const cu = await auth();
 
   if (!cu?.user?.id) {
-    redirect("/login"); // Redirect to login if the user is not authenticated
+    return {
+      success: false,
+      message: "Required sign in to purchase subscription",
+      loggedinRequired: true,
+    };
   }
 
   const userId = cu.user.id;

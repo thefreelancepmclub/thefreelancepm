@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
-import { LoginForm } from "./_components/login-form";
+import { Suspense } from "react";
+import LoginForm from "./_components/login-form";
 
 export default function LoginPage() {
   return (
@@ -38,18 +38,9 @@ export default function LoginPage() {
           </div>
 
           {/* Login form component */}
-          <LoginForm />
-
-          {/* Sign up link */}
-          <div className="text-center text-sm">
-            <span className="text-gray-600">New to our platform?</span>{" "}
-            <Link
-              href="/sign-up"
-              className="font-medium text-orange-500 hover:text-orange-600"
-            >
-              Sign Up Here
-            </Link>
-          </div>
+          <Suspense>
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
     </div>
