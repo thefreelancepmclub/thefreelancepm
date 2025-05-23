@@ -35,7 +35,7 @@ export async function handleSubscriptionCheckout(
           name: "templates",
           total: 10,
           remaining: 10,
-          value: 5000,
+          value: 1160,
           enabled: true,
         },
         {
@@ -53,7 +53,7 @@ export async function handleSubscriptionCheckout(
           name: "templates",
           total: 100,
           remaining: 100,
-          value: 1000,
+          value: 1160,
           enabled: null,
         },
         { name: "courses", total: 5, remaining: 5, value: 1160, enabled: null },
@@ -91,8 +91,8 @@ export async function handleSubscriptionCheckout(
       features.push(
         {
           name: "templates",
-          total: 1100,
-          remaining: 1100,
+          total: 150,
+          remaining: 1160,
           value: 1160,
           enabled: null,
         },
