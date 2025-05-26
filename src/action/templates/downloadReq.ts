@@ -74,13 +74,6 @@ export async function templateDownload(templateId: string) {
   }
 
   if (isFreeTemplate && (isFreeUser || isProUser || isEliteuser)) {
-    // await prisma.userPurchasedTemplate.create({
-    //   data: {
-    //     userId: cu.user.id as string,
-    //     templateId: template.id,
-    //     isPaid: true,
-    //   },
-    // });
     await incrementDownloads(template.id);
 
     // Return file download link or stream file
@@ -97,6 +90,13 @@ export async function templateDownload(templateId: string) {
     feature.value !== null &&
     feature.value - (template.price ?? 0) > 0
   ) {
+    await prisma.userPurchasedTemplate.create({
+      data: {
+        userId: cu.user.id as string,
+        templateId: template.id,
+        isPaid: true,
+      },
+    });
     await incrementDownloads(template.id);
 
     await decrementTemplateRemaining(feature.id, template.price ?? 0);
