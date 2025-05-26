@@ -7,7 +7,7 @@ import { resend } from "@/lib/resend";
 import { signUpFormSchema, SignUpFormValues } from "@/schemas/auth";
 import { manageRememberMeCookies } from "./login";
 
-export async function registeruser(data: SignUpFormValues) {
+export async function registeruser(data: SignUpFormValues, callback?: string) {
   const { success, data: parsedData, error } = signUpFormSchema.safeParse(data);
 
   if (!success) {
@@ -59,7 +59,7 @@ export async function registeruser(data: SignUpFormValues) {
       subject: "Please verify your email address",
       react: EmailVerification({
         username: newUser?.name ?? "",
-        verificationUrl: `${process.env.AUTH_URL}/email-verification/${newUser.id}`,
+        verificationUrl: `${process.env.AUTH_URL}/email-verification/${newUser.id}?callback=${callback ?? ""}`,
       }),
     });
 

@@ -7,7 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Mail } from "lucide-react";
-import Link from "next/link";
+import ConfirmationRedirectButton from "./_component/confirmation-redirect-button";
 
 export default function VerificationEmailSent() {
   return (
@@ -38,10 +38,7 @@ export default function VerificationEmailSent() {
         <CardFooter className="flex flex-col space-y-3 px-6 pb-6">
           <div className="text-center text-sm text-slate-500 mt-4">
             <p>
-              Already verified?{" "}
-              <Link href="/login" className="text-blue-600 hover:underline">
-                Log in
-              </Link>
+              Already verified? <ConfirmationRedirectButton />
             </p>
           </div>
         </CardFooter>
