@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,8 +6,8 @@ import {
 } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma";
 import { CheckCircle } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import VerificationActionButton from "./_components/verification-action-button";
 
 export default async function EmailVerificationConfirmed({
   params,
@@ -50,9 +49,7 @@ export default async function EmailVerificationConfirmed({
         </CardContent>
 
         <CardFooter className="flex flex-col space-y-3 px-6 pb-6">
-          <Button asChild variant="outline" className="w-full">
-            <Link href="/login">Login Now</Link>
-          </Button>
+          <VerificationActionButton />
         </CardFooter>
       </Card>
     </div>

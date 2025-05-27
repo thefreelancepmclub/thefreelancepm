@@ -46,7 +46,7 @@ export function SignUpForm() {
   // Handle form submission
   async function onSubmit(data: SignUpFormValues) {
     startTransition(() => {
-      registeruser(data).then((res) => {
+      registeruser(data, callback).then((res) => {
         if (!res.success) {
           toast.error(res.message);
           return;
@@ -55,7 +55,11 @@ export function SignUpForm() {
         // handle success
         setLoading(true);
         toast.success(res.message);
-        router.push("/sign-up/confirmation");
+        router.push(
+          callback
+            ? `/sign-up/confirmation?callback=${callback}`
+            : "/sign-up/confirmation",
+        );
       });
     });
   }
