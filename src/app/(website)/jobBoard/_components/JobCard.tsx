@@ -44,9 +44,9 @@ const JobCard = ({ data }: JobCardProps) => {
           <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
             {data.type}
           </span>
-          <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
+          {/* <span className="text-sm text-[#000000] bg-[#EAF6FF] py-[5px] px-[10px] rounded-full">
             ${data.salary}
-          </span>
+          </span> */}
         </div>
       </div>
 
