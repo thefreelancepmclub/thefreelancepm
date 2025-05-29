@@ -96,9 +96,8 @@ export default function Navbar({ isLoggedin, role, isJobBoardVisible }: Props) {
 
   return (
     <header
-      className={`fixed top-0  left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md py-2" : "bg-white/95 py-4"
-      }`}
+      className={`fixed top-0  left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-md py-2" : "bg-white/95 py-4"
+        }`}
     >
       <div className="container mx-auto flex items-center justify-between px-4 ">
         <Sheet open={open} onOpenChange={(v) => setOpen(v)}>
@@ -165,9 +164,14 @@ export default function Navbar({ isLoggedin, role, isJobBoardVisible }: Props) {
             </DropdownMenu>
           </>
         ) : (
-          <Button className=" text-white rounded-md px-4 py-2" asChild>
-            <Link href="/sign-up">Join Now</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 transition-colors w-24" asChild>
+              <Link href="/login">Log in</Link>
+            </Button>
+            <Button className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 transition-colors w-24" asChild>
+              <Link href="/sign-up">Join Now</Link>
+            </Button>
+          </div>
         )}
       </div>
     </header>
