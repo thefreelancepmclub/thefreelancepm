@@ -16,52 +16,73 @@ import { Menu, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  faHouse,
+  faLayerGroup,
+  faClipboard,
+  faCopy,
+  faFilePen,
+  faPeopleArrows,
+  faMessage,
+  faQuestion
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const navlinks = [
   {
     id: 1,
     label: "Home",
     href: "/",
+    icon: faHouse
   },
   {
     id: 2,
     label: "Subscriptions",
     href: "/subscriptions",
+    icon: faLayerGroup
   },
   {
     id: 3,
     label: "Job Board",
     href: "/jobBoard",
+    icon: faClipboard
   },
   {
     id: 4,
     label: "Templates",
     href: "/templates",
+    icon: faCopy
   },
   {
     id: 5,
     label: "Courses",
     href: "/courses",
+    icon: faMessage
   },
   {
     id: 6,
     label: "Quizzes",
     href: "/quizzes",
+    icon: faFilePen,
+
   },
   {
     id: 7,
     label: "Testimonials",
     href: "/testmonial",
+    icon: faPeopleArrows,
   },
   {
     id: 8,
     label: "Coaching",
     href: "/coaching",
+    icon: faMessage
   },
   {
     id: 9,
     label: "FAQs",
     href: "/faq",
+    icon: faQuestion
   },
 ];
 
@@ -107,20 +128,22 @@ export default function Navbar({ isLoggedin, role, isJobBoardVisible }: Props) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left">
-            <div className="space-y-4 mt-10">
-              {formattedNavlinks.map(({ id, href, label }) => (
-                <Button
-                  variant="link"
-                  effect="hoverUnderline"
-                  asChild
-                  key={id}
-                  className="text-black"
-                  onClick={() => setOpen(false)}
-                >
-                  <Link href={href} className="w-full">
-                    {label}
-                  </Link>
-                </Button>
+            <div className="mt-10">
+              {formattedNavlinks.map(({ id, href, label, icon }) => (
+                <div key={id} className="flex items-center mb-3"> 
+                  <FontAwesomeIcon icon={icon} className="text-gray-600" /> 
+                  <Button
+                    variant="link"
+                    effect="hoverUnderline"
+                    asChild
+                    className="text-black p-0 hover:no-underline"
+                    onClick={() => setOpen(false)}
+                  >
+                    <Link href={href} className="w-full text-left">
+                      {label}
+                    </Link>
+                  </Button>
+                </div>
               ))}
             </div>
           </SheetContent>
