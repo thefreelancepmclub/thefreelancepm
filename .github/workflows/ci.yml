@@ -1,0 +1,31 @@
+name: CI - lint & build
+
+# Run on every push and every pull-request
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  nextjs-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out code
+      - uses: actions/checkout@v4
+
+      # Install Node 18 and cache npm modules
+      - name: Use Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      # Install deps from lockfile
+      - run: npm ci
+
+      # Lint (fail fast if stylistic errors)
+      - run: npm run lint
+
+      # Build – proves the app compiles
+      - run: npm run build
