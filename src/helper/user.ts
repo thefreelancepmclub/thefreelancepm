@@ -52,6 +52,7 @@ export async function getUserSubscription() {
     subscriptionTitle: userSubscription.subscription?.title,
     subscriptionId: userSubscription.subscription?.id,
     features: userSubscription.features,
+    isActive: userSubscription.status === "active" && !isExpired,
   };
 }
 

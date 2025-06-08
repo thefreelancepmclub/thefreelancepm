@@ -5,12 +5,17 @@ import Stripe from "stripe";
 export async function handleSubscriptionCheckout(
   session: Stripe.Checkout.Session,
 ) {
-  const userId = session.metadata?.userId;
-  const planId = session.metadata?.planId;
-  const stripeProductId = session.metadata?.stripeProductId;
+  const { userId, planId, stripeProductId } = session.metadata || {};
 
+  // Guard: If any of the metadata is missing, skip processing
   if (!userId || !planId || !stripeProductId) {
-    throw new Error("Missing required metadata for subscription");
+    console.warn("Skipping webhook — missing metadata:", { userId, planId, stripeProductId });
+    return;
+  }
+  
+  if (planId === process.env.NEXT_PUBLIC_FREE_PLAN_ID || stripeProductId === "free-lite") {
+    console.log("Skipping webhook logic for Lite (free) plan.");
+    return;
   }
 
   // 💡 Get Stripe Customer ID from session

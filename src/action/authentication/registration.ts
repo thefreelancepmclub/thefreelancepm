@@ -45,6 +45,21 @@ export async function registeruser(data: SignUpFormValues, callback?: string) {
       },
     });
 
+    const lite = await prisma.subscription.findFirst({
+      where: { title: "Freelancer Lite" },
+    });
+    
+    if (!lite) throw new Error("Lite plan not found");
+    
+    await prisma.userSubscription.create({
+      data: {
+        userId: newUser.id,
+        subscriptionId: lite.id,
+        status: "active",
+      },
+    });
+    
+
     // Manage "Remember Me" cookies using the reusable function
     await manageRememberMeCookies(
       !!data.rememberMe,

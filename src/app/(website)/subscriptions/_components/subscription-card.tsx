@@ -66,6 +66,7 @@ export default function PricingCard({
         plan.stripePriceId,
         plan.stripeProductId,
         plan.id,
+        plan.title.toLowerCase(),
       ).then((res) => {
         if (!res.success) {
           if (res.loggedinRequired) {
@@ -77,7 +78,7 @@ export default function PricingCard({
         }
 
         // handle success
-        router.push(res.checkoutUrl as string);
+        router.push(res.redirect || res.checkoutUrl || "/account");
       });
     });
   };

@@ -148,7 +148,7 @@ model Templates {
 
 model Subscription {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
+  title           String           @unique
   features        String[]
   price           Int
   type            SubscriptionType @default(monthly)

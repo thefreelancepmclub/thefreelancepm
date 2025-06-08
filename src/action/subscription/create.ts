@@ -31,6 +31,40 @@ export async function createSubscription(values: SubscriptionCreateFormValues) {
   }
 
   try {
+    if (data.price === 0) {
+      let liteSubscription = await prisma.subscription.findFirst({
+        where: { title: "Freelancer Lite" },
+      });
+    
+      if (!liteSubscription) {
+        liteSubscription = await prisma.subscription.create({
+          data: {
+            title: "Freelancer Lite",
+            price: 0,
+            features: data.features,
+            paymentLink: "N/A",
+            stripeProductId: "free-lite",
+            stripePriceId: "free-lite",
+          },
+        });
+      }
+    
+      await prisma.userSubscription.create({
+        data: {
+          userId: cu.user.id!,
+          subscriptionId: liteSubscription.id,
+          status: "active",
+        },
+      });
+    
+      return {
+        success: true,
+        message: "Lite plan granted directly.",
+        redirect: "/account",
+      };
+    }
+    
+    
     // Create a product in Stripe
     const stripeProduct = await stripe.products.create({
       name: data.title,
@@ -103,6 +137,7 @@ export async function createCheckoutLink(
   priceId: string,
   productId: string,
   planId: string,
+  planName: string,
 ) {
   // Step 1: Authenticate the user
   const cu = await auth();
@@ -114,6 +149,41 @@ export async function createCheckoutLink(
       loggedinRequired: true,
     };
   }
+
+  if (planName.toLowerCase().includes("freelancer lite")) {
+    const lite = await prisma.subscription.findFirst({
+      where: { title: "Freelancer Lite" },
+    });
+  
+    if (!lite) throw new Error("Lite plan not found");
+  
+    const existing = await prisma.userSubscription.findFirst({
+      where: { userId: cu.user.id! },
+    });
+  
+    if (existing) {
+      return {
+        success: true,
+        message: "Already subscribed to a plan.",
+        redirect: "/account",
+      };
+    }
+  
+    await prisma.userSubscription.create({
+      data: {
+        userId: cu.user.id!,
+        subscriptionId: lite.id,
+        status: "active",
+      },
+    });
+  
+    return {
+      success: true,
+      message: "Lite plan activated.",
+      redirect: "/account",
+    };
+  }
+  
 
   const userId = cu.user.id;
 
