@@ -44,9 +44,8 @@ jobs:
             nvm use 22
             # ── 2) go to app folder and deploy ───────────────────────────
             cd /var/www/thefreelancepm || exit 1
-            # pull latest code
-            git pull origin main
-            # install prod deps
+            git fetch origin main
+            git reset --hard origin/main
             npm ci
             # build next.js in prod mode
             npm run build
