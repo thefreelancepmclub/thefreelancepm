@@ -66,7 +66,7 @@ export async function courseDownload(courseId: string) {
 
   const feature = currentSubscription.getFeature("courses");
 
-  if (!feature) {
+  if (!feature && course.category !== "free") {    
     return {
       success: false,
       message: "No feature found",
@@ -93,6 +93,7 @@ export async function courseDownload(courseId: string) {
   } else if (
     isProCourse &&
     (isProUser || isEliteUser) &&
+    feature &&
     feature.remaining !== null &&
     feature.remaining > 0 &&
     feature.value !== null &&

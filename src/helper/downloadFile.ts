@@ -1,14 +1,23 @@
-export function downloadFile(url: string, title: string) {
-  // Create a temporary anchor element
+// helper/downloadFile.ts
+import { getDownloadUrl } from "@edgestore/react/utils";
+
+/**
+ * Force-downloads any EdgeStore file.
+ */
+export function downloadFile(rawUrl: string, niceName?: string) {
+  // add an extension if the caller forgot one
+  if (niceName && !/\.\w+$/.test(niceName)) {
+    const ext = rawUrl.split(".").pop()?.split("?")[0] ?? "pdf";
+    niceName += `.${ext}`;
+  }
+
+  // ⬅️  this line makes the difference
+  const url = getDownloadUrl(rawUrl, niceName);   // adds ?download=<niceName>
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = title ?? ""; // You can set a default filename here if needed
+  a.download = "";           // filename comes from header
   document.body.appendChild(a);
-  a.target = "_blank"; // Open in a new tab if needed
-
-  // Trigger the download
   a.click();
-
-  // Clean up
-  document.body.removeChild(a);
+  a.remove();
 }

@@ -66,12 +66,14 @@ export async function templateDownload(templateId: string) {
 
   const feature = currentSubscription.getFeature("templates");
 
-  if (!feature) {
+  // skip the guard for free templates
+  if (!feature && template.category !== "free") {
     return {
       success: false,
       message: "No feature found",
     };
   }
+  
 
   if (isFreeTemplate && (isFreeUser || isProUser || isEliteuser)) {
     await incrementDownloads(template.id);
@@ -85,6 +87,7 @@ export async function templateDownload(templateId: string) {
   } else if (
     isProTemplate &&
     (isEliteuser || isProUser) &&
+    feature &&
     feature.remaining !== null &&
     feature.remaining > 0 &&
     feature.value !== null &&

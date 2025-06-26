@@ -55,6 +55,12 @@ export function FileUploader({
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
 
+      //  🚫 Reject unwanted extensions
+  if (!/\.(pdf|zip|mp4)$/i.test(selectedFile.name)) {
+    alert("Course must be a PDF, ZIP, or MP4");
+    return;
+  }
+
     setFile(selectedFile);
     setFileName(selectedFile.name);
     setUploading(true);
@@ -71,6 +77,8 @@ export function FileUploader({
           setUploadProgress(progress);
         },
       });
+
+      console.log("EdgeStore returned:", res.url); 
 
       onChange(res.url);
       setUploading(false);
@@ -118,13 +126,14 @@ export function FileUploader({
               <span>Choose File</span>
             </>
           )}
-          <input
-            id={id ?? "File-Upload"}
-            type="file"
-            className="sr-only"
-            onChange={handleFileChange}
-            disabled={uploading}
-          />
+ <input
+   id={id ?? "File-Upload"}
+   type="file"
+   accept=".pdf,.zip,.mp4"        // ⬅️ only real course assets
+   className="sr-only"
+   onChange={handleFileChange}
+   disabled={uploading}
+ />
         </label>
       </div>
       {uploading && (

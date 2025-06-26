@@ -9,9 +9,7 @@ interface Props {
   title: string;
 }
 const CourseDownloadButton = ({ file, title }: Props) => {
-  const onDownload = async () => {
-    downloadFile(file, title);
-  };
+  const onDownload = () => downloadFile(file, `${title}.pdf`);
   return (
     <Button
       className="w-full bg-blue-600 hover:bg-blue-700"
