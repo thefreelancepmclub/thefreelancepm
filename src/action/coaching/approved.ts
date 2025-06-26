@@ -5,7 +5,7 @@ import MeetingInvite from "@/email-templates/meeting-invite";
 import { generateZoomMeeting } from "@/helper/zoom";
 import { prisma } from "@/lib/prisma";
 import { resend } from "@/lib/resend";
-import { parseISO, setHours, setMinutes } from "date-fns";
+import { parseISO } from "date-fns";
 import moment from "moment";
 import { revalidatePath } from "next/cache";
 
@@ -19,10 +19,9 @@ export async function approveCoaching(coachingId: string) {
     };
   }
 
-  const coaching = await prisma.coaching.findFirst({
-    where: {
-      id: coachingId,
-    },
+  const coaching = await prisma.coachingSession.findFirst({
+    where: { id: coachingId },
+    include: { user: true },     // <- add this line
   });
 
   if (!coaching) {
@@ -32,18 +31,25 @@ export async function approveCoaching(coachingId: string) {
     };
   }
 
-  const { date, time, firstName, lastName, email } = coaching;
+  const { date: rawDate, user } = coaching;
+  const email      = user.email!;                // always present in your schema
+  const [firstName = "", ...rest] = (user.name ?? "").split(" ");
+  const lastName   = rest.join(" ");
+  
 
-  // Combine date and time, assume `date` and `time` are strings like '2025-05-02' and '14:00'
-  const coachingDate =
-    typeof date === "string" ? parseISO(date) : new Date(date);
+  if (!rawDate) {
+    return {
+      success: false,
+      message:
+        "This coaching record has no date and/or time. Approve it only after the slot is chosen.",
+    };
+  }
 
-  // If time is a string like "14:30"
-  const [hourStr, minuteStr] = time.split(":");
-  const startDateTime = setMinutes(
-    setHours(coachingDate, parseInt(hourStr)),
-    parseInt(minuteStr),
-  );
+    /* rawDate already contains the exact start-time.
+       Ensure it’s a JS Date object in case Prisma is configured
+       to return strings. */
+    const startDateTime =
+      typeof rawDate === "string" ? parseISO(rawDate) : rawDate;
 
   const zoom = await generateZoomMeeting({
     topic: `1:1 Session between ${firstName} & Ashanti Johnson`,
@@ -61,32 +67,29 @@ export async function approveCoaching(coachingId: string) {
     };
   }
 
-  const { startUrl, joinUrl, passcode } = zoom;
+  const { joinUrl, passcode } = zoom;
 
   // send email to user with meet link
   await resend.emails.send({
     from: "FreelancePM Club  <support@thefreelancepmclub.com>",
-    to: [coaching.email as string],
+    to: [email],
     subject: "Zoom Invitation:  Discussion with Ashanti Johnson, PMP",
     react: MeetingInvite({
-      meetingDate: moment(coaching.date).format("MMMM Do, YYYY"),
-      meetingTime: coaching.time,
-      meetingId: coaching.pass_code || undefined,
-      meetingLink: coaching.join_url || undefined,
+            meetingDate: moment(startDateTime).format("MMMM Do, YYYY"),
+      meetingTime: moment(startDateTime).format("HH:mm"),
+      meetingId:   passcode,   // ← from Zoom response
+      meetingLink: joinUrl,    // ← from Zoom response
     }),
   });
 
   // save meet link to coaching session
 
-  await prisma.coaching.update({
+  await prisma.coachingSession.update({
     where: {
       id: coachingId as string,
     },
     data: {
-      start_url: startUrl,
-      join_url: joinUrl,
-      pass_code: passcode,
-      status: "scheduled",
+      status: "paid",
     },
   });
 

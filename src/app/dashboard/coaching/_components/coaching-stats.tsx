@@ -25,8 +25,8 @@ const StatCard = ({ title, value, icon }: StatCardProps) => (
 );
 
 export default async function CoachingStats() {
-  const totalSessions = await prisma.coaching.count();
-  const upcomingSessions = await prisma.coaching.count({
+  const totalSessions = await prisma.coachingSession.count();
+  const upcomingSessions = await prisma.coachingSession.count({
     where: {
       date: {
         gte: new Date(),
@@ -34,7 +34,7 @@ export default async function CoachingStats() {
     },
   });
 
-  const todaySessions = await prisma.coaching.count({
+  const todaySessions = await prisma.coachingSession.count({
     where: {
       date: {
         gte: new Date(new Date().setHours(0, 0, 0, 0)),

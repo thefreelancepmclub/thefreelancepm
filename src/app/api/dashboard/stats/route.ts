@@ -56,21 +56,18 @@ export async function GET(req: Request) {
       (sum, purchase) => sum + (purchase.template?.price || 0),
       0,
     );
-
+    const PRICE_PER_SESSION_USD = 50;
     // 4. Revenue from coaching sessions
-    const coachingSessions = await prisma.coaching.findMany({
+    const coachingSessions = await prisma.coachingSession.findMany({
       where: {
         date: {
           gte: startDate,
         },
-        isPaid: true,
+        status: "paid",
       },
     });
 
-    const coachingRevenue = coachingSessions.reduce(
-      (sum, session) => sum + (session.amount || 0),
-      0,
-    );
+    const coachingRevenue = coachingSessions.length * PRICE_PER_SESSION_USD;
 
     // 5. Total revenue
     const totalRevenue = templateRevenue + coachingRevenue;

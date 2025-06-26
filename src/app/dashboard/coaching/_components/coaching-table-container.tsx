@@ -19,12 +19,15 @@ import {
 } from "@/components/ui/table";
 import { TablePagination } from "@/components/ui/table-pagination";
 import useCoachingStore from "@/zustand/dashboard/coaching";
-import { Coaching } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Search } from "lucide-react";
 import moment from "moment";
 import { useState } from "react";
 import CoachingTableAction from "./coaching-table-action";
+type SessionRow = import("@prisma/client").CoachingSession & {
+  user: { name: string | null; email: string | null } | null;
+};
+
 
 interface ApiRes {
   success: boolean;
@@ -56,20 +59,23 @@ export function CoachingTableContainer() {
         ).then((res) => res.json()),
     });
 
-  const getStatusClass = (status: string) => {
-    switch (status) {
-      case "completed":
-        return "text-green-600 bg-green-100";
-      case "scheduled":
-        return "text-blue-600 bg-blue-100";
-      case "canceled":
-        return "text-red-600 bg-red-100";
-      case "opened":
-        return "text-yellow-600 bg-yellow-100";
-      default:
-        return "text-gray-600 bg-gray-100";
-    }
-  };
+    const getStatusClass = (status: string) => {
+      switch (status) {
+        case "completed":
+          return "text-green-600 bg-green-100";
+        case "scheduled":
+          return "text-blue-600 bg-blue-100";
+        case "opened":
+          return "text-yellow-600 bg-yellow-100";
+        case "paid":
+          return "text-purple-600 bg-purple-100";
+        case "canceled":
+          return "text-red-600 bg-red-100";
+        default:
+          return "text-gray-600 bg-gray-100";
+      }
+    };
+    
 
   if (isLoading) {
     return (
@@ -130,56 +136,34 @@ export function CoachingTableContainer() {
                 <TableHead>User</TableHead>
                 <TableHead>User Email</TableHead>
                 <TableHead>Date & Time</TableHead>
-                <TableHead>Focus Area</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data?.data?.map((coaching: Coaching) => (
-                <TableRow className="border-none  " key={coaching.id}>
-                  <TableCell className="font-medium">{coaching?.id}</TableCell>
-                  <TableCell className="font-medium">
-                    {coaching?.firstName}
+              {data?.data?.map((row: SessionRow) => (
+                <TableRow className="border-none  " key={row.id}>
+                  <TableCell className="font-medium">{row.id}</TableCell>
+                                    <TableCell className="font-medium">
+                    {row.user?.name ?? "—"}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {coaching?.email}
+                    {row.user?.email ?? "—"}
                   </TableCell>
                   <TableCell className="font-medium">
-                    <div className="flex flex-col gap-1">
-                      <span>{moment(coaching.date).format("MM/DD/YYYY")}</span>
-                      <span>{coaching.time}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="font-semibold text-[16px]">
-                    <div className="flex flex-wrap gap-1">
-                      {coaching?.focusArea.length > 0 ? (
-                        coaching.focusArea.map((area: string) => (
-                          <span
-                            key={area}
-                            className="inline-block rounded  px-2 py-0.5 text-xs"
-                          >
-                            {area}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="inline-block rounded  px-2 py-0.5 text-xs">
-                          {coaching.focusArea[0]}
-                        </span>
-                      )}
-                    </div>
+                    {row.date ? moment(row.date).format("MM/DD/YYYY HH:mm") : "—"}
                   </TableCell>
                   <TableCell className="font-medium">
                     <span
                       className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusClass(
-                        coaching?.status,
+                        row.status,
                       )}`}
                     >
-                      {coaching?.status}
+                      {row.status}
                     </span>
                   </TableCell>
                   <TableCell>
-                    <CoachingTableAction data={coaching} />
+                    <CoachingTableAction data={row} />
                   </TableCell>
                 </TableRow>
               ))}

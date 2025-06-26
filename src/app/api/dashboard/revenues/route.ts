@@ -33,12 +33,12 @@ export async function GET(req: Request) {
     });
 
     // Fetch coaching sessions
-    const coachingSessions = await prisma.coaching.findMany({
+    const coachingSessions = await prisma.coachingSession.findMany({
       where: {
         date: {
           gte: startDate,
         },
-        isPaid: true,
+        status: "paid"
       },
     });
 
@@ -50,24 +50,24 @@ export async function GET(req: Request) {
       })),
       ...coachingSessions.map((c) => ({
         date: c.date,
-        amount: c.amount || 0,
+        amount: 5000,
       })),
     ];
 
     // Group by day or month
     const grouped: Record<string, number> = {};
 
-    revenueData.forEach((item) => {
-      let key = "";
-
-      if (type === "weekly") {
-        key = item.date.toLocaleDateString("en-US", { weekday: "short" }); // "Mon"
-      } else {
-        key = item.date.toLocaleDateString("en-US", { month: "short" }); // "Jan"
-      }
-
-      grouped[key] = (grouped[key] || 0) + item.amount;
-    });
+    revenueData                 // ① skip any nulls early
+      .filter(d => d.date !== null)
+      .forEach(item => {
+        const date = item.date as Date;        // ② now safely non-null
+        const key =
+          type === "weekly"
+            ? date.toLocaleDateString("en-US", { weekday: "short" }) // "Mon"
+            : date.toLocaleDateString("en-US", { month: "short" });  // "Jan"
+    
+        grouped[key] = (grouped[key] || 0) + item.amount;
+      });
 
     // Define full range
     const fullWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

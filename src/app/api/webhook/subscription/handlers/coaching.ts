@@ -9,11 +9,12 @@ export async function handleCoachingCheckout(session: Stripe.Checkout.Session) {
   }
 
   // Mark the coaching session as paid
-  await prisma.coaching.update({
+  await prisma.coachingSession.update({
     where: { id: coachingId },
     data: {
-      isPaid: true,
-      amount: session.amount_total || 0,
-    },
+      status: "paid",
+            // you can optionally flip the flag that was set on creation:
+            requiresPayment: false,
+          },
   });
 }

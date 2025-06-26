@@ -1,13 +1,13 @@
 import { approveCoaching } from "@/action/coaching/approved";
 import { Button } from "@/components/ui/button";
-import { Coaching } from "@prisma/client";
+import { CoachingSession } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
 interface Props {
-  data: Coaching;
+  data: CoachingSession;
 }
 const CoachingTableAction = ({ data }: Props) => {
   const [pending, startTransition] = useTransition();
@@ -28,10 +28,10 @@ const CoachingTableAction = ({ data }: Props) => {
     });
   };
 
-  if (data.start_url) {
+  if (data.startUrl) {
     return (
       <a
-        href={data.start_url}
+        href={data.startUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="text-blue-500 hover:underline"

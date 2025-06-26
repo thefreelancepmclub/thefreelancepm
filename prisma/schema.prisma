@@ -36,7 +36,6 @@ model User {
   calendarLink  String?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-  coaching      Coaching[]
 
   stripeCustomerId String?
 
@@ -46,8 +45,9 @@ model User {
   jobActivities      UserJobActivity[] // Jobs the user applied for or interacted with
   courses            UserPurchasedCourse[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  coachingSessions CoachingSession[]
 }
 
 model ResetReq {
@@ -351,32 +351,46 @@ enum CoachingStatus {
   camceled
 }
 
-model Coaching {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName  String
-  email     String
-  phone     String
-  date      DateTime
-  time      String
-  focusArea String[]
-  isPaid    Boolean  @default(false)
-  amount    Int
-  notes     String
+enum SessionType {
+  consultation
+  coaching
+}
 
-  status CoachingStatus @default(opened)
 
-  // meeting link
-  join_url  String?
-  start_url String?
-  pass_code String?
+enum Tier {
+  free
+  lite
+  pro
+  elite
+}
 
-  // Relation to User
+enum SessionStatus {
+  opened
+  paid
+  cancelled
+}
+
+/// ─── 2️⃣  TIDY THE MODEL (MongoDB flavour)  ────────────────────────
+model CoachingSession {
+  /// Mongo IDs should match the rest of your schema (`@map("_id") @db.ObjectId`)
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  /// relation to User
   userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  sessionType     SessionType
+  tierAtCreate    Tier
+  date            DateTime?
+  requiresPayment Boolean
+
+  status    SessionStatus @default(opened)
+  startUrl String? @map("start_url")
+  joinUrl  String? @map("join_url")
+  passCode String? @map("pass_code")
+  createdAt DateTime      @default(now())
+
+  @@index([userId, createdAt])
 }
 
 model JobAlert {

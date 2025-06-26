@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import Script from "next/script";
 import AppProvider from "@/provider/AppProvider";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google"; // Optional: For fallback fonts
@@ -55,6 +56,11 @@ export default async function RootLayout({
         <Toaster closeButton richColors />
 
         <NextTopLoader showSpinner={false} />
+        {/* Calendly */}
+        <Script
+          src="https://assets.calendly.com/assets/external/widget.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

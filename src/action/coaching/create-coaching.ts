@@ -1,104 +1,119 @@
 "use server";
 
 import { auth } from "@/auth";
-import { tierModel } from "@/helper/subscription";
 import { prisma } from "@/lib/prisma";
+import { tierModel } from "@/helper/subscription";
+import { deriveFlags } from "@/lib/booking/validate";
 import { stripe } from "@/lib/stripe";
-import { coachingSchema, CoachingSchemaType } from "@/schemas/coaching";
+import { coachingSchema, type CoachingSchema }           // ⬅️ value + type
+  from "@/schemas/coaching";
 import { DateTime } from "luxon";
 import { redirect } from "next/navigation";
+import type { Tier } from "@/lib/booking/logic";
+
+function safeDate(
+  dateInput?: string | Date | null,
+  timeInput?: string | null,
+): Date | undefined {
+  if (!dateInput || !timeInput) return undefined;
+
+  // normalise the calendar day
+  const day = typeof dateInput === "string"
+    ? DateTime.fromISO(dateInput)
+    : DateTime.fromJSDate(dateInput);
+
+  if (!day.isValid) return undefined;              // bad date from UI
+
+  // parse "9:00 AM", "17:30", etc.
+  const t = DateTime.fromFormat(timeInput.trim(), "h:mm a").isValid
+    ? DateTime.fromFormat(timeInput.trim(), "h:mm a")
+    : DateTime.fromFormat(timeInput.trim(), "H:mm");
+
+  if (!t.isValid) return undefined;                // bad time from UI
+
+  // merge → JS Date in UTC
+  return day.set({ hour: t.hour, minute: t.minute }).toJSDate();
+}
 
 export type webhookFor = "subscription" | "coaching" | "template" | "course";
 
-export async function createCoaching(data: CoachingSchemaType) {
+export async function createCoaching(data: CoachingSchema) {
   const cu = await auth();
   if (!cu?.user) redirect("/login");
 
-  // Get current user with their subscriptions and previous coaching sessions
+  // ── 1) Load user + past coaching
   const user = await prisma.user.findFirst({
     where: { id: cu.user.id },
-    include: {
-      userSubscriptions: true,
-      coaching: true,
-    },
+    include: { userSubscriptions: true, coachingSessions: true },
   });
-
-  if (!user?.userSubscriptions || user.userSubscriptions.length === 0) {
-    return {
-      success: false,
-      message:
-        "No active subscription found. Please subscribe to book a session.",
-    };
+  if (!user?.userSubscriptions?.length) {
+    return { success: false, message: "No active subscription found." };
   }
 
-  // Validate incoming form data
-  const parsedData = coachingSchema.safeParse(data);
-  if (!parsedData.success) {
-    return {
-      success: false,
-      message: parsedData.error.message,
-    };
+  // ── 2) Validate payload (now includes sessionType)
+  const parsed = coachingSchema.safeParse(data);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.message };
   }
 
   const {
+    sessionType,              
     date,
     time,
     email,
     firstName,
     lastName,
-    focusAreas,
-    phoneNumber,
-    notes,
-  } = parsedData.data;
+  } = parsed.data;
 
-  const subscription = user.userSubscriptions[0];
-  const tier =
-    tierModel[subscription.subscriptionId as keyof typeof tierModel] || "pro";
-
-  // Determine if payment is required based on subscription tier & usage
-  let requiresPayment = false;
-
-  if (tier === "free") {
-    // Free tier gets 1 free coaching
-    if (user.coaching.length > 0) requiresPayment = true;
-  } else if (tier === "elite") {
-    // Elite gets 1 free coaching per month
-    const now = DateTime.utc();
-    const hasBookedThisMonth = user.coaching.some((c) => {
-      const bookedDate = DateTime.fromJSDate(c.date, { zone: "utc" });
-      return bookedDate.hasSame(now, "month");
-    });
-
-    if (hasBookedThisMonth) requiresPayment = true;
-  } else {
-    // All other tiers (e.g. Pro) must pay
-    requiresPayment = true;
+  function makeCalendlyUrl(type: "consultation" | "coaching") {
+    return type === "consultation"
+      ? process.env.NEXT_PUBLIC_CALENDLY_CONSULT_URL!
+      : process.env.NEXT_PUBLIC_CALENDLY_COACH_URL!;
   }
 
-  if (requiresPayment) {
-    // Create unpaid coaching entry and generate checkout session
-    const coaching = await prisma.coaching.create({
-      data: {
-        amount: 0,
-        date,
-        time,
-        email,
-        firstName,
-        lastName,
-        focusArea: focusAreas,
-        phone: phoneNumber,
-        notes: notes || "",
-        userId: user.id,
-        isPaid: false,
-      },
-    });
+  // ── 3) Determine tier
+  const sub = user.userSubscriptions[0];
+   const tier: Tier =
+     (tierModel[sub.subscriptionId as keyof typeof tierModel] ?? "pro") as Tier;
 
+// ── 4) Centralised business rules (replaces the big if/else)
+const { needsSlot, pay: requiresPayment } = deriveFlags(
+  { sessionType, firstName, lastName, email },           // minimal shape
+  {
+    tier,
+    freeRemaining: tier === "elite"
+    ? user.coachingSessions.filter(c =>
+        c.sessionType === "coaching" &&
+        DateTime.fromJSDate(c.createdAt, { zone: "utc" }).hasSame(DateTime.utc(), "month")
+      ).length === 0
+    : false,
+    isLegacyFree: tier === "free" && user.coachingSessions.length === 0, // legacy rule
+  },
+);
+
+if (needsSlot && (!date || !time)) {
+  return { success:false, message:"Select date & time" };
+}
+// ── 5) Create the new CoachingSession row
+const coaching = await prisma.coachingSession.create({
+  data: {
+    userId:         user.id,
+    sessionType,
+    tierAtCreate:   tier,
+    date: safeDate(date, time),
+    requiresPayment,
+    status:         requiresPayment ? "opened" : "paid",
+  },
+});
+
+
+  // ── 6) Payment flow or Calendly link
+  if (requiresPayment) {
     const session = await createCheckoutSession({
-      email: user.email as string,
+      email: user.email!,
       coachingId: coaching.id,
       userId: user.id,
     });
-
     return {
       success: true,
       checkoutUrl: session.url,
@@ -106,26 +121,12 @@ export async function createCoaching(data: CoachingSchemaType) {
     };
   }
 
-  // Otherwise, book session directly
-  await prisma.coaching.create({
-    data: {
-      amount: 0,
-      date,
-      time,
-      email,
-      firstName,
-      lastName,
-      focusArea: focusAreas,
-      phone: phoneNumber,
-      notes: notes || "",
-      userId: user.id,
-      isPaid: true,
-    },
-  });
+
 
   return {
     success: true,
-    message: "Your session has been booked successfully.",
+    calendlyUrl: makeCalendlyUrl(sessionType),
+    message: "Booking successful – pick a slot",
   };
 }
 

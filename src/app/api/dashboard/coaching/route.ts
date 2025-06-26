@@ -54,11 +54,11 @@ export async function GET(request: NextRequest) {
       ];
     }
 
-    const totalItems = await prisma.coaching.count({ where });
+    const totalItems = await prisma.coachingSession.count({ where });
     const totalPages = Math.ceil(totalItems / limit);
     const skip = (page - 1) * limit;
 
-    const coachings = await prisma.coaching.findMany({
+    const coachings = await prisma.coachingSession.findMany({
       where,
       skip,
       take: limit,
