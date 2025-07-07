@@ -72,12 +72,12 @@ const navlinks = [
     href: "/testmonial",
     icon: faPeopleArrows,
   },
-  {
-    id: 8,
-    label: "Coaching",
-    href: "/coaching",
-    icon: faMessage
-  },
+  // {
+  //   id: 8,
+  //   label: "Coaching",
+  //   href: "/coaching",
+  //   icon: faMessage
+  // },
   {
     id: 9,
     label: "FAQs",
